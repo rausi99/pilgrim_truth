@@ -21,7 +21,7 @@ const API_URL =
 
 const BACKEND_URL = API_URL.replace(/\/api\/?$/, "");
 
-const HERO_IMAGE = "images/bble.jpeg";
+const HERO_IMAGE = "/images/bble.jpeg";
 
 const DEFAULT_SCRIPTURE =
   "Your word is a lamp to my feet and a light to my path.";

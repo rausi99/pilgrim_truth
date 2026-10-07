@@ -48,7 +48,7 @@
       rgba(7, 26, 51, 0.72) 65%,
       rgba(7, 26, 51, 0.48) 100%
     ),
-    url("images/bble.jpeg") center / cover no-repeat;
+   url("/images/bble.jpeg") center / cover no-repeat;
 
   color: var(--bs-white);
 }

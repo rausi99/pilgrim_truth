@@ -946,7 +946,7 @@ function AdminResourceForm() {
                         "http"
                       )
                         ? uploadInfo.file_url
-                        : `http://localhost:5000${uploadInfo.file_url}`
+                        : `${BACKEND_URL}${uploadInfo.file_url}`
                     }
                     target="_blank"
                     rel="noreferrer"

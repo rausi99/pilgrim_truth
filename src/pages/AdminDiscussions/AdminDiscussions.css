@@ -1,0 +1,1036 @@
+/* =========================================================
+   PILGRIM TRUTH — ADMIN DISCUSSIONS
+   Community moderation interface
+   ========================================================= */
+
+.admin-discussions-page {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 28px 30px 40px;
+  color: #263746;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.admin-discussions-page .admin-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.admin-discussions-page .admin-eyebrow {
+  display: inline-block;
+  margin-bottom: 7px;
+  color: #145da0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.admin-discussions-page .admin-page-header h1 {
+  margin: 0;
+  color: #071827;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 32px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.admin-discussions-page .admin-page-header p {
+  margin: 8px 0 0;
+  max-width: 650px;
+  color: #647586;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.admin-discussions-page .admin-discussion-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  padding: 10px 14px;
+  border: 1px solid #dce6ee;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #145da0;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(7, 24, 39, 0.04);
+}
+
+/* =========================================================
+   ERROR BANNER
+   ========================================================= */
+
+.admin-discussions-page .admin-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 12px 14px;
+  border: 1px solid #f0caca;
+  border-radius: 10px;
+  background: #fff7f7;
+  color: #a53b3b;
+  font-size: 13px;
+}
+
+.admin-discussions-page .admin-error-banner span {
+  flex: 1;
+}
+
+.admin-discussions-page .admin-error-banner button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #a53b3b;
+  cursor: pointer;
+}
+
+.admin-discussions-page .admin-error-banner button:hover {
+  background: #fdeaea;
+}
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.admin-discussions-page .admin-discussion-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 14px;
+  border: 1px solid #dce6ee;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(7, 24, 39, 0.035);
+}
+
+.admin-discussions-page .admin-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 220px;
+}
+
+.admin-discussions-page .admin-search-box svg {
+  position: absolute;
+  left: 13px;
+  color: #7b8b99;
+  pointer-events: none;
+}
+
+.admin-discussions-page .admin-search-box input {
+  width: 100%;
+  height: 42px;
+  padding: 0 14px 0 40px;
+  border: 1px solid #d6e1e9;
+  border-radius: 9px;
+  outline: none;
+  background: #f8fafc;
+  color: #263746;
+  font-family: inherit;
+  font-size: 13px;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.admin-discussions-page .admin-search-box input::placeholder {
+  color: #8a98a5;
+}
+
+.admin-discussions-page .admin-search-box input:focus {
+  border-color: #1d6fb8;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(29, 111, 184, 0.1);
+}
+
+.admin-discussions-page .admin-filter-box {
+  flex-shrink: 0;
+}
+
+.admin-discussions-page .admin-filter-box select {
+  height: 42px;
+  min-width: 145px;
+  padding: 0 34px 0 12px;
+  border: 1px solid #d6e1e9;
+  border-radius: 9px;
+  outline: none;
+  background: #f8fafc;
+  color: #263746;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.admin-discussions-page .admin-filter-box select:focus {
+  border-color: #1d6fb8;
+  box-shadow: 0 0 0 3px rgba(29, 111, 184, 0.1);
+}
+
+.admin-discussions-page .admin-clear-filter {
+  height: 42px;
+  padding: 0 13px;
+  border: 1px solid #d6e1e9;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #526575;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-discussions-page .admin-clear-filter:hover {
+  border-color: #1d6fb8;
+  color: #145da0;
+  background: #f5f9fc;
+}
+
+/* =========================================================
+   SUMMARY
+   ========================================================= */
+
+.admin-discussions-page .admin-discussion-summary {
+  margin: 0 0 12px;
+  color: #718190;
+  font-size: 12px;
+}
+
+.admin-discussions-page .admin-discussion-summary strong {
+  color: #263746;
+  font-weight: 800;
+}
+
+/* =========================================================
+   TABLE CARD
+   ========================================================= */
+
+.admin-discussions-page .admin-discussion-table-card {
+  overflow: hidden;
+  border: 1px solid #dce6ee;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 3px 14px rgba(7, 24, 39, 0.045);
+}
+
+.admin-discussions-page .admin-discussion-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.admin-discussions-page .admin-discussion-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.admin-discussions-page .admin-discussion-table th {
+  padding: 14px 16px;
+  border-bottom: 1px solid #dce6ee;
+  background: #f7f9fb;
+  color: #607282;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.admin-discussions-page .admin-discussion-table td {
+  padding: 15px 16px;
+  border-bottom: 1px solid #edf1f4;
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.admin-discussions-page .admin-discussion-table tbody tr {
+  transition: background 0.16s ease;
+}
+
+.admin-discussions-page .admin-discussion-table tbody tr:hover {
+  background: #fbfdff;
+}
+
+.admin-discussions-page .admin-discussion-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* =========================================================
+   DISCUSSION CELL
+   ========================================================= */
+
+.admin-discussions-page .admin-discussion-info {
+  min-width: 220px;
+}
+
+.admin-discussions-page .admin-discussion-title-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.admin-discussions-page .admin-discussion-title {
+  max-width: 350px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #0b1f33;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 750;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-discussions-page .admin-discussion-title:hover {
+  color: #145da0;
+}
+
+.admin-discussions-page .admin-featured-icon {
+  color: #145da0;
+  flex-shrink: 0;
+}
+
+.admin-discussions-page .admin-locked-icon {
+  color: #647586;
+  flex-shrink: 0;
+}
+
+.admin-discussions-page .admin-discussion-info p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 5px 0 0;
+  max-width: 350px;
+  color: #758593;
+  font-size: 12px;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* =========================================================
+   AUTHOR
+   ========================================================= */
+
+.admin-discussions-page .admin-author-info {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 150px;
+}
+
+.admin-discussions-page .admin-author-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: 1px solid #d6e5ef;
+  border-radius: 50%;
+  background: #edf5fa;
+  color: #145da0;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.admin-discussions-page .admin-author-info strong {
+  display: block;
+  overflow: hidden;
+  max-width: 150px;
+  color: #263746;
+  font-size: 12px;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-discussions-page .admin-author-info span {
+  display: block;
+  margin-top: 2px;
+  color: #8a98a5;
+  font-size: 11px;
+}
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.admin-discussions-page .admin-category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  border: 1px solid #d9e6ef;
+  border-radius: 7px;
+  background: #f3f8fb;
+  color: #145da0;
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   REPLY COUNT
+   ========================================================= */
+
+.admin-discussions-page .admin-reply-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #526575;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.admin-discussions-page .admin-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.admin-discussions-page .admin-status-published {
+  border: 1px solid #c9e5d6;
+  background: #f0faf4;
+  color: #26734a;
+}
+
+.admin-discussions-page .admin-status-draft {
+  border: 1px solid #dce3e8;
+  background: #f5f7f8;
+  color: #647586;
+}
+
+.admin-discussions-page .admin-status-hidden {
+  border: 1px solid #e8d0d0;
+  background: #fff5f5;
+  color: #9b4545;
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.admin-discussions-page .admin-discussion-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.admin-discussions-page .admin-discussion-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid #d8e2e9;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #526575;
+  cursor: pointer;
+  transition:
+    border-color 0.16s ease,
+    background 0.16s ease,
+    color 0.16s ease;
+}
+
+.admin-discussions-page .admin-discussion-actions button:hover {
+  border-color: #a9c7dd;
+  background: #f2f8fc;
+  color: #145da0;
+}
+
+.admin-discussions-page .admin-discussion-actions .admin-danger-action:hover {
+  border-color: #e7baba;
+  background: #fff5f5;
+  color: #b44343;
+}
+
+.admin-discussions-page .admin-discussion-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   STATES
+   ========================================================= */
+
+.admin-discussions-page .admin-discussion-state {
+  display: flex;
+  min-height: 280px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.admin-discussions-page .admin-discussion-state svg {
+  color: #1d6fb8;
+}
+
+.admin-discussions-page .admin-discussion-state p {
+  margin: 0;
+  color: #718190;
+  font-size: 13px;
+}
+
+.admin-discussions-page .admin-loading-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #dce8f0;
+  border-top-color: #145da0;
+  border-radius: 50%;
+  animation: admin-discussion-spin 0.75s linear infinite;
+}
+
+@keyframes admin-discussion-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   DISCUSSION MODAL
+   ========================================================= */
+
+.admin-discussions-page .admin-modal-overlay {
+  position: fixed;
+  z-index: 1200;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(7, 24, 39, 0.58);
+  backdrop-filter: blur(3px);
+}
+
+.admin-discussions-page .admin-discussion-modal {
+  width: min(760px, 100%);
+  max-height: min(780px, calc(100vh - 48px));
+  overflow: hidden;
+  border: 1px solid #dce6ee;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(7, 24, 39, 0.2);
+}
+
+.admin-discussions-page .admin-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 22px;
+  border-bottom: 1px solid #e5ebef;
+}
+
+.admin-discussions-page .admin-modal-header h2 {
+  margin: 3px 0 0;
+  color: #071827;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 23px;
+  line-height: 1.3;
+}
+
+.admin-discussions-page .admin-modal-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 1px solid #d9e2e8;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #647586;
+  cursor: pointer;
+}
+
+.admin-discussions-page .admin-modal-close:hover {
+  border-color: #b9d0e0;
+  background: #f4f8fb;
+  color: #145da0;
+}
+
+.admin-discussions-page .admin-discussion-modal-body {
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+  padding: 22px;
+}
+
+/* =========================================================
+   MODAL META
+   ========================================================= */
+
+.admin-discussions-page .admin-discussion-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-discussions-page .admin-discussion-meta > div {
+  padding: 12px;
+  border: 1px solid #e0e8ee;
+  border-radius: 9px;
+  background: #f8fafc;
+}
+
+.admin-discussions-page .admin-discussion-meta span {
+  display: block;
+  margin-bottom: 4px;
+  color: #84929e;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.admin-discussions-page .admin-discussion-meta strong {
+  display: block;
+  overflow: hidden;
+  color: #263746;
+  font-size: 12px;
+  font-weight: 750;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   MODAL CONTENT
+   ========================================================= */
+
+.admin-discussions-page .admin-discussion-content {
+  padding: 16px;
+  border: 1px solid #e0e8ee;
+  border-radius: 10px;
+  background: #fbfcfd;
+  color: #3c4d5c;
+  font-size: 14px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   MODAL CONTROLS
+   ========================================================= */
+
+.admin-discussions-page .admin-discussion-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #dce6ee;
+  border-radius: 10px;
+  background: #f7f9fb;
+}
+
+.admin-discussions-page .admin-discussion-controls button,
+.admin-discussions-page .admin-discussion-controls select {
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #d3dfe7;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #3e5261;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-discussions-page .admin-discussion-controls button:hover,
+.admin-discussions-page .admin-discussion-controls select:hover {
+  border-color: #a8c6db;
+  color: #145da0;
+}
+
+.admin-discussions-page .admin-discussion-controls select:focus {
+  outline: none;
+  border-color: #1d6fb8;
+  box-shadow: 0 0 0 3px rgba(29, 111, 184, 0.1);
+}
+
+/* =========================================================
+   REPLIES
+   ========================================================= */
+
+.admin-discussions-page .admin-replies-section {
+  margin-top: 24px;
+}
+
+.admin-discussions-page .admin-replies-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-discussions-page .admin-replies-heading h3 {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.admin-discussions-page .admin-replies-heading span {
+  color: #84929e;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.admin-discussions-page .admin-empty-replies {
+  padding: 24px;
+  border: 1px dashed #ccd9e2;
+  border-radius: 10px;
+  background: #fafcfd;
+  color: #7b8a97;
+  font-size: 12px;
+  text-align: center;
+}
+
+.admin-discussions-page .admin-replies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-discussions-page .admin-reply-card {
+  padding: 14px;
+  border: 1px solid #dfe7ec;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.admin-discussions-page .admin-reply-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.admin-discussions-page .admin-reply-header strong {
+  color: #263746;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.admin-discussions-page .admin-reply-header span {
+  color: #8996a1;
+  font-size: 10px;
+}
+
+.admin-discussions-page .admin-reply-card p {
+  margin: 0;
+  color: #526575;
+  font-size: 12px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.admin-discussions-page .admin-reply-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid #e4cccc;
+  border-radius: 7px;
+  background: #fff8f8;
+  color: #b44343;
+  cursor: pointer;
+}
+
+.admin-discussions-page .admin-reply-delete:hover {
+  border-color: #dcaeae;
+  background: #fff1f1;
+}
+
+/* =========================================================
+   CONFIRMATION MODAL
+   ========================================================= */
+
+.admin-discussions-page .admin-confirm-modal {
+  width: min(430px, 100%);
+  padding: 26px;
+  border: 1px solid #dce6ee;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(7, 24, 39, 0.2);
+  text-align: center;
+}
+
+.admin-discussions-page .admin-confirm-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  background: #fff1f1;
+  color: #b44343;
+}
+
+.admin-discussions-page .admin-confirm-modal h3 {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.admin-discussions-page .admin-confirm-modal p {
+  margin: 9px auto 0;
+  max-width: 350px;
+  color: #718190;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.admin-discussions-page .admin-confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 22px;
+}
+
+.admin-discussions-page .admin-confirm-actions button {
+  min-width: 105px;
+  height: 39px;
+  padding: 0 14px;
+  border: 1px solid #d4dfe6;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #526575;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.admin-discussions-page .admin-confirm-actions button:hover {
+  background: #f6f9fb;
+}
+
+.admin-discussions-page .admin-confirm-actions .admin-danger-button {
+  border-color: #b44343;
+  background: #b44343;
+  color: #ffffff;
+}
+
+.admin-discussions-page .admin-confirm-actions .admin-danger-button:hover {
+  border-color: #963838;
+  background: #963838;
+}
+
+.admin-discussions-page .admin-confirm-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.admin-discussions-page button:focus-visible,
+.admin-discussions-page select:focus-visible,
+.admin-discussions-page input:focus-visible {
+  outline: 3px solid rgba(29, 111, 184, 0.18);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+  .admin-discussions-page {
+    padding: 24px 22px 36px;
+  }
+
+  .admin-discussions-page .admin-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-discussions-page .admin-discussion-count {
+    align-self: flex-start;
+  }
+
+  .admin-discussions-page .admin-discussion-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .admin-discussions-page .admin-search-box {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .admin-discussions-page {
+    padding: 20px 16px 30px;
+  }
+
+  .admin-discussions-page .admin-page-header h1 {
+    font-size: 28px;
+  }
+
+  .admin-discussions-page .admin-discussion-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-discussions-page .admin-search-box,
+  .admin-discussions-page .admin-filter-box {
+    width: 100%;
+  }
+
+  .admin-discussions-page .admin-filter-box select,
+  .admin-discussions-page .admin-clear-filter {
+    width: 100%;
+  }
+
+  .admin-discussions-page .admin-discussion-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-discussions-page .admin-modal-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .admin-discussions-page .admin-discussion-modal {
+    width: 100%;
+    max-height: 94vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .admin-discussions-page .admin-discussion-modal-body {
+    max-height: calc(94vh - 82px);
+    padding: 18px;
+  }
+
+  .admin-discussions-page .admin-modal-header {
+    padding: 17px 18px;
+  }
+
+  .admin-discussions-page .admin-modal-header h2 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-discussions-page {
+    padding: 17px 12px 26px;
+  }
+
+  .admin-discussions-page .admin-page-header {
+    margin-bottom: 18px;
+  }
+
+  .admin-discussions-page .admin-page-header h1 {
+    font-size: 25px;
+  }
+
+  .admin-discussions-page .admin-page-header p {
+    font-size: 13px;
+  }
+
+  .admin-discussions-page .admin-discussion-count {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .admin-discussions-page .admin-discussion-table-card {
+    border-radius: 11px;
+  }
+
+  .admin-discussions-page .admin-discussion-table th,
+  .admin-discussions-page .admin-discussion-table td {
+    padding: 12px;
+  }
+
+  .admin-discussions-page .admin-discussion-title {
+    max-width: 260px;
+  }
+
+  .admin-discussions-page .admin-confirm-modal {
+    width: calc(100% - 24px);
+    padding: 22px 18px;
+  }
+
+  .admin-discussions-page .admin-confirm-actions {
+    flex-direction: column-reverse;
+  }
+
+  .admin-discussions-page .admin-confirm-actions button {
+    width: 100%;
+  }
+
+  .admin-discussions-page .admin-discussion-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-discussions-page .admin-discussion-controls button,
+  .admin-discussions-page .admin-discussion-controls select {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-discussions-page *,
+  .admin-discussions-page *::before,
+  .admin-discussions-page *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

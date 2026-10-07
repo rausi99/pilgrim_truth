@@ -10,6 +10,7 @@ const resources = [
     size: "2.4 MB",
     featured: true,
     icon: "book",
+    file: "/resources/bible-study-guide.pdf",
   },
   {
     slug: "bible-books-overview",
@@ -22,6 +23,7 @@ const resources = [
     size: "1.8 MB",
     featured: false,
     icon: "library",
+    file: "/resources/bible-books-overview.pdf",
   },
   {
     slug: "biblical-timeline",
@@ -34,6 +36,7 @@ const resources = [
     size: "3.1 MB",
     featured: false,
     icon: "clock",
+    file: "/resources/biblical-timeline.pdf",
   },
   {
     slug: "bible-geography-guide",
@@ -42,10 +45,11 @@ const resources = [
     description:
       "Explore important biblical places, regions, journeys, cities, and geographical settings.",
     type: "Map Guide",
-    format: "PDF",
+    format: "Map Guide",
     size: "4.2 MB",
     featured: false,
     icon: "map",
+    file: "/resources/bible-geography-guide.pdf",
   },
   {
     slug: "prophecy-study-guide",
@@ -58,6 +62,7 @@ const resources = [
     size: "2.7 MB",
     featured: false,
     icon: "flame",
+    file: "/resources/prophecy-study-guide.pdf",
   },
   {
     slug: "scripture-memory-guide",
@@ -70,6 +75,7 @@ const resources = [
     size: "1.5 MB",
     featured: false,
     icon: "heart",
+    file: "/resources/scripture-memory-guide.pdf",
   },
 ];
 

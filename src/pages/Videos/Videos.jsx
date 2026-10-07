@@ -1,358 +1,371 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Play, Search } from "lucide-react";
-import { Link } from "react-router-dom";
 
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
-import videos from "../../data/videos";
+
+import "./Videos.css";
+
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
+const YOUTUBE_CHANNEL_URL =
+  "https://www.youtube.com/@pilgrimtruthministry";
+
+function getYoutubeId(video) {
+  if (video?.youtube_id) {
+    return video.youtube_id;
+  }
+
+  if (!video?.youtube_url) {
+    return "";
+  }
+
+  try {
+    const url = new URL(video.youtube_url);
+
+    if (url.hostname.includes("youtu.be")) {
+      return url.pathname.replace("/", "").split("?")[0];
+    }
+
+    if (url.pathname.includes("/shorts/")) {
+      return url.pathname.split("/shorts/")[1].split("/")[0];
+    }
+
+    if (url.pathname.includes("/embed/")) {
+      return url.pathname.split("/embed/")[1].split("/")[0];
+    }
+
+    return url.searchParams.get("v") || "";
+  } catch {
+    return "";
+  }
+}
+
+function getThumbnail(video) {
+  if (video?.thumbnail_url) {
+    return video.thumbnail_url;
+  }
+
+  const youtubeId = getYoutubeId(video);
+
+  if (youtubeId) {
+    return `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
+  }
+
+  return "/images/video-placeholder.jpg";
+}
+
+function getYoutubeUrl(video) {
+  if (video?.youtube_url) {
+    return video.youtube_url;
+  }
+
+  const youtubeId = getYoutubeId(video);
+
+  if (youtubeId) {
+    return `https://www.youtube.com/watch?v=${youtubeId}`;
+  }
+
+  return YOUTUBE_CHANNEL_URL;
+}
 
 function Videos() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [videos, setVideos] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const categories = [
-    "All",
-    "Bible Study",
-    "Prophecy",
-    "Bible History",
-    "Christian Living",
-    "Health",
-  ];
+  useEffect(() => {
+    let isMounted = true;
 
-  const popularTopics = [
-    { label: "Bible Study", category: "Bible Study" },
-    { label: "Biblical Prophecy", category: "Prophecy" },
-    { label: "Bible History", category: "Bible History" },
-    { label: "Christian Living", category: "Christian Living" },
-    { label: "Healthy Living", category: "Health" },
-    { label: "Faith & Purpose", category: null },
-  ];
+    const loadVideos = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          `${API_URL}/content/public/videos`
+        );
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.message || "Unable to load videos."
+          );
+        }
+
+        if (isMounted) {
+          setVideos(
+            Array.isArray(data.videos)
+              ? data.videos
+              : []
+          );
+        }
+      } catch (err) {
+        console.error("Videos loading error:", err);
+
+        if (isMounted) {
+          setError(
+            err.message ||
+              "Unable to load videos at the moment."
+          );
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadVideos();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const filteredVideos = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase();
+    const search = searchTerm.trim().toLowerCase();
+
+    if (!search) {
+      return videos;
+    }
 
     return videos.filter((video) => {
-      const matchesCategory =
-        activeCategory === "All" ||
-        video.category === activeCategory;
+      const title =
+        video?.title?.toLowerCase() || "";
 
-      const matchesSearch =
-        !query ||
-        video.title.toLowerCase().includes(query) ||
-        video.description.toLowerCase().includes(query) ||
-        video.category.toLowerCase().includes(query);
+      const category =
+        video?.category?.toLowerCase() || "";
 
-      return matchesCategory && matchesSearch;
+      const author =
+        video?.author?.toLowerCase() || "";
+
+      const description =
+        video?.description?.toLowerCase() || "";
+
+      return (
+        title.includes(search) ||
+        category.includes(search) ||
+        author.includes(search) ||
+        description.includes(search)
+      );
     });
-  }, [searchQuery, activeCategory]);
-
-  const featuredVideo = videos[0];
-
-  const handleTopicClick = (category) => {
-    if (!category) return;
-
-    setActiveCategory(category);
-    setSearchQuery("");
-
-    document
-      .querySelector(".videos-library-section")
-      ?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-  };
-
-  const clearFilters = () => {
-    setSearchQuery("");
-    setActiveCategory("All");
-  };
+  }, [videos, searchTerm]);
 
   return (
-    <div className="inner-page videos-page">
+    <>
       <Navbar />
 
-      <main>
-        {/* HERO */}
-        <section className="page-hero videos-hero">
-          <div className="container">
-            <span className="section-label">
-              PILGRIM TRUTH VIDEOS
-            </span>
+      <main className="videos-page">
+        {/* =====================================================
+            HERO
+        ====================================================== */}
+        <section className="videos-hero">
+          <div className="videos-hero-overlay" />
 
-            <h1>
-              Watch. Learn.
-              <em>Discover truth.</em>
-            </h1>
-
-            <p>
-              Explore biblical lessons, thoughtful discussions,
-              history, prophecy, Christian living, and practical
-              faith through video.
-            </p>
-
-            <div className="video-search-wrapper">
-              <div className="page-search">
-                <Search size={19} />
-
-                <input
-                  id="video-search"
-                  name="videoSearch"
-                  type="search"
-                  value={searchQuery}
-                  onChange={(event) => {
-                    setSearchQuery(event.target.value);
-                  }}
-                  placeholder="Search videos, topics, or lessons..."
-                  aria-label="Search videos, topics, or lessons"
-                  autoComplete="off"
-                />
-
-                {searchQuery && (
-                  <button
-                    type="button"
-                    className="video-search-clear"
-                    onClick={() => setSearchQuery("")}
-                    aria-label="Clear video search"
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-
-              {searchQuery.trim() && (
-                <p className="video-search-results">
-                  {filteredVideos.length}{" "}
-                  {filteredVideos.length === 1
-                    ? "video"
-                    : "videos"}{" "}
-                  found for{" "}
-                  <strong>"{searchQuery}"</strong>
-                </p>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* FEATURED VIDEO */}
-        <section className="section videos-featured-section">
-          <div className="container">
-            <div className="section-heading-row">
-              <div>
-                <span className="section-label">
-                  FEATURED VIDEO
-                </span>
-
-                <h2>Take a closer look.</h2>
-              </div>
-            </div>
-
-            <div className="video-featured-card">
-              <div className="video-featured-image">
-                <img
-                  src={featuredVideo.image}
-                  alt={featuredVideo.title}
-                />
-
-                <Link
-                  to={`/videos/${featuredVideo.slug}`}
-                  className="video-play-button"
-                  aria-label={`Watch ${featuredVideo.title}`}
-                >
-                  <Play size={24} fill="currentColor" />
-                </Link>
-
-                <span className="video-duration">
-                  {featuredVideo.duration}
-                </span>
-              </div>
-
-              <div className="video-featured-content">
-                <span className="section-label">
-                  {featuredVideo.category}
-                </span>
-
-                <h3>{featuredVideo.title}</h3>
-
-                <p>{featuredVideo.description}</p>
-
-                <Link
-                  to={`/videos/${featuredVideo.slug}`}
-                  className="btn btn-primary"
-                >
-                  Watch Featured Video
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* VIDEO LIBRARY */}
-        <section className="section videos-library-section">
-          <div className="container">
-            <div className="section-heading-row">
-              <div>
-                <span className="section-label">
-                  VIDEO LIBRARY
-                </span>
-
-                <h2>Explore the collection.</h2>
-              </div>
-
-              <span className="videos-count">
-                {filteredVideos.length}{" "}
-                {filteredVideos.length === 1
-                  ? "video"
-                  : "videos"}
+          <div className="videos-container videos-hero-container">
+            <div className="videos-hero-content">
+              <span className="videos-eyebrow">
+                PILGRIM TRUTH MEDIA
               </span>
+
+              <h1>
+                Faith. Truth.
+                <br />
+                Understanding.
+              </h1>
+
+              <p>
+                Explore Bible teachings, Christian
+                reflections, and ministry messages
+                designed to strengthen your faith and
+                deepen your understanding of God's Word.
+              </p>
             </div>
+          </div>
+        </section>
 
-            <div className="video-filters">
-              {categories.map((category) => (
-                <button
-                  type="button"
-                  key={category}
-                  className={
-                    activeCategory === category
-                      ? "video-filter active"
-                      : "video-filter"
-                  }
-                  onClick={() => {
-                    setActiveCategory(category);
-                  }}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
+        {/* =====================================================
+            VIDEO LIBRARY
+        ====================================================== */}
+        <section className="video-library">
+          <div className="videos-container">
+            <div className="library-header">
+              <div className="library-heading">
+                <span className="videos-eyebrow">
+                  OUR MEDIA
+                </span>
 
-            {filteredVideos.length > 0 ? (
-              <div className="videos-grid">
-                {filteredVideos.map((video) => (
-                  <article
-                    className="video-card"
-                    key={video.slug}
-                  >
-                    <div className="video-card-image">
-                      <img
-                        src={video.image}
-                        alt={video.title}
-                      />
-
-                      <Link
-                        to={`/videos/${video.slug}`}
-                        className="video-card-play"
-                        aria-label={`Watch ${video.title}`}
-                      >
-                        <Play
-                          size={18}
-                          fill="currentColor"
-                        />
-                      </Link>
-
-                      <span className="video-duration">
-                        {video.duration}
-                      </span>
-                    </div>
-
-                    <div className="video-card-content">
-                      <span>{video.category}</span>
-
-                      <h3>{video.title}</h3>
-
-                      <p>{video.description}</p>
-
-                      <Link
-                        to={`/videos/${video.slug}`}
-                        className="video-card-link"
-                      >
-                        Watch
-                        <ArrowRight size={15} />
-                      </Link>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="videos-empty-state">
-                <h3>No videos found.</h3>
+                <h2>Videos</h2>
 
                 <p>
-                  Try a different search term or choose another
-                  category.
+                  Browse our collection of Bible
+                  teachings, reflections, and ministry
+                  content.
                 </p>
+              </div>
 
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={clearFilters}
-                >
-                  View All Videos
-                </button>
+              <div className="video-search">
+                <Search size={18} aria-hidden="true" />
+
+                <input
+                  type="search"
+                  value={searchTerm}
+                  onChange={(event) =>
+                    setSearchTerm(event.target.value)
+                  }
+                  placeholder="Search videos..."
+                  aria-label="Search videos"
+                />
+              </div>
+            </div>
+
+            {!loading &&
+              !error &&
+              searchTerm.trim() && (
+                <div className="search-result-info">
+                  <span>
+                    {filteredVideos.length}{" "}
+                    {filteredVideos.length === 1
+                      ? "video"
+                      : "videos"}{" "}
+                    found
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() => setSearchTerm("")}
+                  >
+                    Clear search
+                  </button>
+                </div>
+              )}
+
+            {loading && (
+              <div className="videos-state">
+                <p>Loading videos...</p>
               </div>
             )}
+
+            {!loading && error && (
+              <div className="videos-state videos-error">
+                <p>{error}</p>
+              </div>
+            )}
+
+            {!loading &&
+              !error &&
+              filteredVideos.length === 0 && (
+                <div className="videos-state">
+                  <p>
+                    {searchTerm.trim()
+                      ? "No videos match your search."
+                      : "No videos are available yet."}
+                  </p>
+                </div>
+              )}
+
+            {!loading &&
+              !error &&
+              filteredVideos.length > 0 && (
+                <div className="video-grid">
+                  {filteredVideos.map((video) => (
+                    <article
+                      className="video-card"
+                      key={video.id || video.slug}
+                    >
+                      <a
+                        href={getYoutubeUrl(video)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="video-card-link"
+                        aria-label={`Watch ${video.title}`}
+                      >
+                        <div className="video-card-image">
+                          <img
+                            src={getThumbnail(video)}
+                            alt={video.title}
+                            loading="lazy"
+                          />
+
+                          <span
+                            className="video-play-button"
+                            aria-hidden="true"
+                          >
+                            <Play
+                              size={17}
+                              fill="currentColor"
+                            />
+                          </span>
+
+                          {video.duration && (
+                            <span className="video-duration">
+                              {video.duration}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="video-card-content">
+                          {video.category && (
+                            <span className="video-category">
+                              {video.category}
+                            </span>
+                          )}
+
+                          <h3>{video.title}</h3>
+
+                          {video.author && (
+                            <p className="video-author">
+                              By {video.author}
+                            </p>
+                          )}
+                        </div>
+                      </a>
+                    </article>
+                  ))}
+                </div>
+              )}
           </div>
         </section>
 
-        {/* POPULAR TOPICS */}
-        <section className="section videos-topics-section">
-          <div className="container">
-            <span className="section-label">
-              POPULAR TOPICS
-            </span>
+        {/* =====================================================
+            YOUTUBE CTA
+        ====================================================== */}
+        <section className="videos-youtube-section">
+          <div className="videos-container">
+            <div className="youtube-content">
+              <span className="videos-eyebrow">
+                PILGRIM TRUTH ON YOUTUBE
+              </span>
 
-            <h2>Where would you like to explore?</h2>
+              <h2>
+                Continue exploring God's Word.
+              </h2>
 
-            <div className="video-topic-grid">
-              {popularTopics.map((topic) => (
-                <button
-                  type="button"
-                  key={topic.label}
-                  className="video-topic-card"
-                  onClick={() =>
-                    handleTopicClick(topic.category)
-                  }
-                  disabled={!topic.category}
-                >
-                  <strong>{topic.label}</strong>
+              <p>
+                Find more teachings, reflections, and
+                ministry content on our YouTube channel.
+              </p>
 
-                  <ArrowRight size={17} />
-                </button>
-              ))}
+              <a
+                href={YOUTUBE_CHANNEL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="video-primary-button"
+              >
+                Visit YouTube
+                <ArrowRight size={17} />
+              </a>
             </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="section videos-cta">
-          <div className="container">
-            <span className="section-label">
-              KEEP EXPLORING
-            </span>
-
-            <h2>
-              Watch thoughtfully.
-              <em>Study deeply.</em>
-            </h2>
-
-            <p>
-              Continue exploring Scripture through Bible studies,
-              articles, prophecy, history, and Christian living.
-            </p>
-
-            <Link
-              to="/bible-studies"
-              className="btn btn-primary"
-            >
-              Explore Bible Studies
-              <ArrowRight size={16} />
-            </Link>
           </div>
         </section>
       </main>
 
       <Footer />
-    </div>
+    </>
   );
 }
 

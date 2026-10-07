@@ -1,343 +1,469 @@
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   ArrowRight,
   BookOpen,
   Heart,
   Lightbulb,
   ShieldCheck,
-  Sparkles,
   Users,
 } from "lucide-react";
-
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
+import "./ChristianLiving.css";
 
-function ChristianLiving() {
-  const categories = [
-    {
-      icon: Heart,
-      title: "Faith & Character",
-      description:
-        "Explore how biblical principles can shape character, choices, habits, and everyday life.",
-    },
-    {
-      icon: Users,
-      title: "Relationships",
-      description:
-        "Discover biblical principles for family, friendship, community, forgiveness, and love.",
-    },
-    {
-      icon: Lightbulb,
-      title: "Wisdom for Life",
-      description:
-        "Find practical biblical wisdom for decisions, challenges, work, and personal growth.",
-    },
-    {
-      icon: ShieldCheck,
-      title: "Faith Under Pressure",
-      description:
-        "Learn how Scripture speaks to perseverance, trials, temptation, courage, and hope.",
-    },
-  ];
+const API_URL = (
+  import.meta.env.VITE_API_URL || "http://localhost:5000/api"
+).replace(/\/$/, "");
 
-  const studies = [
-    {
-      category: "FAITH",
-      title: "What Does It Mean to Live by Faith?",
-      description:
-        "Explore what Scripture teaches about trusting God and putting faith into practice.",
-      duration: "12 min read",
-    },
-    {
-      category: "CHARACTER",
-      title: "Building a Christ-Centered Character",
-      description:
-        "Discover biblical principles for developing integrity, humility, patience, and love.",
-      duration: "15 min read",
-    },
-    {
-      category: "DAILY LIFE",
-      title: "Finding Purpose in Everyday Life",
-      description:
-        "Consider how biblical principles can bring meaning and purpose to ordinary responsibilities.",
-      duration: "14 min read",
-    },
-  ];
+const categoryIcons = {
+  "Faith & Character": Heart,
+  Relationships: Users,
+  "Wisdom for Life": Lightbulb,
+  "Faith Under Pressure": ShieldCheck,
+};
 
-  const practicalTopics = [
-    "Prayer & Spiritual Growth",
-    "Faith & Work",
-    "Family & Relationships",
-    "Forgiveness",
-    "Temptation & Self-Control",
-    "Hope & Perseverance",
-  ];
+const categoryDescription = {
+  "Faith & Character":
+    "Explore the foundations of Christian character, faith, integrity, and spiritual maturity.",
+  Relationships:
+    "Discover biblical wisdom for friendships, family, marriage, community, and healthy relationships.",
+  "Wisdom for Life":
+    "Apply biblical principles to everyday decisions, work, purpose, habits, and personal growth.",
+  "Faith Under Pressure":
+    "Learn how Scripture speaks to trials, temptation, uncertainty, suffering, and perseverance.",
+};
+
+function getImageUrl(image) {
+  if (!image) return null;
+
+  if (
+    image.startsWith("http://") ||
+    image.startsWith("https://") ||
+    image.startsWith("data:")
+  ) {
+    return image;
+  }
+
+  const backendUrl = API_URL.replace("/api", "");
+
+  if (image.startsWith("/")) {
+    return `${backendUrl}${image}`;
+  }
+
+  return `${backendUrl}/${image.replace(/^\/+/, "")}`;
+}
+
+function getExcerpt(text, length = 150) {
+  if (!text) return "";
+
+  const cleanText = text.replace(/<[^>]*>/g, "").trim();
+
+  if (cleanText.length <= length) {
+    return cleanText;
+  }
+
+  return `${cleanText.substring(0, length).trim()}...`;
+}
+
+export default function ChristianLiving() {
+  const [studies, setStudies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadStudies() {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await fetch(
+          `${API_URL}/content/public/christian-living`,
+          {
+            signal: controller.signal,
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+              "Unable to load Christian Living studies."
+          );
+        }
+
+        setStudies(data.studies || []);
+      } catch (err) {
+        if (err.name === "AbortError") return;
+
+        console.error("Christian Living error:", err);
+
+        setError(
+          err.message ||
+            "Unable to load Christian Living studies."
+        );
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadStudies();
+
+    return () => controller.abort();
+  }, []);
+
+  const categories = useMemo(() => {
+    return [
+      ...new Set(
+        studies
+          .map((study) => study.category)
+          .filter(Boolean)
+      ),
+    ];
+  }, [studies]);
+
+  const featuredStudy = useMemo(() => {
+    return (
+      studies.find((study) => study.is_featured) ||
+      studies[0] ||
+      null
+    );
+  }, [studies]);
+
+  const filteredStudies = useMemo(() => {
+    if (activeCategory === "All") {
+      return studies;
+    }
+
+    return studies.filter(
+      (study) => study.category === activeCategory
+    );
+  }, [studies, activeCategory]);
+
+  const displayCategories =
+    categories.length > 0
+      ? categories
+      : Object.keys(categoryIcons);
 
   return (
-    <div className="inner-page christian-living-page">
+    <>
       <Navbar />
 
-      <main>
+      <main className="christian-living-page">
+        {/* HERO */}
         <section className="christian-living-hero">
-          <div className="container christian-living-hero-grid">
-            <div className="christian-living-hero-content">
-              <span className="section-label">CHRISTIAN LIVING</span>
+          <div className="christian-living-hero-inner">
+            <span className="section-label">
+              CHRISTIAN LIVING
+            </span>
 
-              <h1>
-                Faith that shapes
-                <em>everyday life.</em>
-              </h1>
+            <h1>
+              Faith that shapes
+              <br />
+              everyday life.
+            </h1>
 
-              <p>
-                Explore practical biblical principles for faith, character,
-                relationships, purpose, and the everyday journey of following
-                Christ.
-              </p>
-
-              <div className="christian-living-actions">
-                <a
-                  href="#living-categories"
-                  className="btn btn-primary"
-                >
-                  Explore Topics
-                  <ArrowRight size={16} />
-                </a>
-
-                <a
-                  href="#living-studies"
-                  className="btn btn-secondary"
-                >
-                  <BookOpen size={16} />
-                  Start a Study
-                </a>
-              </div>
-            </div>
-
-            <div className="christian-living-hero-card">
-              <div className="christian-living-hero-icon">
-                <Sparkles size={24} />
-              </div>
-
-              <span>DAILY REMINDER</span>
-
-              <blockquote>
-                “Let your light shine before others.”
-              </blockquote>
-
-              <cite>Matthew 5:16</cite>
-            </div>
+            <p>
+              Practical, Scripture-centered guidance
+              for following Christ in character,
+              relationships, work, decisions, and
+              everyday life.
+            </p>
           </div>
         </section>
 
-        <section className="section christian-living-intro">
-          <div className="container christian-living-intro-grid">
+        {/* INTRO */}
+        <section className="christian-living-intro">
+          <div className="christian-living-intro-inner">
             <div>
-              <span className="section-label">FAITH IN PRACTICE</span>
+              <span className="section-label">
+                LIVING THE FAITH
+              </span>
 
               <h2>
-                Christianity is not only
-                <span> what we believe.</span>
+                Christianity is more than what we
+                believe.
               </h2>
             </div>
 
-            <div className="christian-living-intro-text">
-              <p>
-                Scripture speaks not only about belief, but also about how
-                those beliefs influence the way we live, treat others, make
-                decisions, and respond to life's challenges.
-              </p>
-
-              <p>
-                Pilgrim Truth explores practical biblical principles that can
-                help connect Scripture with everyday life.
-              </p>
-            </div>
+            <p>
+              Scripture speaks not only to what we
+              believe, but also to how we live. These
+              studies explore practical questions of
+              Christian character, relationships,
+              purpose, wisdom, temptation, and
+              spiritual growth.
+            </p>
           </div>
         </section>
 
-        <section
-          className="section christian-living-categories"
-          id="living-categories"
-        >
-          <div className="container">
+        {/* CATEGORIES */}
+        <section className="christian-living-categories">
+          <div className="christian-living-container">
             <div className="section-heading">
-              <div>
-                <span className="section-label">EXPLORE CHRISTIAN LIVING</span>
+              <span className="section-label">
+                EXPLORE TOPICS
+              </span>
 
-                <h2>Where would you like to begin?</h2>
-
-                <p>
-                  Explore practical areas of Christian life and spiritual
-                  growth.
-                </p>
-              </div>
+              <h2>Areas of Christian Living</h2>
             </div>
 
             <div className="christian-living-category-grid">
-              {categories.map((category) => {
-                const Icon = category.icon;
+              <button
+                type="button"
+                className={`christian-living-category ${
+                  activeCategory === "All" ? "active" : ""
+                }`}
+                onClick={() => setActiveCategory("All")}
+              >
+                <BookOpen size={22} />
+
+                <span>All Studies</span>
+
+                <small>
+                  Explore all available Christian
+                  Living studies and practical
+                  Scripture-centered guidance.
+                </small>
+              </button>
+
+              {displayCategories.map((category) => {
+                const Icon =
+                  categoryIcons[category] || BookOpen;
 
                 return (
-                  <a
-                    href="#living-studies"
-                    className="christian-living-category-card"
-                    key={category.title}
+                  <button
+                    type="button"
+                    key={category}
+                    className={`christian-living-category ${
+                      activeCategory === category
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      setActiveCategory(category)
+                    }
                   >
-                    <div className="christian-living-category-icon">
-                      <Icon size={21} />
-                    </div>
+                    <Icon size={22} />
 
-                    <h3>{category.title}</h3>
+                    <span>{category}</span>
 
-                    <p>{category.description}</p>
-
-                    <span>
-                      Explore
-                      <ArrowRight size={15} />
-                    </span>
-                  </a>
+                    <small>
+                      {categoryDescription[category] ||
+                        "Explore Scripture-centered guidance for everyday Christian life."}
+                    </small>
+                  </button>
                 );
               })}
             </div>
           </div>
         </section>
 
-        <section
-          className="section christian-living-studies"
-          id="living-studies"
-        >
-          <div className="container">
-            <div className="section-heading">
-              <div>
-                <span className="section-label">FEATURED STUDIES</span>
+        {/* FEATURED STUDY */}
+        {featuredStudy && (
+          <section className="christian-living-featured">
+            <div className="christian-living-container">
+              <div className="christian-living-featured-card">
+                {getImageUrl(
+                  featuredStudy.featured_image
+                ) && (
+                  <div className="christian-living-featured-image">
+                    <img
+                      src={getImageUrl(
+                        featuredStudy.featured_image
+                      )}
+                      alt={featuredStudy.title}
+                    />
+                  </div>
+                )}
 
-                <h2>Practical truth for everyday life.</h2>
+                <div className="christian-living-featured-content">
+                  <span className="section-label">
+                    FEATURED STUDY
+                  </span>
 
-                <p>
-                  Explore studies that connect biblical principles with
-                  everyday Christian living.
-                </p>
+                  <h2>{featuredStudy.title}</h2>
+
+                  {featuredStudy.scripture_reference && (
+                    <div className="christian-living-scripture">
+                      <BookOpen size={16} />
+
+                      <span>
+                        {featuredStudy.scripture_reference}
+                      </span>
+                    </div>
+                  )}
+
+                  <p>
+                    {getExcerpt(
+                      featuredStudy.description ||
+                        featuredStudy.content,
+                      220
+                    )}
+                  </p>
+
+                  <Link
+                    to={`/christian-living/${featuredStudy.slug}`}
+                    className="btn btn-primary"
+                  >
+                    Read the study
+                    <ArrowRight size={16} />
+                  </Link>
+                </div>
               </div>
-
-              <a
-                href="#living-studies"
-                className="section-heading-link"
-              >
-                View all studies
-                <ArrowRight size={16} />
-              </a>
             </div>
+          </section>
+        )}
 
-            <div className="christian-living-study-grid">
-              {studies.map((study) => (
-                <article
-                  className="christian-living-study-card"
-                  key={study.title}
-                >
-                  <div className="christian-living-study-top">
-                    <BookOpen size={20} />
-                    <span>{study.category}</span>
-                  </div>
+        {/* STUDIES */}
+        <section className="christian-living-studies">
+          <div className="christian-living-container">
+            <div className="section-heading">
+              <span className="section-label">
+                STUDIES
+              </span>
 
-                  <h3>{study.title}</h3>
-
-                  <p>{study.description}</p>
-
-                  <div className="christian-living-study-bottom">
-                    <span>{study.duration}</span>
-
-                    <a href="#living-studies">
-                      Read study
-                      <ArrowRight size={15} />
-                    </a>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section christian-living-topics">
-          <div className="container christian-living-topics-grid">
-            <div className="christian-living-topics-heading">
-              <span className="section-label">PRACTICAL TOPICS</span>
-
-              <h2>
-                Biblical wisdom for
-                <em>real life.</em>
-              </h2>
+              <h2>Practical Christian Living</h2>
 
               <p>
-                Explore practical questions and everyday challenges through a
-                biblical perspective.
+                Explore studies designed to connect
+                biblical truth with everyday life.
               </p>
             </div>
 
-            <div className="christian-living-topic-list">
-              {practicalTopics.map((topic, index) => (
-                <a
-                  href="#living-studies"
-                  className="christian-living-topic"
-                  key={topic}
-                >
-                  <span>0{index + 1}</span>
+            {loading ? (
+              <div className="christian-living-state">
+                <div className="christian-living-spinner" />
 
-                  <strong>{topic}</strong>
+                <p>Loading studies...</p>
+              </div>
+            ) : error ? (
+              <div className="christian-living-state error">
+                <BookOpen size={30} />
 
-                  <ArrowRight size={17} />
-                </a>
-              ))}
-            </div>
+                <h3>Unable to load studies</h3>
+
+                <p>{error}</p>
+              </div>
+            ) : filteredStudies.length === 0 ? (
+              <div className="christian-living-state">
+                <BookOpen size={30} />
+
+                <h3>No studies available yet</h3>
+
+                <p>
+                  Christian Living studies will appear
+                  here as they are published.
+                </p>
+              </div>
+            ) : (
+              <div className="christian-living-study-grid">
+                {filteredStudies.map((study) => (
+                  <article
+                    className="christian-living-study-card"
+                    key={study.id}
+                  >
+                    {getImageUrl(
+                      study.featured_image
+                    ) && (
+                      <div className="christian-living-study-image">
+                        <img
+                          src={getImageUrl(
+                            study.featured_image
+                          )}
+                          alt={study.title}
+                        />
+                      </div>
+                    )}
+
+                    <div className="christian-living-study-body">
+                      <span className="study-category">
+                        {study.category ||
+                          "Christian Living"}
+                      </span>
+
+                      <h3>{study.title}</h3>
+
+                      <p>
+                        {getExcerpt(
+                          study.description ||
+                            study.content,
+                          150
+                        )}
+                      </p>
+
+                      {study.scripture_reference && (
+                        <div className="study-scripture">
+                          <BookOpen size={15} />
+
+                          <span>
+                            {study.scripture_reference}
+                          </span>
+                        </div>
+                      )}
+
+                      <Link
+                        to={`/christian-living/${study.slug}`}
+                        className="study-read-link"
+                      >
+                        Read study
+                        <ArrowRight size={15} />
+                      </Link>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
-        <section className="section christian-living-quote">
-          <div className="container christian-living-quote-content">
-            <div className="christian-living-quote-icon">
-              <Heart size={20} />
-            </div>
+        {/* SCRIPTURE */}
+        <section className="christian-living-quote">
+          <div className="christian-living-container">
+            <blockquote>
+              “Whatever you do, do it all for the
+              glory of God.”
+            </blockquote>
 
-            <span className="section-label">LIVE WITH PURPOSE</span>
-
-            <h2>
-              “Whatever you do,
-              <em>do it all for the glory of God.”</em>
-            </h2>
-
-            <p>1 Corinthians 10:31</p>
+            <span>1 Corinthians 10:31</span>
           </div>
         </section>
 
-        <section className="section christian-living-final">
-          <div className="container christian-living-final-content">
-            <span className="section-label">KEEP GROWING</span>
+        {/* CTA */}
+        <section className="christian-living-cta">
+          <div className="christian-living-container">
+            <span className="section-label">
+              KEEP GROWING
+            </span>
 
             <h2>
-              Search Scripture.
-              <em>Live the truth.</em>
+              Let biblical truth shape everyday life.
             </h2>
 
             <p>
-              Continue exploring Scripture through Bible studies and biblical
-              prophecy.
+              Continue exploring Scripture,
+              Christian history, prophecy, and
+              practical faith.
             </p>
 
-            <div className="christian-living-final-actions">
-              <a href="/bible-studies" className="btn btn-primary">
-                Bible Studies
-                <ArrowRight size={16} />
-              </a>
-
-              <a href="/prophecy" className="btn btn-secondary">
-                Explore Prophecy
-              </a>
-            </div>
+            <Link
+              to="/bible-studies"
+              className="btn btn-primary"
+            >
+              Explore Bible Studies
+              <ArrowRight size={16} />
+            </Link>
           </div>
         </section>
       </main>
 
       <Footer />
-    </div>
+    </>
   );
 }
-
-export default ChristianLiving;

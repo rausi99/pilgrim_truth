@@ -4,77 +4,84 @@ const videos = [
     category: "Prophecy",
     title: "Understanding Biblical Prophecy",
     description:
-      "A thoughtful introduction to studying biblical prophecy through Scripture, context, and careful comparison.",
-    duration: "18:42",
-    date: "September 22, 2026",
-    image:
-      "https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=1400&q=80",
-    youtubeId: "dQw4w9WgXcQ",
+      "Explore how to approach biblical prophecy carefully through Scripture, context, symbols, and historical setting.",
+    duration: "12:40",
+    date: "2026-09-01",
+    image: "/images/prophecy-video.jpg",
+    youtubeUrl: "",
+    youtubeId: "",
+    featured: true,
+    published: true,
   },
-
   {
     slug: "how-to-study-the-bible",
     category: "Bible Study",
     title: "How to Study the Bible",
     description:
-      "Practical principles for reading Scripture carefully, asking good questions, and discovering biblical themes.",
-    duration: "21:15",
-    date: "September 22, 2026",
-    image:
-      "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1400&q=80",
-    youtubeId: "dQw4w9WgXcQ",
+      "Learn practical principles for reading Scripture carefully, understanding context, and developing a consistent study habit.",
+    duration: "10:25",
+    date: "2026-08-25",
+    image: "/images/bible-study-video.jpg",
+    youtubeUrl: "",
+    youtubeId: "",
+    featured: false,
+    published: true,
   },
-
   {
     slug: "the-world-behind-scripture",
     category: "Bible History",
     title: "The World Behind Scripture",
     description:
-      "Explore the geography, cultures, kingdoms, and historical settings that shaped the biblical story.",
-    duration: "24:08",
-    date: "September 22, 2026",
-    image:
-      "https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=1400&q=80",
-    youtubeId: "dQw4w9WgXcQ",
+      "Discover how historical places, cultures, people, and events can help illuminate the biblical world.",
+    duration: "14:18",
+    date: "2026-08-18",
+    image: "/images/bible-history-video.jpg",
+    youtubeUrl: "",
+    youtubeId: "",
+    featured: false,
+    published: true,
   },
-
   {
     slug: "faith-in-everyday-life",
     category: "Christian Living",
     title: "Faith in Everyday Life",
     description:
-      "Discover practical ways biblical faith can influence character, relationships, decisions, and purpose.",
-    duration: "16:37",
-    date: "September 22, 2026",
-    image:
-      "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1400&q=80",
-    youtubeId: "dQw4w9WgXcQ",
+      "Consider practical ways Christian faith can shape character, relationships, decisions, and everyday purpose.",
+    duration: "09:52",
+    date: "2026-08-11",
+    image: "/images/christian-living-video.jpg",
+    youtubeUrl: "",
+    youtubeId: "",
+    featured: false,
+    published: true,
   },
-
   {
     slug: "principles-of-healthy-living",
     category: "Health",
     title: "Principles of Healthy Living",
     description:
-      "Explore balanced principles involving nutrition, movement, rest, and whole-person wellbeing.",
-    duration: "19:26",
-    date: "September 22, 2026",
-    image:
-      "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1400&q=80",
-    youtubeId: "dQw4w9WgXcQ",
+      "Explore thoughtful principles surrounding rest, movement, nutrition, habits, and whole-person wellbeing.",
+    duration: "11:36",
+    date: "2026-08-04",
+    image: "/images/healthy-living-video.jpg",
+    youtubeUrl: "",
+    youtubeId: "",
+    featured: false,
+    published: true,
   },
-
   {
     slug: "search-the-scriptures",
     category: "Bible Study",
     title: "Search the Scriptures",
     description:
-      "Learn how comparison, context, and careful observation can strengthen your personal Bible study.",
-    duration: "14:52",
-    date: "September 22, 2026",
-    image:
-      "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1400&q=80",
-    youtubeId: "dQw4w9WgXcQ",
+      "A reflective study encouraging careful reading, honest questions, and deeper engagement with Scripture.",
+    duration: "08:47",
+    date: "2026-07-28",
+    image: "/images/search-scriptures-video.jpg",
+    youtubeUrl: "",
+    youtubeId: "",
+    featured: false,
+    published: true,
   },
 ];
 

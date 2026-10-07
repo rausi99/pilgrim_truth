@@ -1,0 +1,701 @@
+
+/* =========================================================
+   DAILY INSPIRATION DETAIL
+   ========================================================= */
+
+.daily-detail-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #10233f;
+}
+
+.daily-detail-page .container {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.daily-detail-page .section-label {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #2563a6;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  line-height: 1.4;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.daily-detail-loading {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #607087;
+}
+
+.daily-detail-loading p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.spin {
+  color: #2563a6;
+  animation: dailyDetailSpin 0.9s linear infinite;
+}
+
+@keyframes dailyDetailSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.daily-detail-error {
+  width: min(700px, calc(100% - 40px));
+  min-height: 55vh;
+  margin: 0 auto;
+  padding: 100px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.daily-detail-error-icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  border-radius: 50%;
+  background: #edf5fc;
+  color: #2563a6;
+}
+
+.daily-detail-error .section-label {
+  margin-bottom: 8px;
+}
+
+.daily-detail-error h1 {
+  margin: 0;
+  color: #10233f;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+}
+
+.daily-detail-error p {
+  max-width: 540px;
+  margin: 18px 0 28px;
+  color: #68788d;
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.primary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 7px;
+  background: #123d6b;
+  color: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.primary-button:hover {
+  background: #0d3157;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(18, 61, 107, 0.18);
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.daily-detail-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 58px 20px 80px;
+  background:
+    linear-gradient(
+      105deg,
+      #0b2949 0%,
+      #123d6b 58%,
+      #1a527f 100%
+    );
+}
+
+.daily-detail-hero::after {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  right: -190px;
+  top: -260px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 65px rgba(255, 255, 255, 0.025),
+    0 0 0 130px rgba(255, 255, 255, 0.015);
+}
+
+.daily-detail-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.daily-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 52px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.74);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    gap 0.2s ease;
+}
+
+.daily-detail-back:hover {
+  gap: 11px;
+  color: #ffffff;
+}
+
+.daily-detail-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 16px;
+  color: #9ec7e8;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.daily-detail-hero h1 {
+  max-width: 900px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2.7rem, 6vw, 5rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+}
+
+.daily-detail-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 27px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.84rem;
+}
+
+.daily-detail-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.daily-detail-meta svg {
+  color: #9ec7e8;
+}
+
+.daily-meta-divider {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.daily-detail-content {
+  padding: 0 20px 100px;
+  background: #ffffff;
+}
+
+.daily-detail-image-wrapper {
+  position: relative;
+  z-index: 2;
+  width: min(1050px, 100%);
+  height: 480px;
+  margin: -35px auto 75px;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #eaf2fa;
+  box-shadow: 0 22px 55px rgba(16, 47, 82, 0.14);
+}
+
+.daily-detail-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.daily-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 310px;
+  align-items: start;
+  gap: 75px;
+  width: min(1080px, 100%);
+  margin: 0 auto;
+}
+
+.daily-detail-main {
+  min-width: 0;
+}
+
+.daily-scripture {
+  margin-bottom: 58px;
+  padding: 32px;
+  border-left: 4px solid #2563a6;
+  border-radius: 0 10px 10px 0;
+  background: #f3f8fd;
+}
+
+.daily-scripture > svg {
+  margin-bottom: 16px;
+  color: #2563a6;
+}
+
+.daily-scripture .section-label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.daily-scripture h2 {
+  margin: 0;
+  color: #102f52;
+  font-size: clamp(1.5rem, 3vw, 2.15rem);
+  line-height: 1.25;
+}
+
+.daily-scripture p {
+  margin: 16px 0 0;
+  color: #607087;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.daily-detail-section {
+  margin-bottom: 55px;
+}
+
+.daily-detail-section .section-label {
+  margin-bottom: 16px;
+}
+
+.daily-detail-text {
+  color: #3f5269;
+  font-size: 1.05rem;
+  line-height: 1.95;
+  white-space: pre-line;
+}
+
+.daily-prayer {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  margin-top: 10px;
+  padding: 27px;
+  border: 1px solid #d9e6f2;
+  border-radius: 10px;
+  background: #f7faff;
+}
+
+.daily-prayer-icon {
+  flex: 0 0 auto;
+  width: 43px;
+  height: 43px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #e7f1fb;
+  color: #2563a6;
+}
+
+.daily-prayer .section-label {
+  margin-bottom: 8px;
+}
+
+.daily-prayer p {
+  margin: 0;
+  color: #43566d;
+  font-size: 0.98rem;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.daily-detail-sidebar {
+  position: sticky;
+  top: 100px;
+}
+
+.daily-sidebar-card {
+  padding: 28px;
+  border: 1px solid #dfe8f1;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(16, 35, 63, 0.055);
+}
+
+.daily-sidebar-card + .daily-sidebar-card {
+  margin-top: 18px;
+}
+
+.daily-sidebar-card .section-label {
+  margin-bottom: 11px;
+}
+
+.daily-sidebar-card h3 {
+  margin: 0;
+  color: #10233f;
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+.daily-sidebar-card p {
+  margin: 14px 0 22px;
+  color: #68788d;
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.daily-sidebar-card.secondary {
+  background: #f5f9fd;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 43px;
+  padding: 0 16px;
+  border: 1px solid #c7d9e9;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #123d6b;
+  font-size: 0.83rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.secondary-button:hover {
+  border-color: #9dbbd6;
+  background: #f3f8fd;
+  transform: translateY(-2px);
+}
+
+.sidebar-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #123d6b;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: gap 0.2s ease;
+}
+
+.sidebar-text-link:hover {
+  gap: 11px;
+}
+
+/* =========================================================
+   PREVIOUS / NEXT
+   ========================================================= */
+
+.daily-detail-navigation {
+  padding: 90px 20px 100px;
+  background: #f7faff;
+  border-top: 1px solid #e1eaf3;
+}
+
+.daily-nav-header {
+  margin-bottom: 35px;
+}
+
+.daily-nav-header h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.daily-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.daily-nav-card {
+  min-height: 170px;
+  padding: 28px;
+  border: 1px solid #dce6ef;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #10233f;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 7px 20px rgba(16, 35, 63, 0.04);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+button.daily-nav-card {
+  font: inherit;
+}
+
+.daily-nav-card:hover:not(.daily-nav-disabled) {
+  transform: translateY(-4px);
+  border-color: #b9d0e5;
+  box-shadow: 0 15px 30px rgba(16, 35, 63, 0.08);
+}
+
+.daily-nav-card > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 18px;
+  color: #2563a6;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.daily-nav-next {
+  text-align: right;
+}
+
+.daily-nav-next > span {
+  justify-content: flex-end;
+}
+
+.daily-nav-card strong {
+  display: block;
+  color: #10233f;
+  font-size: 1.08rem;
+  line-height: 1.45;
+}
+
+.daily-nav-card small {
+  display: block;
+  margin-top: 11px;
+  color: #728197;
+  font-size: 0.78rem;
+}
+
+.daily-nav-disabled {
+  cursor: default;
+  opacity: 0.62;
+  box-shadow: none;
+}
+
+.daily-view-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: fit-content;
+  margin: 35px auto 0;
+  color: #123d6b;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    gap 0.2s ease,
+    color 0.2s ease;
+}
+
+.daily-view-all:hover {
+  gap: 11px;
+  color: #2563a6;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 980px) {
+  .daily-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 45px;
+    width: min(850px, 100%);
+  }
+
+  .daily-detail-sidebar {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .daily-sidebar-card + .daily-sidebar-card {
+    margin-top: 0;
+  }
+
+  .daily-detail-image-wrapper {
+    height: 400px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .daily-detail-page .container {
+    width: min(100% - 30px, 1180px);
+  }
+
+  .daily-detail-hero {
+    padding: 40px 15px 65px;
+  }
+
+  .daily-detail-back {
+    margin-bottom: 38px;
+  }
+
+  .daily-detail-hero h1 {
+    font-size: clamp(2.35rem, 11vw, 3.5rem);
+  }
+
+  .daily-detail-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .daily-meta-divider {
+    display: none !important;
+  }
+
+  .daily-detail-content {
+    padding: 0 15px 70px;
+  }
+
+  .daily-detail-image-wrapper {
+    width: 100%;
+    height: 270px;
+    margin: -25px auto 55px;
+    border-radius: 9px;
+  }
+
+  .daily-detail-layout {
+    gap: 45px;
+  }
+
+  .daily-scripture {
+    margin-bottom: 45px;
+    padding: 23px;
+  }
+
+  .daily-scripture h2 {
+    font-size: 1.5rem;
+  }
+
+  .daily-detail-section {
+    margin-bottom: 42px;
+  }
+
+  .daily-detail-text {
+    font-size: 0.98rem;
+    line-height: 1.85;
+  }
+
+  .daily-prayer {
+    padding: 21px;
+  }
+
+  .daily-detail-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-detail-navigation {
+    padding: 70px 15px;
+  }
+
+  .daily-nav-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-nav-card {
+    min-height: 145px;
+    padding: 23px;
+  }
+
+  .daily-nav-next {
+    text-align: left;
+  }
+
+  .daily-nav-next > span {
+    justify-content: flex-start;
+  }
+
+  .daily-nav-header h2 {
+    font-size: 2rem;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .daily-detail-hero h1 {
+    font-size: 2.3rem;
+  }
+
+  .daily-detail-image-wrapper {
+    height: 235px;
+  }
+
+  .daily-scripture {
+    padding: 20px;
+  }
+
+  .daily-prayer {
+    gap: 12px;
+  }
+}

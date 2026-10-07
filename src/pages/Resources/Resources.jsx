@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
+import "./Resources.css";
 import resources from "../../data/resources";
 
 function Resources() {
@@ -62,6 +63,22 @@ function Resources() {
     resources[0];
 
   const FeaturedIcon = iconMap[featuredResource.icon];
+
+  const handleDownload = (resource) => {
+    if (!resource.file) {
+      alert(
+        "This resource is not available for download yet."
+      );
+      return;
+    }
+
+    const link = document.createElement("a");
+    link.href = resource.file;
+    link.download = resource.file.split("/").pop();
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   const clearFilters = () => {
     setSearchQuery("");
@@ -180,9 +197,7 @@ function Resources() {
                   type="button"
                   className="btn btn-primary"
                   onClick={() =>
-                    alert(
-                      "This resource will be available for download once the resource file is connected."
-                    )
+                    handleDownload(featuredResource)
                   }
                 >
                   <Download size={16} />
@@ -283,9 +298,7 @@ function Resources() {
                           type="button"
                           className="resource-download-link"
                           onClick={() =>
-                            alert(
-                              "Download functionality will be connected when the resource file is added."
-                            )
+                            handleDownload(resource)
                           }
                         >
                           Download

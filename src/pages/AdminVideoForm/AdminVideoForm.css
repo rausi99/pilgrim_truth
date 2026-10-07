@@ -1,0 +1,696 @@
+/* =========================================================
+   PILGRIM TRUTH — ADMIN VIDEO FORM
+   Clean navy / blue / white
+   ========================================================= */
+
+.admin-video-form-page {
+  width: 100%;
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 8px 0 40px;
+  color: #263746;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.admin-page-heading {
+  margin-bottom: 26px;
+}
+
+.admin-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 16px;
+  color: #145da0;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.admin-back-link:hover {
+  color: #0b1f33;
+}
+
+.admin-eyebrow {
+  margin-bottom: 7px;
+  color: #145da0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.admin-page-heading h1 {
+  margin: 0;
+  color: #071827;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.admin-page-heading p {
+  max-width: 680px;
+  margin: 8px 0 0;
+  color: #647586;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.admin-form-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 13px 15px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.admin-form-error {
+  border-color: #f0caca;
+  background: #fff6f6;
+  color: #9b2c2c;
+}
+
+.admin-form-success {
+  border-color: #c9dfd1;
+  background: #f3faf5;
+  color: #287044;
+}
+
+/* =========================================================
+   MAIN FORM LAYOUT
+   ========================================================= */
+
+.admin-video-form {
+  width: 100%;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 350px;
+  align-items: start;
+  gap: 22px;
+}
+
+.admin-form-main,
+.admin-form-sidebar {
+  min-width: 0;
+}
+
+.admin-form-main {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.admin-form-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* =========================================================
+   FORM CARDS
+   ========================================================= */
+
+.admin-form-card {
+  overflow: hidden;
+  border: 1px solid #dce6ee;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 3px 14px rgba(7, 24, 39, 0.045);
+}
+
+.admin-form-card-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px 22px;
+  border-bottom: 1px solid #e7edf2;
+  background: #fbfcfd;
+}
+
+.admin-form-card-heading > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: #145da0;
+}
+
+.admin-form-card-heading h2 {
+  margin: 0;
+  color: #071827;
+  font-size: 16px;
+  line-height: 1.3;
+  font-weight: 750;
+}
+
+.admin-form-card-heading p {
+  margin: 4px 0 0;
+  color: #728291;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+}
+
+/* =========================================================
+   FORM FIELDS
+   ========================================================= */
+
+.admin-form-field {
+  min-width: 0;
+}
+
+.admin-form-field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #263746;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.admin-form-field input,
+.admin-form-field select,
+.admin-form-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cfdbe4;
+  border-radius: 7px;
+  outline: none;
+  background: #ffffff;
+  color: #1c2f3e;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 13px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.admin-form-field input,
+.admin-form-field select {
+  min-height: 42px;
+  padding: 10px 12px;
+}
+
+.admin-form-field textarea {
+  min-height: 130px;
+  padding: 11px 12px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.admin-form-field input::placeholder,
+.admin-form-field textarea::placeholder {
+  color: #9aa8b4;
+}
+
+.admin-form-field input:hover,
+.admin-form-field select:hover,
+.admin-form-field textarea:hover {
+  border-color: #b7c8d5;
+}
+
+.admin-form-field input:focus,
+.admin-form-field select:focus,
+.admin-form-field textarea:focus {
+  border-color: #145da0;
+  box-shadow: 0 0 0 3px rgba(20, 93, 160, 0.1);
+}
+
+.admin-form-field input:read-only {
+  background: #f5f8fb;
+  color: #6d7d8b;
+  cursor: default;
+}
+
+.admin-field-help {
+  display: block;
+  margin-top: 6px;
+  color: #7a8996;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   TWO-COLUMN FORM ROW
+   ========================================================= */
+
+.admin-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* =========================================================
+   YOUTUBE INPUT
+   ========================================================= */
+
+.admin-youtube-input-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 9px;
+  align-items: stretch;
+}
+
+.admin-youtube-input-row .admin-secondary-button {
+  white-space: nowrap;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.admin-primary-button,
+.admin-secondary-button,
+.admin-cancel-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 9px 15px;
+  border-radius: 7px;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-primary-button {
+  border: 1px solid #145da0;
+  background: #145da0;
+  color: #ffffff;
+}
+
+.admin-primary-button:hover:not(:disabled) {
+  border-color: #0b4f8a;
+  background: #0b4f8a;
+  box-shadow: 0 4px 12px rgba(20, 93, 160, 0.18);
+}
+
+.admin-secondary-button,
+.admin-cancel-button {
+  border: 1px solid #ccd9e2;
+  background: #ffffff;
+  color: #334858;
+}
+
+.admin-secondary-button:hover:not(:disabled),
+.admin-cancel-button:hover {
+  border-color: #aebfcd;
+  background: #f5f8fb;
+  color: #145da0;
+}
+
+.admin-primary-button:disabled,
+.admin-secondary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.admin-primary-button:focus-visible,
+.admin-secondary-button:focus-visible,
+.admin-cancel-button:focus-visible,
+.admin-back-link:focus-visible {
+  outline: 3px solid rgba(20, 93, 160, 0.18);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   VIDEO PREVIEW
+   ========================================================= */
+
+.admin-video-preview {
+  overflow: hidden;
+  border: 1px solid #dce6ee;
+  border-radius: 9px;
+  background: #f5f8fb;
+}
+
+.admin-video-preview-label {
+  padding: 10px 12px;
+  border-bottom: 1px solid #dce6ee;
+  color: #526575;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-video-preview img {
+  display: block;
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  background: #071827;
+}
+
+/* =========================================================
+   FEATURED VIDEO
+   ========================================================= */
+
+.video-featured-card {
+  border: 1px solid #d7e3ec;
+  border-radius: 9px;
+  background: #f7fafc;
+}
+
+.video-featured-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 13px;
+  cursor: pointer;
+}
+
+.video-featured-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video-checkbox {
+  display: flex;
+  flex: 0 0 18px;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  border: 1.5px solid #b8c9d6;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.video-featured-toggle input:checked + .video-checkbox {
+  border-color: #145da0;
+  background: #145da0;
+}
+
+.video-featured-toggle input:focus-visible + .video-checkbox {
+  outline: 3px solid rgba(20, 93, 160, 0.16);
+  outline-offset: 2px;
+}
+
+.video-featured-toggle:hover .video-checkbox {
+  border-color: #145da0;
+}
+
+.video-featured-content {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.video-featured-title {
+  color: #1e3445;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.video-featured-description {
+  color: #758694;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   THUMBNAIL HELP CARD
+   ========================================================= */
+
+.admin-video-help-card > p {
+  margin: 0;
+  padding: 18px 22px 20px;
+  color: #687987;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.admin-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 18px 0 0;
+  border-top: 1px solid #dce6ee;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.admin-table-state {
+  display: flex;
+  min-height: 280px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  border: 1px solid #dce6ee;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #7a8996;
+  text-align: center;
+}
+
+.admin-table-state > svg {
+  margin-bottom: 12px;
+  color: #145da0;
+}
+
+.admin-table-state h3 {
+  margin: 0;
+  color: #263746;
+  font-size: 15px;
+}
+
+.admin-table-state p {
+  margin: 6px 0 0;
+  color: #7b8995;
+  font-size: 12px;
+}
+
+/* =========================================================
+   SPINNER
+   ========================================================= */
+
+.admin-spin {
+  animation: admin-video-spin 0.9s linear infinite;
+}
+
+@keyframes admin-video-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — LARGE TABLETS
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .admin-form-grid {
+    grid-template-columns: minmax(0, 1fr) 310px;
+    gap: 18px;
+  }
+
+  .admin-form-fields {
+    padding: 20px;
+  }
+
+  .admin-form-card-heading {
+    padding: 18px 20px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — TABLETS
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-form-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .admin-video-help-card {
+    height: fit-content;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .admin-video-form-page {
+    padding: 4px 0 30px;
+  }
+
+  .admin-page-heading {
+    margin-bottom: 20px;
+  }
+
+  .admin-page-heading h1 {
+    font-size: 26px;
+  }
+
+  .admin-page-heading p {
+    font-size: 13px;
+  }
+
+  .admin-form-main {
+    gap: 16px;
+  }
+
+  .admin-form-sidebar {
+    display: flex;
+    gap: 16px;
+  }
+
+  .admin-form-card-heading {
+    padding: 16px;
+  }
+
+  .admin-form-fields {
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .admin-form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-youtube-input-row {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-youtube-input-row .admin-secondary-button {
+    width: 100%;
+  }
+
+  .admin-form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .admin-form-actions .admin-primary-button,
+  .admin-form-actions .admin-cancel-button {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+  .admin-page-heading h1 {
+    font-size: 24px;
+  }
+
+  .admin-page-heading p {
+    font-size: 12px;
+  }
+
+  .admin-form-card-heading {
+    gap: 9px;
+    padding: 14px;
+  }
+
+  .admin-form-card-heading h2 {
+    font-size: 15px;
+  }
+
+  .admin-form-fields {
+    padding: 14px;
+  }
+
+  .admin-form-field label {
+    font-size: 11px;
+  }
+
+  .admin-form-field input,
+  .admin-form-field select,
+  .admin-form-field textarea {
+    font-size: 12px;
+  }
+
+  .admin-video-preview img {
+    max-height: 220px;
+  }
+
+  .admin-featured-card {
+    padding: 0;
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-spin {
+    animation: none;
+  }
+
+  .admin-primary-button,
+  .admin-secondary-button,
+  .admin-cancel-button,
+  .admin-form-field input,
+  .admin-form-field select,
+  .admin-form-field textarea,
+  .video-checkbox {
+    transition: none;
+  }
+}

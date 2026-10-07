@@ -1,0 +1,753 @@
+/* =========================================================
+   CHRISTIAN LIVING PAGE
+   ========================================================= */
+
+.christian-living-page {
+  min-height: 100vh;
+  background: #ffffff;
+  color: #10233f;
+}
+
+/* =========================================================
+   SHARED
+   ========================================================= */
+
+.christian-living-container {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.section-label {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: #2563a6;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+}
+
+.section-heading {
+  max-width: 720px;
+  margin-bottom: 42px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: #10233f;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+.section-heading p {
+  max-width: 620px;
+  margin: 16px 0 0;
+  color: #607087;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: #123d6b;
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(18, 61, 107, 0.15);
+}
+
+.btn-primary:hover {
+  background: #0d3157;
+  box-shadow: 0 12px 26px rgba(18, 61, 107, 0.2);
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.christian-living-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 500px;
+  padding: 90px 20px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 31, 57, 0.98) 0%,
+      rgba(12, 48, 84, 0.95) 48%,
+      rgba(18, 61, 107, 0.9) 100%
+    );
+}
+
+.christian-living-hero::after {
+  content: "";
+  position: absolute;
+  right: -120px;
+  bottom: -180px;
+  width: 460px;
+  height: 460px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 70px rgba(255, 255, 255, 0.025),
+    0 0 0 140px rgba(255, 255, 255, 0.018);
+}
+
+.christian-living-hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.christian-living-hero .section-label {
+  color: #9fc7ee;
+}
+
+.christian-living-hero h1 {
+  max-width: 780px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(3rem, 7vw, 5.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  font-weight: 800;
+}
+
+.christian-living-hero p {
+  max-width: 680px;
+  margin: 28px 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 1.7vw, 1.18rem);
+  line-height: 1.8;
+}
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+.christian-living-intro {
+  padding: 92px 20px;
+  background: #f7faff;
+  border-bottom: 1px solid #e4edf6;
+}
+
+.christian-living-intro-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  align-items: start;
+  gap: 80px;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.christian-living-intro h2 {
+  max-width: 560px;
+  margin: 0;
+  color: #10233f;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.christian-living-intro-inner > p {
+  margin: 36px 0 0;
+  color: #607087;
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+/* =========================================================
+   CATEGORIES
+   ========================================================= */
+
+.christian-living-categories {
+  padding: 96px 20px 80px;
+  background: #ffffff;
+}
+
+.christian-living-category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.christian-living-category {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 220px;
+  padding: 26px 24px;
+  border: 1px solid #dfe8f2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #10233f;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.christian-living-category svg {
+  margin-bottom: 24px;
+  color: #2563a6;
+}
+
+.christian-living-category span {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.christian-living-category small {
+  color: #6b7a8e;
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+.christian-living-category:hover {
+  transform: translateY(-4px);
+  border-color: #a9c8e6;
+  box-shadow: 0 14px 30px rgba(16, 35, 63, 0.08);
+}
+
+.christian-living-category.active {
+  border-color: #2563a6;
+  background: #f0f7ff;
+  box-shadow: 0 12px 26px rgba(37, 99, 166, 0.08);
+}
+
+.christian-living-category.active svg {
+  color: #123d6b;
+}
+
+/* =========================================================
+   FEATURED STUDY
+   ========================================================= */
+
+.christian-living-featured {
+  padding: 20px 20px 100px;
+  background: #ffffff;
+}
+
+.christian-living-featured-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  min-height: 470px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #102f52;
+  box-shadow: 0 20px 50px rgba(16, 47, 82, 0.13);
+}
+
+.christian-living-featured-image {
+  min-height: 470px;
+  overflow: hidden;
+}
+
+.christian-living-featured-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.christian-living-featured-card:hover
+  .christian-living-featured-image
+  img {
+  transform: scale(1.025);
+}
+
+.christian-living-featured-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 58px;
+}
+
+.christian-living-featured-content .section-label {
+  color: #9fc7ee;
+}
+
+.christian-living-featured-content h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.christian-living-featured-content > p {
+  margin: 22px 0 30px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.98rem;
+  line-height: 1.8;
+}
+
+.christian-living-scripture {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: #b7d5f1;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.christian-living-featured-content .btn {
+  align-self: flex-start;
+  background: #ffffff;
+  color: #123d6b;
+}
+
+.christian-living-featured-content .btn:hover {
+  background: #edf5fc;
+}
+
+/* =========================================================
+   STUDIES
+   ========================================================= */
+
+.christian-living-studies {
+  padding: 100px 20px;
+  background: #f7faff;
+  border-top: 1px solid #e4edf6;
+  border-bottom: 1px solid #e4edf6;
+}
+
+.christian-living-study-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.christian-living-study-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e0e8f1;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 22px rgba(16, 35, 63, 0.045);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.christian-living-study-card:hover {
+  transform: translateY(-5px);
+  border-color: #c4d8eb;
+  box-shadow: 0 18px 34px rgba(16, 35, 63, 0.09);
+}
+
+.christian-living-study-image {
+  height: 210px;
+  overflow: hidden;
+  background: #eaf2fa;
+}
+
+.christian-living-study-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.christian-living-study-card:hover
+  .christian-living-study-image
+  img {
+  transform: scale(1.035);
+}
+
+.christian-living-study-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 26px;
+}
+
+.study-category {
+  margin-bottom: 10px;
+  color: #2563a6;
+  font-size: 0.73rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.christian-living-study-body h3 {
+  margin: 0;
+  color: #10233f;
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+
+.christian-living-study-body > p {
+  margin: 14px 0 18px;
+  color: #68788d;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.study-scripture {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin-bottom: 22px;
+  color: #345d84;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.study-scripture svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.study-read-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: auto;
+  color: #123d6b;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    gap 0.2s ease,
+    color 0.2s ease;
+}
+
+.study-read-link:hover {
+  gap: 11px;
+  color: #2563a6;
+}
+
+/* =========================================================
+   STATES
+   ========================================================= */
+
+.christian-living-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  padding: 40px;
+  border: 1px solid #e0e8f1;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #607087;
+  text-align: center;
+}
+
+.christian-living-state svg {
+  margin-bottom: 14px;
+  color: #2563a6;
+}
+
+.christian-living-state h3 {
+  margin: 0 0 8px;
+  color: #10233f;
+  font-size: 1.2rem;
+}
+
+.christian-living-state p {
+  max-width: 480px;
+  margin: 0;
+  line-height: 1.7;
+}
+
+.christian-living-state.error {
+  border-color: #d7e4f1;
+}
+
+.christian-living-spinner {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 14px;
+  border: 3px solid #dbe8f5;
+  border-top-color: #2563a6;
+  border-radius: 50%;
+  animation: christianLivingSpin 0.8s linear infinite;
+}
+
+@keyframes christianLivingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   SCRIPTURE QUOTE
+   ========================================================= */
+
+.christian-living-quote {
+  padding: 100px 20px;
+  background: #102f52;
+  text-align: center;
+}
+
+.christian-living-quote blockquote {
+  max-width: 850px;
+  margin: 0 auto 22px;
+  color: #ffffff;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.christian-living-quote span {
+  color: #a9c9e8;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.christian-living-cta {
+  padding: 100px 20px;
+  background: #f7faff;
+  text-align: center;
+}
+
+.christian-living-cta .christian-living-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.christian-living-cta .section-label {
+  margin-bottom: 12px;
+}
+
+.christian-living-cta h2 {
+  max-width: 760px;
+  margin: 0;
+  color: #10233f;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.christian-living-cta p {
+  max-width: 620px;
+  margin: 18px 0 30px;
+  color: #607087;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 980px) {
+  .christian-living-category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .christian-living-study-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .christian-living-intro-inner {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .christian-living-intro-inner > p {
+    margin-top: 0;
+    max-width: 720px;
+  }
+
+  .christian-living-featured-card {
+    grid-template-columns: 1fr;
+  }
+
+  .christian-living-featured-image {
+    min-height: 340px;
+    max-height: 420px;
+  }
+
+  .christian-living-featured-content {
+    padding: 44px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .christian-living-container {
+    width: min(100% - 30px, 1180px);
+  }
+
+  .christian-living-hero {
+    min-height: 430px;
+    padding: 70px 15px;
+  }
+
+  .christian-living-hero h1 {
+    font-size: clamp(2.6rem, 13vw, 4rem);
+  }
+
+  .christian-living-hero p {
+    margin-top: 22px;
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
+
+  .christian-living-intro {
+    padding: 70px 15px;
+  }
+
+  .christian-living-intro h2 {
+    font-size: 2rem;
+  }
+
+  .christian-living-intro-inner > p {
+    font-size: 0.96rem;
+  }
+
+  .christian-living-categories {
+    padding: 70px 15px 50px;
+  }
+
+  .section-heading {
+    margin-bottom: 30px;
+  }
+
+  .section-heading h2 {
+    font-size: 2rem;
+  }
+
+  .christian-living-category-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .christian-living-category {
+    min-height: auto;
+    padding: 22px;
+  }
+
+  .christian-living-featured {
+    padding: 15px 15px 70px;
+  }
+
+  .christian-living-featured-card {
+    border-radius: 10px;
+  }
+
+  .christian-living-featured-image {
+    min-height: 250px;
+    max-height: 300px;
+  }
+
+  .christian-living-featured-content {
+    padding: 32px 24px;
+  }
+
+  .christian-living-featured-content h2 {
+    font-size: 2rem;
+  }
+
+  .christian-living-featured-content > p {
+    font-size: 0.92rem;
+  }
+
+  .christian-living-studies {
+    padding: 70px 15px;
+  }
+
+  .christian-living-study-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .christian-living-study-image {
+    height: 220px;
+  }
+
+  .christian-living-study-body {
+    padding: 23px;
+  }
+
+  .christian-living-quote {
+    padding: 75px 20px;
+  }
+
+  .christian-living-quote blockquote {
+    font-size: 1.9rem;
+  }
+
+  .christian-living-cta {
+    padding: 75px 20px;
+  }
+
+  .christian-living-cta h2 {
+    font-size: 2rem;
+  }
+
+  .btn {
+    min-height: 44px;
+    padding: 0 17px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .christian-living-hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .christian-living-featured-content {
+    padding: 28px 20px;
+  }
+
+  .christian-living-featured-content h2 {
+    font-size: 1.75rem;
+  }
+
+  .christian-living-study-body h3 {
+    font-size: 1.15rem;
+  }
+}

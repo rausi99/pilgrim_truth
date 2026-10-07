@@ -1,8 +1,9 @@
 import { useAuth } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import {
   ArrowRight,
   BookOpen,
+  ChevronDown,
   Cross,
   FileText,
   Flame,
@@ -15,121 +16,162 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import "./Navbar.css";
+
+const primaryLinks = [
+  {
+    label: "Home",
+    to: "/",
+  },
+  {
+    label: "Bible Studies",
+    to: "/bible-studies",
+  },
+  {
+    label: "Prophecy",
+    to: "/prophecy",
+  },
+  {
+    label: "History",
+    to: "/history",
+  },
+  {
+    label: "Christian Living",
+    to: "/christian-living",
+  },
+  {
+    label: "Health",
+    to: "/health",
+  },
+  {
+    label: "Articles",
+    to: "/articles",
+  },
+];
+
+const moreLinks = [
+  {
+    label: "Daily Inspiration",
+    to: "/daily-inspirations",
+    icon: Flame,
+  },
+  {
+    label: "Videos",
+    to: "/videos",
+    icon: Play,
+  },
+  {
+    label: "Resources",
+    to: "/resources",
+    icon: BookOpen,
+  },
+  {
+    label: "Discussions",
+    to: "/discussions",
+    icon: MessageCircle,
+  },
+];
+
+const searchItems = [
+  {
+    title: "Bible Studies",
+    type: "Bible Study",
+    description: "Explore Bible-based studies and practical lessons.",
+    to: "/bible-studies",
+  },
+  {
+    title: "Prophecy",
+    type: "Prophecy",
+    description: "Explore biblical prophecy and its meaning.",
+    to: "/prophecy",
+  },
+  {
+    title: "History",
+    type: "History",
+    description: "Discover historical events and biblical context.",
+    to: "/history",
+  },
+  {
+    title: "Christian Living",
+    type: "Christian Living",
+    description: "Practical guidance for everyday Christian life.",
+    to: "/christian-living",
+  },
+  {
+    title: "Health",
+    type: "Health",
+    description: "Explore principles of healthy Christian living.",
+    to: "/health",
+  },
+  {
+    title: "Articles",
+    type: "Articles",
+    description: "Read articles covering faith, Scripture and life.",
+    to: "/articles",
+  },
+  {
+    title: "Daily Inspiration",
+    type: "Daily Inspiration",
+    description: "Daily biblical encouragement and reflection.",
+    to: "/daily-inspirations",
+  },
+  {
+    title: "Videos",
+    type: "Videos",
+    description: "Watch Bible teachings and Christian content.",
+    to: "/videos",
+  },
+  {
+    title: "Resources",
+    type: "Resources",
+    description: "Find useful Christian study resources.",
+    to: "/resources",
+  },
+  {
+    title: "Discussions",
+    type: "Discussions",
+    description: "Join conversations and discuss biblical topics.",
+    to: "/discussions",
+  },
+];
 
 function Navbar() {
+  const { isAuthenticated, logout } = useAuth();
+  const location = useLocation();
+
   const [menuOpen, setMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { user, isAuthenticated, logout } = useAuth();
 
-  const links = [
-  { name: "Home", href: "/" },
-  { name: "Bible Studies", href: "/bible-studies" },
-  { name: "Prophecy", href: "/prophecy" },
-  { name: "History", href: "/history" },
-  { name: "Christian Living", href: "/christian-living" },
-  { name: "Health", href: "/health" },
-  { name: "Articles", href: "/articles" },
-  { name: "Videos", href: "/videos" },
-  { name: "Resources", href: "/resources" },
-  { name: "Discussions", href: "/discussions" },
+  const user = JSON.parse(localStorage.getItem("user") || "null");
 
-];
+  const isAdmin =
+    user?.role === "admin" || user?.role === "administrator";
 
-const searchableContent = [
-  {
-    title: "Understanding Biblical Prophecy",
-    type: "Prophecy",
-    description:
-      "Explore biblical prophecy and discover how Scripture communicates hope and truth.",
-    icon: Flame,
-    href: "/prophecy",
-  },
-  {
-    title: "Bible Study Foundations",
-    type: "Bible Study",
-    description:
-      "Build a stronger foundation for studying and understanding the Bible.",
-    icon: BookOpen,
-    href: "/bible-studies",
-  },
-  {
-    title: "The History of Scripture",
-    type: "Bible History",
-    description:
-      "Discover the historical background, people, places, and events of the Bible.",
-    icon: History,
-    href: "/history",
-  },
-  {
-    title: "Living With Purpose",
-    type: "Christian Living",
-    description:
-      "Practical reflections on faith, character, purpose, and everyday Christian life.",
-    icon: Cross,
-    href: "/christian-living",
-  },
-  {
-    title: "Healthy Living",
-    type: "Health",
-    description:
-      "Explore thoughtful principles for nutrition, movement, rest, and whole-person wellness.",
-    icon: Heart,
-    href: "/health",
-  },
-  {
-    title: "Pilgrim Truth Articles",
-    type: "Articles",
-    description:
-      "Read thoughtful articles exploring Scripture, prophecy, history, Christian living, and health.",
-    icon: FileText,
-    href: "/articles",
-  },
-  {
-    title: "Watch & Learn",
-    type: "Videos",
-    description:
-      "Explore biblical lessons and discussions through video.",
-    icon: Play,
-    href: "/videos",
-  },
-  {
-    title: "Study Resources",
-    type: "Resources",
-    description:
-      "Find study guides, Bible maps, timelines, downloads, and useful study tools.",
-    icon: BookOpen,
-    href: "/resources",
-  },
-  {
-    title: "Pilgrim Truth Discussions",
-    type: "Discussions",
-    description:
-      "Join thoughtful conversations about Scripture, prophecy, history, and Christian living.",
-    icon: MessageCircle,
-    href: "/discussions",
-  },
-];
-
-  const results =
-    searchQuery.trim().length > 0
-      ? searchableContent.filter((item) =>
-          `${item.title} ${item.type} ${item.description}`
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase())
-        )
-      : [];
+  const moreIsActive = moreLinks.some((item) =>
+    location.pathname.startsWith(item.to)
+  );
 
   useEffect(() => {
-    const handleKeyDown = (event) => {
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-        setSearchOpen(true);
-      }
+    document.body.classList.toggle("navbar-menu-open", menuOpen);
 
+    return () => {
+      document.body.classList.remove("navbar-menu-open");
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen && !searchOpen) return;
+
+    const handleKeyDown = (event) => {
       if (event.key === "Escape") {
-        setSearchOpen(false);
         setMenuOpen(false);
+        setMoreOpen(false);
+        setAccountOpen(false);
+        setSearchOpen(false);
+        setSearchQuery("");
       }
     };
 
@@ -138,11 +180,17 @@ const searchableContent = [
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [menuOpen, searchOpen]);
+
+  const closeMenus = () => {
+    setMenuOpen(false);
+    setMoreOpen(false);
+    setAccountOpen(false);
+  };
 
   const openSearch = () => {
     setSearchOpen(true);
-    setMenuOpen(false);
+    closeMenus();
   };
 
   const closeSearch = () => {
@@ -150,122 +198,294 @@ const searchableContent = [
     setSearchQuery("");
   };
 
+  const handleLogout = () => {
+    closeMenus();
+    logout();
+  };
+
+  const filteredSearchItems = searchItems.filter((item) => {
+    const query = searchQuery.trim().toLowerCase();
+
+    if (!query) return true;
+
+    return (
+      item.title.toLowerCase().includes(query) ||
+      item.type.toLowerCase().includes(query) ||
+      item.description.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <>
       <header className="navbar">
-        <div className="container nav-inner">
-          <a href="#top" className="brand" onClick={() => setMenuOpen(false)}>
-            <div className="brand-mark">
-              <Cross size={19} strokeWidth={2.2} />
-            </div>
+        <div className="nav-inner">
+          {/* Brand */}
+          <Link
+            to="/"
+            className="navbar-brand"
+            onClick={closeMenus}
+            aria-label="Pilgrim Truth Home"
+          >
+            <span className="brand-mark">
+              <Cross size={21} strokeWidth={2.2} />
+            </span>
 
-            <div className="brand-text">
-              <strong>PILGRIM</strong>
-              <span>TRUTH</span>
-            </div>
-          </a>
+            <span className="brand-text">
+              <span className="brand-primary">PILGRIM</span>
+              <span className="brand-secondary">TRUTH</span>
+            </span>
+          </Link>
 
-          <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
-            <div className="mobile-nav-top">
-              <span>MENU</span>
-
-              <button
-                className="mobile-close"
-                onClick={() => setMenuOpen(false)}
-                aria-label="Close menu"
+          {/* Desktop / Mobile Navigation */}
+          <nav
+            className={`nav-links ${menuOpen ? "open" : ""}`}
+            aria-label="Primary navigation"
+          >
+            {/* Primary links */}
+            {primaryLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  `nav-link ${isActive ? "active" : ""}`
+                }
+                onClick={closeMenus}
               >
-                <X size={22} />
-              </button>
-            </div>
-
-            {links.map((link) => (
-              <a
-                href={link.href}
-                key={link.name}
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.name}
-              </a>
+                {link.label}
+              </NavLink>
             ))}
 
-            <button className="mobile-search-link" onClick={openSearch}>
+            {/* More */}
+            <div className="nav-more">
+              <button
+                type="button"
+                className={`nav-more-trigger ${
+                  moreIsActive ? "active" : ""
+                }`}
+                onClick={() => setMoreOpen((open) => !open)}
+                aria-expanded={moreOpen}
+              >
+                More
+                <ChevronDown
+                  size={16}
+                  className={moreOpen ? "rotate" : ""}
+                />
+              </button>
+
+              <div
+                className={`nav-more-menu ${
+                  moreOpen ? "show" : ""
+                }`}
+              >
+                {moreLinks.map((item) => {
+                  const Icon = item.icon;
+
+                  return (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className={({ isActive }) =>
+                        `more-link ${isActive ? "active" : ""}`
+                      }
+                      onClick={closeMenus}
+                    >
+                      <span className="more-link-icon">
+                        <Icon size={17} />
+                      </span>
+
+                      <span>{item.label}</span>
+                    </NavLink>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Mobile search */}
+            <button
+              type="button"
+              className="mobile-search-link"
+              onClick={openSearch}
+            >
               <Search size={18} />
-              Search Pilgrim Truth
+              <span>Search</span>
             </button>
+
+            {/* Mobile authentication */}
+            <div className="mobile-auth">
+              {!isAuthenticated ? (
+                <>
+                  <Link
+                    to="/login"
+                    className="mobile-auth-link"
+                    onClick={closeMenus}
+                  >
+                    Login
+                  </Link>
+
+                  <Link
+                    to="/register"
+                    className="mobile-register-link"
+                    onClick={closeMenus}
+                  >
+                    Create Account
+                    <ArrowRight size={17} />
+                  </Link>
+                </>
+              ) : (
+                <>
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="mobile-auth-link"
+                      onClick={closeMenus}
+                    >
+                      Admin Dashboard
+                    </Link>
+                  )}
+
+                  <button
+                    type="button"
+                    className="mobile-logout-link"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
+            </div>
           </nav>
 
-         <div className="nav-actions">
+          {/* Desktop actions */}
+          <div className="nav-actions">
+            <button
+              type="button"
+              className="nav-search-trigger"
+              onClick={openSearch}
+              aria-label="Search"
+            >
+              <Search size={19} />
+              <span>Search</span>
+            </button>
 
-  <button
-    className="nav-search-trigger"
-    onClick={openSearch}
-    aria-label="Search"
-  >
-    <Search size={17} />
-    <span>Search</span>
-    <kbd>Ctrl K</kbd>
-  </button>
+            {isAuthenticated ? (
+              <div className="account-wrapper">
+                <button
+                  type="button"
+                  className="account-trigger"
+                  onClick={() => {
+                    setAccountOpen((open) => !open);
+                    setMoreOpen(false);
+                  }}
+                  aria-expanded={accountOpen}
+                >
+                  <span className="account-avatar">
+                    {user?.name?.charAt(0)?.toUpperCase() || "A"}
+                  </span>
 
-  {isAuthenticated ? (
-    <div className="navbar-user">
-      <span className="navbar-user-name">
-        {user?.name}
-      </span>
+                  <span className="account-label">
+                    Account
+                  </span>
 
-      <button
-        type="button"
-        className="navbar-logout"
-        onClick={logout}
-      >
-        Logout
-      </button>
-    </div>
-  ) : (
-    <div className="navbar-auth">
-    <Link to="/login" className="navbar-login">
-         Login
-    </Link>
+                  <ChevronDown
+                    size={15}
+                    className={accountOpen ? "rotate" : ""}
+                  />
+                </button>
 
-    <Link to="/register" className="navbar-register">
-  Create Account
-    </Link>
-    </div>
-  )}
+                <div
+                  className={`account-menu ${
+                    accountOpen ? "show" : ""
+                  }`}
+                >
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="account-menu-link"
+                      onClick={closeMenus}
+                    >
+                      Admin Dashboard
+                    </Link>
+                  )}
 
-  <button
-    className="menu-btn"
-    onClick={() => setMenuOpen(!menuOpen)}
-    aria-label="Open menu"
-  >
-    {menuOpen ? <X size={22} /> : <Menu size={22} />}
-  </button>
+                  <button
+                    type="button"
+                    className="account-menu-link logout"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="login-link"
+                  onClick={closeMenus}
+                >
+                  Login
+                </Link>
 
-</div>
+                <Link
+                  to="/register"
+                  className="register-link"
+                  onClick={closeMenus}
+                >
+                  Create Account
+                  <ArrowRight size={17} />
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            className={`menu-btn ${menuOpen ? "open" : ""}`}
+            onClick={() => {
+              setMenuOpen((open) => !open);
+              setMoreOpen(false);
+              setAccountOpen(false);
+            }}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? (
+              <X size={25} strokeWidth={2} />
+            ) : (
+              <Menu size={25} strokeWidth={2} />
+            )}
+          </button>
         </div>
       </header>
 
+      {/* Mobile menu backdrop */}
+      <div
+        className={`menu-backdrop ${menuOpen ? "show" : ""}`}
+        onClick={closeMenus}
+        aria-hidden="true"
+      />
+
+      {/* Search */}
       {searchOpen && (
-        <div
-          className="search-overlay"
-          onClick={(event) => {
-            if (event.target === event.currentTarget) {
-              closeSearch();
-            }
-          }}
-        >
+        <div className="search-overlay">
           <div className="search-panel">
-            <div className="search-panel-top">
+            <div className="search-header">
               <div>
-                <span className="search-eyebrow">SEARCH</span>
-                <h2>What are you looking for?</h2>
+                <span className="search-eyebrow">
+                  PILGRIM TRUTH
+                </span>
+
+                <h2>Search</h2>
               </div>
 
               <button
+                type="button"
                 className="search-close"
                 onClick={closeSearch}
                 aria-label="Close search"
               >
-                <X size={22} />
+                <X size={23} />
               </button>
             </div>
 
@@ -273,15 +493,18 @@ const searchableContent = [
               <Search size={21} />
 
               <input
-                type="text"
-                autoFocus
+                type="search"
                 value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search Bible studies, prophecy, articles..."
+                onChange={(event) =>
+                  setSearchQuery(event.target.value)
+                }
+                placeholder="Search Pilgrim Truth..."
+                autoFocus
               />
 
               {searchQuery && (
                 <button
+                  type="button"
                   className="clear-search"
                   onClick={() => setSearchQuery("")}
                   aria-label="Clear search"
@@ -291,80 +514,61 @@ const searchableContent = [
               )}
             </div>
 
-            {searchQuery.trim() === "" ? (
-              <div className="search-default">
-                <p className="search-label">POPULAR SEARCHES</p>
+            <div className="popular-searches">
+              <span>Popular:</span>
 
-                <div className="search-tags">
-                  <button onClick={() => setSearchQuery("Prophecy")}>
-                    Prophecy
-                  </button>
+              {[
+                "Bible Studies",
+                "Prophecy",
+                "Articles",
+                "Videos",
+              ].map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setSearchQuery(item)}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
 
-                  <button onClick={() => setSearchQuery("Daniel")}>
-                    Daniel
-                  </button>
+            <div className="search-results">
+              {filteredSearchItems.length > 0 ? (
+                filteredSearchItems.map((item) => (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className="search-result"
+                    onClick={closeSearch}
+                  >
+                    <div className="search-result-icon">
+                      <FileText size={19} />
+                    </div>
 
-                  <button onClick={() => setSearchQuery("Bible Study")}>
-                    Bible Study
-                  </button>
+                    <div className="search-result-content">
+                      <span>{item.type}</span>
+                      <h3>{item.title}</h3>
+                      <p>{item.description}</p>
+                    </div>
 
-                  <button onClick={() => setSearchQuery("History")}>
-                    Bible History
-                  </button>
+                    <ArrowRight
+                      className="search-result-arrow"
+                      size={18}
+                    />
+                  </Link>
+                ))
+              ) : (
+                <div className="no-search-results">
+                  <Search size={30} />
+                  <h3>No results found</h3>
+                  <p>
+                    Try another search term or browse the
+                    navigation.
+                  </p>
                 </div>
-
-                <div className="search-note">
-                  <Search size={17} />
-                  <span>
-                    Search across Bible studies, prophecy, articles, videos
-                    and resources.
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <div className="search-results">
-                <p className="search-label">
-                  {results.length}{" "}
-                  {results.length === 1 ? "RESULT" : "RESULTS"}
-                </p>
-
-                {results.length > 0 ? (
-                  results.map((item) => {
-                    const Icon = item.icon;
-
-                    return (
-                      <a
-                        href={item.href}
-                        className="search-result"
-                        key={item.title}
-                        onClick={closeSearch}
-                      >
-                        <div className="search-result-icon">
-                          <Icon size={19} />
-                        </div>
-
-                        <div className="search-result-content">
-                          <span>{item.type}</span>
-                          <h3>{item.title}</h3>
-                          <p>{item.description}</p>
-                        </div>
-
-                        <ArrowRight size={18} />
-                      </a>
-                    );
-                  })
-                ) : (
-                  <div className="no-results">
-                    <Search size={30} />
-                    <h3>No results found</h3>
-                    <p>
-                      Try another search term such as prophecy, Bible, Daniel,
-                      history or Christian living.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       )}

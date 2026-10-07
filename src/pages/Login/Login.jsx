@@ -12,6 +12,8 @@ import Footer from "../../components/layout/Footer";
 import { loginUser } from "../../services/auth";
 import { useAuth } from "../../context/AuthContext";
 
+import "./Login.css";
+
 function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -45,9 +47,19 @@ function Login() {
 
       login(data);
 
-      navigate("/discussions");
+      const isAdmin =
+        data.user?.role === "admin" ||
+        data.user?.role === "administrator";
+
+      if (isAdmin) {
+        navigate("/admin");
+      } else {
+        navigate("/discussions");
+      }
     } catch (error) {
-      setError(error.message || "Unable to log in.");
+      setError(
+        error.message || "Unable to log in."
+      );
     } finally {
       setLoading(false);
     }
@@ -59,25 +71,20 @@ function Login() {
 
       <main className="auth-page">
         <section className="auth-editorial">
-
-          {/* LEFT PANEL */}
+          {/* LEFT EDITORIAL PANEL */}
           <div className="auth-editorial-panel">
             <div className="auth-panel-content">
-
               <div className="auth-panel-brand">
                 <div className="auth-panel-mark">
-                  <BookOpen size={20} />
+                  <BookOpen size={24} strokeWidth={1.8} />
                 </div>
 
-                <div>
-                  <strong>PILGRIM</strong>
-                  <span>TRUTH</span>
-                </div>
+                <span>PILGRIM TRUTH</span>
               </div>
 
               <div className="auth-panel-main">
                 <span className="auth-panel-label">
-                  SEEKING TRUTH
+                  WELCOME BACK
                 </span>
 
                 <h1>
@@ -86,45 +93,43 @@ function Login() {
                 </h1>
 
                 <p>
-                  A place to study Scripture carefully,
-                  ask meaningful questions, and grow in
-                  understanding.
+                  Return to a place where faith,
+                  Scripture, and meaningful
+                  conversations come together.
                 </p>
               </div>
 
               <div className="auth-panel-quote">
                 <span className="auth-quote-line"></span>
 
-                <p>
-                  “Search the Scriptures.”
-                </p>
+                <blockquote>
+                  "Your word is a lamp for my feet,
+                  a light on my path."
+                </blockquote>
 
-                <small>
-                  John 5:39
-                </small>
+                <cite>
+                  — Psalm 119:105
+                </cite>
               </div>
-
             </div>
           </div>
 
-          {/* RIGHT PANEL */}
+          {/* RIGHT FORM PANEL */}
           <div className="auth-form-panel">
             <div className="auth-form-container">
-
+              {/* MOBILE BRAND */}
               <div className="auth-mobile-brand">
                 <div className="auth-panel-mark">
-                  <BookOpen size={20} />
+                  <BookOpen size={22} strokeWidth={1.8} />
                 </div>
 
-                <div>
-                  <strong>PILGRIM</strong>
-                  <span>TRUTH</span>
-                </div>
+                <span>PILGRIM TRUTH</span>
               </div>
 
+              {/* HEADER */}
               <div className="auth-header">
                 <span className="section-label">
-                  WELCOME BACK
+                  ACCOUNT
                 </span>
 
                 <h2>
@@ -133,41 +138,55 @@ function Login() {
                 </h2>
 
                 <p>
-                  Continue exploring Scripture and join
-                  thoughtful conversations.
+                  Enter your details below to
+                  continue your journey with
+                  Pilgrim Truth.
                 </p>
               </div>
 
+              {/* ERROR MESSAGE */}
               {error && (
-                <div className="auth-error">
+                <div
+                  className="auth-error"
+                  role="alert"
+                >
                   {error}
                 </div>
               )}
 
+              {/* LOGIN FORM */}
               <form
-                onSubmit={handleSubmit}
                 className="auth-form"
+                onSubmit={handleSubmit}
               >
+                {/* EMAIL */}
                 <div className="form-group">
-                  <label htmlFor="login-email">
+                  <label
+                    className="form-label"
+                    htmlFor="email"
+                  >
                     Email address
                   </label>
 
                   <input
-                    id="login-email"
+                    id="email"
                     name="email"
                     type="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="you@example.com"
+                    placeholder="Enter your email address"
                     autoComplete="email"
                     required
                   />
                 </div>
 
+                {/* PASSWORD */}
                 <div className="form-group">
                   <div className="form-label-row">
-                    <label htmlFor="login-password">
+                    <label
+                      className="form-label"
+                      htmlFor="password"
+                    >
                       Password
                     </label>
 
@@ -186,7 +205,7 @@ function Login() {
 
                   <div className="password-field">
                     <input
-                      id="login-password"
+                      id="password"
                       name="password"
                       type={
                         showPassword
@@ -215,14 +234,15 @@ function Login() {
                       }
                     >
                       {showPassword ? (
-                        <EyeOff size={18} />
+                        <EyeOff size={19} />
                       ) : (
-                        <Eye size={18} />
+                        <Eye size={19} />
                       )}
                     </button>
                   </div>
                 </div>
 
+                {/* SUBMIT */}
                 <button
                   type="submit"
                   className="auth-submit"
@@ -231,29 +251,36 @@ function Login() {
                   <span>
                     {loading
                       ? "Signing in..."
-                      : "Sign In"}
+                      : "Sign in"}
                   </span>
 
                   {!loading && (
-                    <ArrowRight size={18} />
+                    <ArrowRight
+                      size={19}
+                      strokeWidth={2}
+                    />
                   )}
                 </button>
               </form>
 
+              {/* DIVIDER */}
               <div className="auth-divider">
-                <span>or</span>
+                <span>OR</span>
               </div>
 
-              <p className="auth-switch">
-                Don't have an account?{" "}
-                <Link to="/register">
-                  Create one
-                </Link>
-              </p>
+              {/* REGISTER LINK */}
+              <div className="auth-switch">
+                <span>
+                  Don't have an account?
+                </span>
 
+                <Link to="/register">
+                  Create Account
+                  
+                </Link>
+              </div>
             </div>
           </div>
-
         </section>
       </main>
 

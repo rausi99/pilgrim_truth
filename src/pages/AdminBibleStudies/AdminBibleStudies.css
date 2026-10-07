@@ -1,0 +1,757 @@
+/* =========================================================
+   PILGRIM TRUTH
+   ADMIN — BIBLE STUDIES
+   ========================================================= */
+
+.bible-studies-page {
+  width: 100%;
+  min-width: 0;
+  padding: 30px 32px 40px;
+  color: #263746;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.bible-studies-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.bible-studies-header-content {
+  min-width: 0;
+}
+
+.bible-studies-label {
+  display: block;
+  margin-bottom: 8px;
+  color: #176da3;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.bible-studies-header h1 {
+  margin: 0;
+  color: #071827;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+.bible-studies-header p {
+  margin: 8px 0 0;
+  color: #6a7b89;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   NEW BUTTON
+   ========================================================= */
+
+.bible-studies-new-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid #145da0;
+  border-radius: 8px;
+  background: #145da0;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.bible-studies-new-button:hover {
+  border-color: #0e4d86;
+  background: #0e4d86;
+  box-shadow: 0 5px 14px rgba(20, 93, 160, 0.16);
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.bible-studies-toolbar {
+  display: grid;
+  grid-template-columns: minmax(250px, 1fr) 175px 185px auto;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #dce5ec;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(7, 24, 39, 0.035);
+}
+
+.bible-studies-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.bible-studies-search svg {
+  position: absolute;
+  left: 13px;
+  color: #82919e;
+  pointer-events: none;
+}
+
+.bible-studies-search input {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px 0 39px;
+  border: 1px solid #d5dfe7;
+  border-radius: 7px;
+  outline: none;
+  background: #ffffff;
+  color: #263746;
+  font-family: inherit;
+  font-size: 12px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.bible-studies-search input::placeholder {
+  color: #9aa7b2;
+}
+
+.bible-studies-search input:focus,
+.bible-studies-filter:focus {
+  border-color: #71a9d5;
+  box-shadow: 0 0 0 3px rgba(20, 93, 160, 0.08);
+}
+
+.bible-studies-filter {
+  width: 100%;
+  height: 40px;
+  padding: 0 30px 0 11px;
+  border: 1px solid #d5dfe7;
+  border-radius: 7px;
+  outline: none;
+  background: #ffffff;
+  color: #344a5b;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.bible-studies-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d5dfe7;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #627381;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.bible-studies-clear:hover {
+  border-color: #b9c9d5;
+  background: #f5f8fb;
+  color: #145da0;
+}
+
+/* =========================================================
+   RESULTS
+   ========================================================= */
+
+.bible-studies-result {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  color: #71808d;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   TABLE CARD
+   ========================================================= */
+
+.bible-studies-table-card {
+  overflow: hidden;
+  border: 1px solid #dce5ec;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 3px 14px rgba(7, 24, 39, 0.04);
+}
+
+.bible-studies-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bible-studies-table {
+  width: 100%;
+  min-width: 940px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.bible-studies-table thead {
+  background: #f6f8fa;
+}
+
+.bible-studies-table th {
+  height: 44px;
+  padding: 0 17px;
+  border-bottom: 1px solid #dce5ec;
+  color: #657584;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.bible-studies-table td {
+  padding: 14px 17px;
+  border-bottom: 1px solid #edf1f4;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.bible-studies-table tbody tr {
+  transition: background 0.18s ease;
+}
+
+.bible-studies-table tbody tr:hover {
+  background: #fbfcfd;
+}
+
+.bible-studies-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.actions-column {
+  text-align: right;
+}
+
+/* =========================================================
+   STUDY
+   ========================================================= */
+
+.study-primary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  min-width: 245px;
+}
+
+.study-primary strong {
+  color: #0b1f33;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.study-description {
+  display: block;
+  max-width: 350px;
+  overflow: hidden;
+  color: #7a8895;
+  font-size: 11px;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.study-featured {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 7px;
+  border: 1px solid #cbddeb;
+  border-radius: 5px;
+  background: #eef6fc;
+  color: #145da0;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.study-featured svg {
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.study-category {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 8px;
+  border: 1px solid #dbe4eb;
+  border-radius: 5px;
+  background: #f7f9fb;
+  color: #536777;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   SCRIPTURE
+   ========================================================= */
+
+.study-scripture {
+  color: #344e62;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.study-author {
+  color: #526474;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.study-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  min-height: 25px;
+  padding: 0 8px;
+  border-radius: 5px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.study-status.published {
+  border: 1px solid #c9e3d4;
+  background: #eef8f1;
+  color: #267044;
+}
+
+.study-status.draft {
+  border: 1px solid #dce2e7;
+  background: #f5f7f9;
+  color: #65737e;
+}
+
+.study-status.scheduled {
+  border: 1px solid #cbddea;
+  background: #eef6fc;
+  color: #28658e;
+}
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+.study-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #6b7b88;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.study-date svg {
+  color: #176da3;
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.study-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.study-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #d7e0e7;
+  border-radius: 6px;
+  background: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.study-action.edit {
+  color: #4f6678;
+}
+
+.study-action.edit:hover {
+  border-color: #b7ccdc;
+  background: #f2f7fb;
+  color: #145da0;
+  transform: translateY(-1px);
+}
+
+.study-action.delete {
+  color: #667580;
+}
+
+.study-action.delete:hover {
+  border-color: #efcaca;
+  background: #fff5f5;
+  color: #c44242;
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+.bible-studies-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 35px 25px;
+  border: 1px solid #dce5ec;
+  border-radius: 10px;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: 0 3px 14px rgba(7, 24, 39, 0.035);
+}
+
+.bible-studies-state-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 15px;
+  border-radius: 11px;
+  background: #edf5fb;
+  color: #176da3;
+}
+
+.bible-studies-state-icon.error {
+  background: #fff3f3;
+  color: #c44242;
+}
+
+.bible-studies-state h3 {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.bible-studies-state p {
+  max-width: 420px;
+  margin: 7px 0 20px;
+  color: #71808d;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   DELETE MODAL
+   ========================================================= */
+
+.bible-studies-modal-backdrop {
+  position: fixed;
+  z-index: 1200;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(7, 24, 39, 0.58);
+  backdrop-filter: blur(3px);
+}
+
+.bible-studies-delete-modal {
+  position: relative;
+  width: min(100%, 430px);
+  padding: 27px;
+  border: 1px solid #dce5ec;
+  border-radius: 13px;
+  background: #ffffff;
+  box-shadow: 0 24px 65px rgba(7, 24, 39, 0.22);
+}
+
+.bible-studies-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 31px;
+  height: 31px;
+  border: 1px solid #dce4ea;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #687987;
+  cursor: pointer;
+}
+
+.bible-studies-modal-close:hover {
+  background: #f5f8fb;
+  color: #263746;
+}
+
+.delete-modal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  background: #fff1f1;
+  color: #c44242;
+}
+
+.bible-studies-delete-modal h3 {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.bible-studies-delete-modal p {
+  margin: 9px 0 0;
+  color: #697a87;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.bible-studies-delete-modal p strong {
+  color: #263746;
+}
+
+.delete-modal-error {
+  margin-top: 15px;
+  padding: 10px 12px;
+  border: 1px solid #efcccc;
+  border-radius: 7px;
+  background: #fff5f5;
+  color: #b63c3c;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 23px;
+}
+
+.delete-cancel,
+.delete-confirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 39px;
+  padding: 0 14px;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.delete-cancel {
+  border: 1px solid #d5dfe6;
+  background: #ffffff;
+  color: #566a79;
+}
+
+.delete-cancel:hover:not(:disabled) {
+  background: #f5f8fb;
+}
+
+.delete-confirm {
+  border: 1px solid #c44242;
+  background: #c44242;
+  color: #ffffff;
+}
+
+.delete-confirm:hover:not(:disabled) {
+  border-color: #aa3333;
+  background: #aa3333;
+}
+
+.delete-cancel:disabled,
+.delete-confirm:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1050px) {
+  .bible-studies-page {
+    padding: 27px 24px 35px;
+  }
+
+  .bible-studies-toolbar {
+    grid-template-columns: minmax(220px, 1fr) 160px 170px auto;
+  }
+}
+
+@media (max-width: 850px) {
+  .bible-studies-page {
+    padding: 24px 20px 32px;
+  }
+
+  .bible-studies-header {
+    align-items: flex-start;
+  }
+
+  .bible-studies-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .bible-studies-search {
+    grid-column: 1 / -1;
+  }
+
+  .bible-studies-clear {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .bible-studies-page {
+    padding: 20px 15px 30px;
+  }
+
+  .bible-studies-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 17px;
+    margin-bottom: 20px;
+  }
+
+  .bible-studies-header h1 {
+    font-size: 24px;
+  }
+
+  .bible-studies-header p {
+    font-size: 12px;
+  }
+
+  .bible-studies-new-button {
+    width: 100%;
+  }
+
+  .bible-studies-toolbar {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .bible-studies-search {
+    grid-column: auto;
+  }
+
+  .bible-studies-result {
+    min-height: 38px;
+  }
+
+  .bible-studies-table-card {
+    border-radius: 9px;
+  }
+
+  .bible-studies-table th,
+  .bible-studies-table td {
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+
+  .bible-studies-state {
+    min-height: 260px;
+    padding: 30px 18px;
+  }
+
+  .bible-studies-delete-modal {
+    padding: 23px;
+  }
+
+  .delete-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .delete-cancel,
+  .delete-confirm {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .bible-studies-page {
+    padding: 18px 12px 25px;
+  }
+
+  .bible-studies-header h1 {
+    font-size: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bible-studies-new-button,
+  .bible-studies-search input,
+  .bible-studies-filter,
+  .bible-studies-clear,
+  .bible-studies-table tbody tr,
+  .study-action {
+    transition: none;
+  }
+}

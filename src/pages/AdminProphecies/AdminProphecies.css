@@ -1,0 +1,721 @@
+/* =========================================================
+   PILGRIM TRUTH — ADMIN PROPHECY
+   Matches Health / Christian Living admin styling
+   ========================================================= */
+
+.admin-prophecies {
+  width: 100%;
+  padding: 28px 30px 36px;
+  color: #172b3b;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.ap-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.ap-title-row {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+
+.ap-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #d7e6f0;
+  border-radius: 10px;
+  background: #eef6fb;
+  color: #145da0;
+}
+
+.ap-title-row h1 {
+  margin: 0;
+  color: #10283b;
+  font-size: 27px;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.ap-title-row p {
+  margin: 5px 0 0;
+  color: #71818d;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+   ========================================================= */
+
+.ap-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 15px;
+  border: 1px solid #145da0;
+  border-radius: 7px;
+  background: #145da0;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.ap-primary-btn:hover {
+  background: #0f4f88;
+  border-color: #0f4f88;
+  box-shadow: 0 5px 14px rgba(20, 93, 160, 0.16);
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.ap-error {
+  margin-bottom: 18px;
+  padding: 11px 13px;
+  border: 1px solid #efcccc;
+  border-radius: 7px;
+  background: #fff5f5;
+  color: #a13d3d;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.ap-toolbar {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 180px 180px;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ap-search {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 40px;
+  border: 1px solid #dce6ee;
+  border-radius: 7px;
+  background: #ffffff;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.ap-search > svg {
+  flex: 0 0 auto;
+  margin-left: 12px;
+  color: #7b8c99;
+}
+
+.ap-search input {
+  width: 100%;
+  height: 100%;
+  padding: 0 8px 0 9px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #263746;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.ap-search input::placeholder {
+  color: #98a5ae;
+}
+
+.ap-search:focus-within {
+  border-color: #78a9ca;
+  box-shadow: 0 0 0 3px rgba(20, 93, 160, 0.07);
+}
+
+.ap-search button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 31px;
+  height: 31px;
+  margin-right: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #7b8c99;
+  cursor: pointer;
+}
+
+.ap-search button:hover {
+  background: #f1f5f8;
+  color: #243949;
+}
+
+.ap-toolbar select {
+  width: 100%;
+  height: 40px;
+  padding: 0 30px 0 11px;
+  border: 1px solid #dce6ee;
+  border-radius: 7px;
+  outline: 0;
+  background: #ffffff;
+  color: #455a69;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ap-toolbar select:focus {
+  border-color: #78a9ca;
+  box-shadow: 0 0 0 3px rgba(20, 93, 160, 0.07);
+}
+
+
+/* =========================================================
+   RESULTS
+   ========================================================= */
+
+.ap-results {
+  margin: 0 0 12px;
+  color: #7b8b97;
+  font-size: 11px;
+}
+
+.ap-results strong {
+  color: #405666;
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING
+   ========================================================= */
+
+.ap-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 310px;
+  padding: 40px 20px;
+  border: 1px solid #dce6ee;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #7a8b97;
+  text-align: center;
+  box-shadow: 0 3px 14px rgba(11, 31, 51, 0.035);
+}
+
+.ap-empty > svg {
+  margin-bottom: 10px;
+  color: #86a0b1;
+}
+
+.ap-empty h3 {
+  margin: 0;
+  color: #253b4b;
+  font-size: 15px;
+  font-weight: 750;
+}
+
+.ap-empty p {
+  max-width: 420px;
+  margin: 6px 0 16px;
+  color: #71818d;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   TABLE CARD
+   ========================================================= */
+
+.ap-table-card {
+  overflow: hidden;
+  border: 1px solid #dce6ee;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 3px 14px rgba(11, 31, 51, 0.035);
+}
+
+.ap-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ap-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.ap-table thead {
+  background: #f6f9fb;
+}
+
+.ap-table th {
+  height: 44px;
+  padding: 0 15px;
+  border-bottom: 1px solid #dce6ee;
+  color: #6d7e8a;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ap-table td {
+  padding: 13px 15px;
+  border-bottom: 1px solid #edf1f4;
+  color: #445866;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+.ap-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.ap-table tbody tr:hover {
+  background: #fafcfd;
+}
+
+.ap-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+
+/* =========================================================
+   PROPHECY CONTENT
+   ========================================================= */
+
+.ap-prophecy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 255px;
+}
+
+.ap-prophecy-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #d9e7f0;
+  border-radius: 9px;
+  background: #eff7fc;
+  color: #176da3;
+}
+
+.ap-prophecy > div:last-child {
+  min-width: 0;
+}
+
+.ap-prophecy strong {
+  display: block;
+  max-width: 285px;
+  overflow: hidden;
+  color: #203747;
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ap-prophecy-slug {
+  display: block;
+  max-width: 285px;
+  margin-top: 3px;
+  overflow: hidden;
+  color: #8997a1;
+  font-size: 10px;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ap-featured {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: #176da3;
+  font-size: 9px;
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.ap-category {
+  color: #506473;
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   SCRIPTURE
+   ========================================================= */
+
+.ap-scripture {
+  display: block;
+  max-width: 170px;
+  color: #556b7a;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.ap-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 65px;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.ap-status-published {
+  border: 1px solid #c2e0ce;
+  background: #eef9f2;
+  color: #2a734c;
+}
+
+.ap-status-draft {
+  border: 1px solid #dce3e8;
+  background: #f5f7f8;
+  color: #697a85;
+}
+
+.ap-status-scheduled {
+  border: 1px solid #c9dfef;
+  background: #eef7fc;
+  color: #23658f;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.ap-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ap-actions a,
+.ap-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid #dce6ee;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #586d7c;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.ap-actions a:hover {
+  border-color: #b3cddd;
+  background: #eef6fb;
+  color: #145da0;
+}
+
+.ap-actions button.danger:hover {
+  border-color: #efc5c5;
+  background: #fff4f4;
+  color: #ad3d3d;
+}
+
+
+/* =========================================================
+   DELETE MODAL
+   ========================================================= */
+
+.ap-modal-backdrop {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(7, 24, 39, 0.48);
+  backdrop-filter: blur(3px);
+}
+
+.ap-modal {
+  position: relative;
+  width: min(100%, 430px);
+  padding: 28px;
+  border: 1px solid #dce6ee;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 22px 55px rgba(7, 24, 39, 0.18);
+}
+
+.ap-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 31px;
+  height: 31px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #788894;
+  cursor: pointer;
+}
+
+.ap-modal-close:hover {
+  background: #f2f5f7;
+  color: #253b4b;
+}
+
+.ap-modal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 15px;
+  border: 1px solid #efcaca;
+  border-radius: 9px;
+  background: #fff4f4;
+  color: #ae4141;
+}
+
+.ap-modal h2 {
+  margin: 0 0 9px;
+  color: #213747;
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.ap-modal p {
+  margin: 6px 0;
+  color: #697b87;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.ap-modal p strong {
+  color: #2c4252;
+}
+
+.ap-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 21px;
+}
+
+.ap-cancel-btn,
+.ap-delete-btn {
+  min-height: 37px;
+  padding: 0 14px;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.ap-cancel-btn {
+  border: 1px solid #dce6ee;
+  background: #ffffff;
+  color: #566b79;
+}
+
+.ap-cancel-btn:hover {
+  background: #f5f8fa;
+}
+
+.ap-delete-btn {
+  border: 1px solid #ae4141;
+  background: #ae4141;
+  color: #ffffff;
+}
+
+.ap-delete-btn:hover {
+  border-color: #943636;
+  background: #943636;
+}
+
+.ap-cancel-btn:disabled,
+.ap-delete-btn:disabled,
+.ap-modal-close:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .admin-prophecies {
+    padding: 24px 20px 32px;
+  }
+
+  .ap-header {
+    align-items: flex-start;
+  }
+
+  .ap-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ap-search {
+    grid-column: 1 / -1;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .admin-prophecies {
+    padding: 19px 15px 28px;
+  }
+
+  .ap-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 17px;
+    margin-bottom: 19px;
+  }
+
+  .ap-title-row {
+    align-items: flex-start;
+  }
+
+  .ap-icon {
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .ap-title-row h1 {
+    font-size: 24px;
+  }
+
+  .ap-title-row p {
+    font-size: 11px;
+  }
+
+  .ap-primary-btn {
+    width: 100%;
+  }
+
+  .ap-toolbar {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .ap-search {
+    grid-column: auto;
+  }
+
+  .ap-toolbar select {
+    width: 100%;
+  }
+
+  .ap-table-card {
+    border-radius: 9px;
+  }
+
+  .ap-table {
+    min-width: 850px;
+  }
+
+  .ap-table th,
+  .ap-table td {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .ap-modal {
+    padding: 24px 19px;
+  }
+
+  .ap-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .ap-cancel-btn,
+  .ap-delete-btn {
+    width: 100%;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .ap-primary-btn,
+  .ap-search,
+  .ap-actions a,
+  .ap-actions button {
+    transition: none;
+  }
+}

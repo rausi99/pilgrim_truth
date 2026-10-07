@@ -1,31 +1,62 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   BookOpen,
+  ChevronRight,
   Flame,
   Heart,
+  History,
   MessageCircle,
   Search,
-  Users,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
-import discussions from "../../data/discussions";
+import { getDiscussions } from "../../services/discussions";
+import { useAuth } from "../../context/AuthContext";
+import "./Discussions.css";
 
 function Discussions() {
+  const { isAuthenticated } = useAuth();
+
+  const [discussions, setDiscussions] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const categories = [
-    "All",
-    "Bible Study",
-    "Prophecy",
-    "Bible History",
-    "Christian Living",
-    "Health",
-  ];
+  useEffect(() => {
+    const loadDiscussions = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const data = await getDiscussions();
+
+        setDiscussions(data.discussions || []);
+      } catch (error) {
+        console.error("Discussion loading error:", error);
+        setError(
+          error.message || "Unable to load discussions."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDiscussions();
+  }, []);
+
+  const categories = useMemo(() => {
+    const uniqueCategories = [
+      ...new Set(
+        discussions.map((discussion) => discussion.category)
+      ),
+    ];
+
+    return ["All", ...uniqueCategories];
+  }, [discussions]);
 
   const filteredDiscussions = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -38,50 +69,127 @@ function Discussions() {
       const matchesSearch =
         !query ||
         discussion.title.toLowerCase().includes(query) ||
-        discussion.excerpt.toLowerCase().includes(query) ||
-        discussion.category.toLowerCase().includes(query);
+        discussion.content.toLowerCase().includes(query) ||
+        discussion.category.toLowerCase().includes(query) ||
+        discussion.author.toLowerCase().includes(query);
 
       return matchesCategory && matchesSearch;
     });
-  }, [searchQuery, activeCategory]);
+  }, [
+    discussions,
+    searchQuery,
+    activeCategory,
+  ]);
 
-  const featuredDiscussions = discussions.filter(
-    (discussion) => discussion.featured
+  const featuredDiscussions = filteredDiscussions.filter(
+    (discussion) => discussion.is_featured
   );
 
-  const clearFilters = () => {
-    setSearchQuery("");
-    setActiveCategory("All");
+  const regularDiscussions = filteredDiscussions.filter(
+    (discussion) => !discussion.is_featured
+  );
+
+  const formatDate = (date) => {
+    if (!date) return "";
+
+    return new Date(date).toLocaleDateString(
+      "en-US",
+      {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      }
+    );
+  };
+
+  const getCategoryIcon = (category) => {
+    switch (category) {
+      case "Prophecy":
+        return Flame;
+
+      case "Bible History":
+        return History;
+
+      case "Christian Living":
+        return Heart;
+
+      case "Health":
+        return Heart;
+
+      case "Bible Study":
+      default:
+        return BookOpen;
+    }
   };
 
   return (
-    <div className="inner-page discussions-page">
+    <>
       <Navbar />
 
-      <main>
+      <main className="discussions-page">
 
         {/* HERO */}
         <section className="page-hero discussions-hero">
-          <div className="container">
+          <div className="container page-hero-content">
 
             <span className="section-label">
-              PILGRIM TRUTH DISCUSSIONS
+              PILGRIM TRUTH COMMUNITY
             </span>
 
             <h1>
-              Ask questions.
-              <em>Search together.</em>
+              Thoughtful
+              <em> conversations.</em>
             </h1>
 
             <p>
-              Join thoughtful conversations about Scripture,
-              prophecy, history, Christian living, and the
-              questions that help us grow.
+              Ask questions, explore Scripture, and
+              engage in meaningful conversations with
+              other seekers of truth.
             </p>
 
-            <div className="discussion-search-wrapper">
-              <div className="page-search">
-                <Search size={19} />
+            <div className="discussions-hero-actions">
+              {isAuthenticated ? (
+                <Link
+                  to="/discussions/new"
+                  className="primary-button"
+                >
+                  Start a Discussion
+                  <ArrowRight size={17} />
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="primary-button"
+                >
+                  Sign In to Participate
+                  <ArrowRight size={17} />
+                </Link>
+              )}
+            </div>
+
+          </div>
+        </section>
+
+        {/* CONTENT */}
+        <section className="section discussions-content">
+          <div className="container">
+
+            {/* HEADER */}
+            <div className="discussions-toolbar">
+
+              <div>
+                <span className="section-label">
+                  COMMUNITY DISCUSSIONS
+                </span>
+
+                <h2>
+                  Explore the
+                  <em> conversation.</em>
+                </h2>
+              </div>
+
+              <div className="discussion-search">
+                <Search size={17} />
 
                 <input
                   id="discussion-search"
@@ -92,199 +200,21 @@ function Discussions() {
                     setSearchQuery(event.target.value)
                   }
                   placeholder="Search discussions..."
-                  aria-label="Search discussions"
-                  autoComplete="off"
                 />
-
-                {searchQuery && (
-                  <button
-                    type="button"
-                    className="discussion-search-clear"
-                    onClick={() => setSearchQuery("")}
-                    aria-label="Clear discussion search"
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-
-              {searchQuery.trim() && (
-                <p className="discussion-search-results">
-                  {filteredDiscussions.length}{" "}
-                  {filteredDiscussions.length === 1
-                    ? "discussion"
-                    : "discussions"}{" "}
-                  found for{" "}
-                  <strong>"{searchQuery}"</strong>
-                </p>
-              )}
-            </div>
-
-            <div className="discussion-hero-actions">
-
-              <a
-                href="#discussion-library"
-                className="btn btn-primary"
-              >
-                Explore Discussions
-                <ArrowRight size={16} />
-              </a>
-
-              <button
-                type="button"
-                className="discussion-outline-button"
-                onClick={() =>
-                  alert(
-                    "The discussion creation form will be connected when authentication is added."
-                  )
-                }
-              >
-                Start a Discussion
-              </button>
-
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* INTRO */}
-        <section className="section discussions-intro-section">
-          <div className="container">
-
-            <div className="discussions-intro">
-
-              <div className="discussions-intro-icon">
-                <Users size={30} />
-              </div>
-
-              <div>
-                <span className="section-label">
-                  THE PILGRIM TRUTH COMMUNITY
-                </span>
-
-                <h2>
-                  Thoughtful questions can lead
-                  to deeper study.
-                </h2>
-
-                <p>
-                  Discussions are designed to encourage respectful
-                  questions, careful study, and meaningful
-                  conversations around Scripture.
-                </p>
               </div>
 
             </div>
 
-          </div>
-        </section>
-
-
-        {/* FEATURED */}
-        <section className="section discussions-featured-section">
-          <div className="container">
-
-            <div className="section-heading-row">
-              <div>
-                <span className="section-label">
-                  FEATURED DISCUSSIONS
-                </span>
-
-                <h2>
-                  Start with the conversation.
-                </h2>
-              </div>
-            </div>
-
-            <div className="featured-discussion-grid">
-
-              {featuredDiscussions.map((discussion) => (
-                <article
-                  className="featured-discussion-card"
-                  key={discussion.id}
-                >
-
-                  <span className="discussion-category">
-                    {discussion.category}
-                  </span>
-
-                  <h3>{discussion.title}</h3>
-
-                  <p>{discussion.excerpt}</p>
-
-                  <div className="discussion-card-footer">
-                    <span>
-                      {discussion.replies} replies
-                    </span>
-
-                    <span>
-                      {discussion.date}
-                    </span>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="discussion-read-link"
-                    onClick={() =>
-                      alert(
-                        "Discussion detail pages will be connected when the discussion system is built."
-                      )
-                    }
-                  >
-                    Join Discussion
-                    <ArrowRight size={15} />
-                  </button>
-
-                </article>
-              ))}
-
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* DISCUSSION LIBRARY */}
-        <section
-          className="section discussions-library-section"
-          id="discussion-library"
-        >
-          <div className="container">
-
-            <div className="section-heading-row">
-
-              <div>
-                <span className="section-label">
-                  DISCUSSION LIBRARY
-                </span>
-
-                <h2>
-                  Explore the conversations.
-                </h2>
-              </div>
-
-              <span className="discussions-count">
-                {filteredDiscussions.length}{" "}
-                {filteredDiscussions.length === 1
-                  ? "discussion"
-                  : "discussions"}
-              </span>
-
-            </div>
-
-
-            {/* FILTERS */}
+            {/* CATEGORIES */}
             <div className="discussion-filters">
-
               {categories.map((category) => (
                 <button
-                  type="button"
                   key={category}
+                  type="button"
                   className={
                     activeCategory === category
-                      ? "discussion-filter active"
-                      : "discussion-filter"
+                      ? "active"
+                      : ""
                   }
                   onClick={() =>
                     setActiveCategory(category)
@@ -293,217 +223,266 @@ function Discussions() {
                   {category}
                 </button>
               ))}
-
             </div>
 
-
-            {/* GRID */}
-            {filteredDiscussions.length > 0 ? (
-              <div className="discussion-grid">
-
-                {filteredDiscussions.map((discussion) => (
-                  <article
-                    className="discussion-card"
-                    key={discussion.id}
-                  >
-
-                    <div className="discussion-card-top">
-                      <span className="discussion-card-category">
-                        {discussion.category}
-                      </span>
-
-                      <MessageCircle size={18} />
-                    </div>
-
-                    <h3>{discussion.title}</h3>
-
-                    <p>{discussion.excerpt}</p>
-
-                    <div className="discussion-meta">
-                      <span>
-                        {discussion.author}
-                      </span>
-
-                      <span>
-                        {discussion.replies} replies
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      className="discussion-card-link"
-                      onClick={() =>
-                        alert(
-                          "Discussion detail pages will be connected later."
-                        )
-                      }
-                    >
-                      View Discussion
-                      <ArrowRight size={15} />
-                    </button>
-
-                  </article>
-                ))}
-
-              </div>
-            ) : (
-              <div className="discussions-empty-state">
-
-                <h3>
-                  No discussions found.
-                </h3>
-
-                <p>
-                  Try another search term or choose
-                  another category.
-                </p>
-
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={clearFilters}
-                >
-                  View All Discussions
-                </button>
-
+            {/* ERROR */}
+            {error && (
+              <div className="discussions-message">
+                <strong>Unable to load discussions.</strong>
+                <p>{error}</p>
               </div>
             )}
 
-          </div>
-        </section>
+            {/* LOADING */}
+            {loading && !error && (
+              <div className="discussions-message">
+                <p>Loading discussions...</p>
+              </div>
+            )}
 
+            {/* EMPTY */}
+            {!loading &&
+              !error &&
+              filteredDiscussions.length === 0 && (
+                <div className="discussions-message">
+                  <MessageCircle size={30} />
 
-        {/* POPULAR TOPICS */}
-        <section className="section discussion-topics-section">
-          <div className="container">
+                  <h3>
+                    No discussions found
+                  </h3>
 
-            <span className="section-label">
-              POPULAR TOPICS
-            </span>
+                  <p>
+                    Try another search or choose a
+                    different category.
+                  </p>
+                </div>
+              )}
 
-            <h2>
-              What would you like to explore?
-            </h2>
+            {/* FEATURED */}
+            {!loading &&
+              !error &&
+              featuredDiscussions.length > 0 && (
+                <div className="discussion-section">
 
-            <div className="discussion-topic-grid">
+                  <div className="discussion-section-heading">
+                    <span className="section-label">
+                      FEATURED
+                    </span>
 
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveCategory("Bible Study")
-                }
-              >
-                <BookOpen size={22} />
-                <span>Bible Study</span>
-                <ArrowRight size={16} />
-              </button>
+                    <h3>
+                      Conversations worth
+                      <em> exploring.</em>
+                    </h3>
+                  </div>
 
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveCategory("Prophecy")
-                }
-              >
-                <Flame size={22} />
-                <span>Prophecy</span>
-                <ArrowRight size={16} />
-              </button>
+                  <div className="featured-discussions">
+                    {featuredDiscussions.map(
+                      (discussion) => {
+                        const Icon = getCategoryIcon(
+                          discussion.category
+                        );
 
-              <button
-                type="button"
-                onClick={() =>
-                  setActiveCategory("Christian Living")
-                }
-              >
-                <Heart size={22} />
-                <span>Christian Living</span>
-                <ArrowRight size={16} />
-              </button>
+                        return (
+                          <article
+                            key={discussion.id}
+                            className="featured-discussion-card"
+                          >
+                            <div className="discussion-card-top">
 
-            </div>
+                              <span className="discussion-category">
+                                <Icon size={15} />
+                                {discussion.category}
+                              </span>
 
-          </div>
-        </section>
+                              <span className="discussion-featured">
+                                Featured
+                              </span>
 
+                            </div>
 
-        {/* COMMUNITY GUIDELINES */}
-        <section className="section discussions-guidelines-section">
-          <div className="container">
+                            <h3>
+                              {discussion.title}
+                            </h3>
 
-            <div className="discussion-guidelines">
+                            <p>
+                              {discussion.content}
+                            </p>
 
-              <span className="section-label">
-                COMMUNITY GUIDELINES
-              </span>
+                            <div className="discussion-card-bottom">
 
-              <h2>
-                Search together with respect.
-              </h2>
+                              <div className="discussion-meta">
+                                <span>
+                                  {discussion.author}
+                                </span>
 
-              <div className="guideline-grid">
+                                <span>
+                                  {formatDate(
+                                    discussion.created_at
+                                  )}
+                                </span>
+
+                                <span>
+                                  {discussion.replies}{" "}
+                                  {discussion.replies === 1
+                                    ? "reply"
+                                    : "replies"}
+                                </span>
+                              </div>
+
+                              <Link
+                                to={`/discussions/${discussion.id}`}
+                                className="discussion-read-link"
+                              >
+                                View Discussion
+                                <ChevronRight size={17} />
+                              </Link>
+
+                            </div>
+                          </article>
+                        );
+                      }
+                    )}
+                  </div>
+
+                </div>
+              )}
+
+            {/* ALL DISCUSSIONS */}
+            {!loading &&
+              !error &&
+              regularDiscussions.length > 0 && (
+                <div className="discussion-section">
+
+                  <div className="discussion-section-heading">
+                    <span className="section-label">
+                      DISCUSSION LIBRARY
+                    </span>
+
+                    <h3>
+                      Recent
+                      <em> conversations.</em>
+                    </h3>
+                  </div>
+
+                  <div className="discussion-list">
+
+                    {regularDiscussions.map(
+                      (discussion) => {
+                        const Icon = getCategoryIcon(
+                          discussion.category
+                        );
+
+                        return (
+                          <article
+                            key={discussion.id}
+                            className="discussion-list-card"
+                          >
+
+                            <div className="discussion-list-icon">
+                              <Icon size={20} />
+                            </div>
+
+                            <div className="discussion-list-content">
+
+                              <div className="discussion-list-category">
+                                {discussion.category}
+                              </div>
+
+                              <h3>
+                                {discussion.title}
+                              </h3>
+
+                              <p>
+                                {discussion.content}
+                              </p>
+
+                              <div className="discussion-list-meta">
+                                <span>
+                                  {discussion.author}
+                                </span>
+
+                                <span>
+                                  {formatDate(
+                                    discussion.created_at
+                                  )}
+                                </span>
+
+                                <span>
+                                  {discussion.replies}{" "}
+                                  {discussion.replies === 1
+                                    ? "reply"
+                                    : "replies"}
+                                </span>
+                              </div>
+
+                            </div>
+
+                            <Link
+                              to={`/discussions/${discussion.id}`}
+                              className="discussion-list-arrow"
+                              aria-label={`View ${discussion.title}`}
+                            >
+                              <ChevronRight size={20} />
+                            </Link>
+
+                          </article>
+                        );
+                      }
+                    )}
+
+                  </div>
+
+                </div>
+              )}
+
+            {/* COMMUNITY GUIDELINES */}
+            <section className="discussion-guidelines">
+
+              <div>
+                <span className="section-label">
+                  OUR COMMUNITY
+                </span>
+
+                <h2>
+                  Seek truth with
+                  <em> humility.</em>
+                </h2>
+
+                <p>
+                  Pilgrim Truth is a place for thoughtful
+                  questions, careful study, and respectful
+                  conversation.
+                </p>
+              </div>
+
+              <div className="guidelines-list">
 
                 <div>
-                  <strong>Study carefully.</strong>
-                  <p>
-                    Support important claims with Scripture
-                    and reliable sources.
-                  </p>
+                  <strong>01</strong>
+                  <span>
+                    Keep conversations respectful.
+                  </span>
                 </div>
 
                 <div>
-                  <strong>Ask honestly.</strong>
-                  <p>
-                    Questions are welcome. Approach difficult
-                    topics with humility.
-                  </p>
+                  <strong>02</strong>
+                  <span>
+                    Support ideas with Scripture and
+                    thoughtful reasoning.
+                  </span>
                 </div>
 
                 <div>
-                  <strong>Respect others.</strong>
-                  <p>
-                    Disagree with ideas without attacking
-                    the people discussing them.
-                  </p>
+                  <strong>03</strong>
+                  <span>
+                    Ask honest questions and allow room
+                    for sincere disagreement.
+                  </span>
                 </div>
 
               </div>
 
-            </div>
-
-          </div>
-        </section>
-
-
-        {/* CTA */}
-        <section className="section discussions-cta">
-          <div className="container">
-
-            <span className="section-label">
-              JOIN THE CONVERSATION
-            </span>
-
-            <h2>
-              Ask thoughtfully.
-              <em>Study together.</em>
-            </h2>
-
-            <p>
-              Bring your questions, insights, and curiosity
-              into a community centered on thoughtful study.
-            </p>
-
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() =>
-                alert(
-                  "Account creation and discussion posting will be connected in the next stage."
-                )
-              }
-            >
-              Start a Discussion
-              <ArrowRight size={16} />
-            </button>
+            </section>
 
           </div>
         </section>
@@ -511,7 +490,7 @@ function Discussions() {
       </main>
 
       <Footer />
-    </div>
+    </>
   );
 }
 

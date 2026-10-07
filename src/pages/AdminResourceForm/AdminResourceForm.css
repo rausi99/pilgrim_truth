@@ -1,0 +1,777 @@
+/* =========================================================
+   PILGRIM TRUTH — ADMIN RESOURCE FORM
+   Clean navy / blue / white
+   ========================================================= */
+
+.admin-resource-form-page {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 8px 0 45px;
+  color: #263746;
+}
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.admin-resource-form-page .admin-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.admin-resource-form-page .admin-page-eyebrow {
+  margin-bottom: 5px;
+  color: #145da0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.admin-resource-form-page .admin-page-header h1 {
+  margin: 0;
+  color: #071827;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 29px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.admin-resource-form-page .admin-page-header p {
+  max-width: 650px;
+  margin: 7px 0 0;
+  color: #687987;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.admin-resource-form-page .admin-primary-button,
+.admin-resource-form-page .admin-secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 9px 14px;
+  border-radius: 7px;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.admin-resource-form-page .admin-primary-button {
+  border: 1px solid #145da0;
+  background: #145da0;
+  color: #ffffff;
+}
+
+.admin-resource-form-page .admin-primary-button:hover:not(:disabled) {
+  border-color: #0b4f8a;
+  background: #0b4f8a;
+  box-shadow: 0 4px 12px rgba(20, 93, 160, 0.18);
+}
+
+.admin-resource-form-page .admin-secondary-button {
+  border: 1px solid #d1dde6;
+  background: #ffffff;
+  color: #526575;
+}
+
+.admin-resource-form-page .admin-secondary-button:hover {
+  border-color: #b8c8d4;
+  background: #f5f8fb;
+  color: #145da0;
+}
+
+.admin-resource-form-page button:disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.admin-resource-form-page .admin-form-alert {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.admin-resource-form-page .admin-form-error {
+  border: 1px solid #eccaca;
+  background: #fff6f6;
+  color: #9d3434;
+}
+
+.admin-resource-form-page .admin-form-success {
+  border: 1px solid #c9dfd0;
+  background: #f2faf4;
+  color: #287043;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.admin-resource-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* =========================================================
+   FORM CARDS
+   ========================================================= */
+
+.admin-resource-form-page .admin-form-card {
+  padding: 22px;
+  border: 1px solid #dce6ee;
+  border-radius: 11px;
+  background: #ffffff;
+  box-shadow: 0 3px 14px rgba(7, 24, 39, 0.045);
+}
+
+.admin-resource-form-page .admin-form-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e6edf2;
+}
+
+.admin-resource-form-page .admin-form-card-header h2 {
+  margin: 0;
+  color: #203848;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.admin-resource-form-page .admin-form-card-header p {
+  margin: 5px 0 0;
+  color: #7a8996;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.admin-resource-form-page .admin-form-card-header > svg {
+  flex: 0 0 auto;
+  color: #145da0;
+}
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.admin-resource-form-page .admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.admin-resource-form-page .admin-form-field {
+  min-width: 0;
+}
+
+.admin-resource-form-page .admin-form-field-full {
+  grid-column: 1 / -1;
+}
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
+.admin-resource-form-page .admin-form-field > label {
+  display: block;
+  margin-bottom: 7px;
+  color: #344b5c;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.admin-resource-form-page .admin-form-field input,
+.admin-resource-form-page .admin-form-field select,
+.admin-resource-form-page .admin-form-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d1dde6;
+  border-radius: 7px;
+  outline: none;
+  background: #ffffff;
+  color: #263746;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-size: 12px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.admin-resource-form-page .admin-form-field input,
+.admin-resource-form-page .admin-form-field select {
+  min-height: 41px;
+  padding: 9px 11px;
+}
+
+.admin-resource-form-page .admin-form-field textarea {
+  min-height: 135px;
+  padding: 11px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.admin-resource-form-page .admin-form-field input::placeholder,
+.admin-resource-form-page .admin-form-field textarea::placeholder {
+  color: #9aa8b4;
+}
+
+.admin-resource-form-page .admin-form-field input:hover,
+.admin-resource-form-page .admin-form-field select:hover,
+.admin-resource-form-page .admin-form-field textarea:hover {
+  border-color: #b9c9d5;
+}
+
+.admin-resource-form-page .admin-form-field input:focus,
+.admin-resource-form-page .admin-form-field select:focus,
+.admin-resource-form-page .admin-form-field textarea:focus {
+  border-color: #145da0;
+  box-shadow: 0 0 0 3px rgba(20, 93, 160, 0.09);
+}
+
+.admin-resource-form-page .admin-form-field input[readonly] {
+  background: #f7f9fb;
+  color: #607381;
+  cursor: default;
+}
+
+/* =========================================================
+   FIELD HELP
+   ========================================================= */
+
+.admin-resource-form-page .admin-form-field small {
+  display: block;
+  margin-top: 6px;
+  color: #81909c;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   RESOURCE UPLOAD
+   ========================================================= */
+
+.admin-resource-upload {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 92px;
+  padding: 16px;
+  border: 1px dashed #bdcfdd;
+  border-radius: 9px;
+  background: #f8fbfd;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.admin-resource-upload:hover {
+  border-color: #145da0;
+  background: #f2f8fc;
+}
+
+.admin-resource-upload.has-file {
+  border-style: solid;
+  border-color: #b8d2e4;
+  background: #f2f8fc;
+}
+
+.admin-resource-upload-icon {
+  display: flex;
+  flex: 0 0 48px;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #d0e0eb;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #145da0;
+}
+
+.admin-resource-upload-content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-resource-upload-content strong {
+  overflow: hidden;
+  color: #294152;
+  font-size: 12px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-resource-upload-content span {
+  overflow: hidden;
+  color: #7a8996;
+  font-size: 10px;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+}
+
+.admin-resource-upload-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 7px 12px;
+  border: 1px solid #c7d7e2;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #145da0;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   SELECTED FILE
+   ========================================================= */
+
+.admin-resource-selected-file,
+.admin-resource-current-file {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 13px;
+  padding: 12px;
+  border: 1px solid #dce6ee;
+  border-radius: 8px;
+  background: #fbfcfd;
+}
+
+.admin-resource-selected-icon,
+.admin-resource-current-icon {
+  display: flex;
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 7px;
+}
+
+.admin-resource-selected-icon {
+  border: 1px solid #cbddea;
+  background: #eef6fb;
+  color: #145da0;
+}
+
+.admin-resource-current-icon {
+  border: 1px solid #c9dfd0;
+  background: #f1f9f3;
+  color: #287043;
+}
+
+.admin-resource-selected-info,
+.admin-resource-current-info {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.admin-resource-selected-info strong,
+.admin-resource-current-info strong {
+  overflow: hidden;
+  color: #334b5c;
+  font-size: 11px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-resource-selected-info span,
+.admin-resource-current-info span {
+  overflow: hidden;
+  color: #7c8b97;
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   ICON BUTTON
+   ========================================================= */
+
+.admin-resource-form-page .admin-icon-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #d5e0e8;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #667886;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.admin-resource-form-page .admin-icon-button:hover:not(:disabled) {
+  border-color: #ecc7c7;
+  background: #fff5f5;
+  color: #b33737;
+}
+
+/* =========================================================
+   FILE DETAILS
+   ========================================================= */
+
+.admin-resource-file-details {
+  margin-top: 17px;
+  padding-top: 17px;
+  border-top: 1px solid #e6edf2;
+}
+
+/* =========================================================
+   FEATURED RESOURCE
+   ========================================================= */
+
+.admin-resource-form-page .admin-feature-toggle {
+  margin-top: 1px;
+}
+
+.admin-resource-form-page .admin-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 58px;
+  margin: 0;
+  padding: 11px 13px;
+  border: 1px solid #d7e2e9;
+  border-radius: 8px;
+  background: #f9fbfc;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.admin-resource-form-page .admin-checkbox-label:hover {
+  border-color: #b9cedd;
+  background: #f4f8fb;
+}
+
+.admin-resource-form-page .admin-checkbox-label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.admin-resource-form-page .admin-checkbox-custom {
+  position: relative;
+  display: flex;
+  flex: 0 0 19px;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border: 1.5px solid #aebfcb;
+  border-radius: 5px;
+  background: #ffffff;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.admin-resource-form-page
+  .admin-checkbox-label
+  input:checked
+  + .admin-checkbox-custom {
+  border-color: #145da0;
+  background: #145da0;
+}
+
+.admin-resource-form-page
+  .admin-checkbox-label
+  input:checked
+  + .admin-checkbox-custom::after {
+  position: absolute;
+  width: 5px;
+  height: 9px;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  content: "";
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.admin-resource-form-page
+  .admin-checkbox-label
+  input:focus-visible
+  + .admin-checkbox-custom {
+  outline: 3px solid rgba(20, 93, 160, 0.15);
+  outline-offset: 2px;
+}
+
+.admin-resource-form-page .admin-checkbox-label > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.admin-resource-form-page .admin-checkbox-label strong {
+  color: #304859;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.admin-resource-form-page .admin-checkbox-label small {
+  margin: 0;
+  color: #7d8c98;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+
+.admin-resource-form-page .admin-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+  padding-top: 2px;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.admin-resource-form-page .admin-empty-state {
+  display: flex;
+  min-height: 300px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  border: 1px solid #dce6ee;
+  border-radius: 11px;
+  background: #ffffff;
+  text-align: center;
+  color: #145da0;
+}
+
+.admin-resource-form-page .admin-empty-state h3 {
+  margin: 13px 0 5px;
+  color: #263d4d;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.admin-resource-form-page .admin-empty-state p {
+  margin: 0;
+  color: #7a8996;
+  font-size: 11px;
+}
+
+/* =========================================================
+   FOCUS ACCESSIBILITY
+   ========================================================= */
+
+.admin-resource-form-page
+  .admin-primary-button:focus-visible,
+.admin-resource-form-page
+  .admin-secondary-button:focus-visible,
+.admin-resource-form-page
+  .admin-icon-button:focus-visible,
+.admin-resource-form-page
+  .admin-resource-upload:focus-visible {
+  outline: 3px solid rgba(20, 93, 160, 0.16);
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .admin-resource-form-page .admin-page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-resource-form-page
+    .admin-page-header
+    .admin-secondary-button {
+    width: auto;
+  }
+
+  .admin-resource-form-page .admin-form-card {
+    padding: 19px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .admin-resource-form-page {
+    padding-bottom: 30px;
+  }
+
+  .admin-resource-form-page .admin-page-header h1 {
+    font-size: 25px;
+  }
+
+  .admin-resource-form-page .admin-page-header p {
+    font-size: 12px;
+  }
+
+  .admin-resource-form-page
+    .admin-page-header
+    .admin-secondary-button {
+    width: 100%;
+  }
+
+  .admin-resource-form-page .admin-form-card {
+    padding: 17px;
+    border-radius: 9px;
+  }
+
+  .admin-resource-form-page .admin-form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .admin-resource-form-page .admin-form-field-full {
+    grid-column: auto;
+  }
+
+  .admin-resource-upload {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .admin-resource-upload-content {
+    flex: 1 1 calc(100% - 65px);
+  }
+
+  .admin-resource-upload-button {
+    width: 100%;
+    margin-left: 62px;
+  }
+
+  .admin-resource-current-file,
+  .admin-resource-selected-file {
+    align-items: flex-start;
+  }
+
+  .admin-resource-current-file
+    .admin-secondary-button {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 7px 10px;
+  }
+
+  .admin-resource-form-page .admin-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .admin-resource-form-page .admin-form-actions > * {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+  .admin-resource-form-page .admin-page-header h1 {
+    font-size: 23px;
+  }
+
+  .admin-resource-form-page .admin-form-card {
+    padding: 15px;
+  }
+
+  .admin-resource-form-page .admin-form-card-header {
+    gap: 12px;
+  }
+
+  .admin-resource-form-page .admin-form-card-header h2 {
+    font-size: 14px;
+  }
+
+  .admin-resource-upload {
+    padding: 13px;
+  }
+
+  .admin-resource-upload-icon {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+  }
+
+  .admin-resource-selected-info span,
+  .admin-resource-current-info span {
+    white-space: normal;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-resource-form-page .admin-primary-button,
+  .admin-resource-form-page .admin-secondary-button,
+  .admin-resource-form-page .admin-form-field input,
+  .admin-resource-form-page .admin-form-field select,
+  .admin-resource-form-page .admin-form-field textarea,
+  .admin-resource-upload,
+  .admin-resource-form-page .admin-icon-button,
+  .admin-resource-form-page .admin-checkbox-label,
+  .admin-resource-form-page .admin-checkbox-custom {
+    transition: none;
+  }
+}

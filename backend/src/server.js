@@ -72,14 +72,15 @@ app.get("/api/health", async (req, res) => {
       message: "API and database are connected",
       databaseTime: result.rows[0].current_time,
     });
-  } catch (error) {
-    console.error(error);
+} catch (error) {
+  console.error("DATABASE ERROR:", error);
 
-    res.status(500).json({
-      success: false,
-      message: "Database connection failed",
-    });
-  }
+  res.status(500).json({
+    success: false,
+    message: "Database connection failed",
+    error: error.message,
+  });
+}
 });
 
 

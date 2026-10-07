@@ -371,10 +371,10 @@ function App() {
               element={<AdminHealthForm />}
             />
 
-            <Route
-              path="health/:id/edit"
-              element={<AdminHealthForm />}
-            />
+           <Route
+  path="health/edit/:id"
+  element={<AdminHealthForm />}
+/>
 
 
             {/* =================================================

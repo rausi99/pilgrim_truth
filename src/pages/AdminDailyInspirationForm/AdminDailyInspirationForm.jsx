@@ -33,17 +33,19 @@ const getToday = () => {
 const toDateTimeLocal = (value) => {
   if (!value) return "";
 
-  const date = new Date(value);
+  const date = new Date(`${value}Z`);
 
   if (Number.isNaN(date.getTime())) {
     return "";
   }
 
-  const offset = date.getTimezoneOffset() * 60000;
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
 
-  return new Date(date.getTime() - offset)
-    .toISOString()
-    .slice(0, 16);
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
 const resolveImageUrl = (image) => {
@@ -287,8 +289,9 @@ function AdminDailyInspirationForm() {
           form.featured_image.trim(),
         status:
           form.status,
-        published_at:
-          form.published_at || null,
+        published_at: form.published_at
+          ? new Date(form.published_at).toISOString()
+          : null,
       };
 
       if (isEditMode) {

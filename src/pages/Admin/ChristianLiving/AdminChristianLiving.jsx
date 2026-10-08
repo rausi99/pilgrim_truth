@@ -239,9 +239,7 @@ function AdminChristianLiving() {
                         <button
                           title="Edit"
                           onClick={() =>
-                            navigate(
-                              `/admin/christian-living/edit/${study.id}`
-                            )
+                            navigate(`/admin/christian-living/${study.id}/edit`)
                           }
                         >
                           <Edit3 size={17} />

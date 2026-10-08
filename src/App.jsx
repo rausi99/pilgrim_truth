@@ -121,7 +121,7 @@ import AdminSettings from "./pages/AdminSettings/AdminSettings";
 function App() {
   return (
     <BrowserRouter>
-    <ScrollToTop />
+      <ScrollToTop />
       <Routes>
 
         {/* =====================================================
@@ -371,10 +371,10 @@ function App() {
               element={<AdminHealthForm />}
             />
 
-           <Route
-  path="health/edit/:id"
-  element={<AdminHealthForm />}
-/>
+            <Route
+              path="health/edit/:id"
+              element={<AdminHealthForm />}
+            />
 
 
             {/* =================================================

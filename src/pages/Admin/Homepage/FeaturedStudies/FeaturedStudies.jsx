@@ -32,6 +32,7 @@ function FeaturedStudies() {
 const getToken = () => {
   return (
     user?.token ||
+    localStorage.getItem("pilgrim_truth_token") ||
     localStorage.getItem("token") ||
     localStorage.getItem("authToken") ||
     localStorage.getItem("accessToken")

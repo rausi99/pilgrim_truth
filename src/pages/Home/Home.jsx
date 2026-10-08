@@ -393,13 +393,14 @@ export default function Home() {
           const data =
             await articlesResult.value.json();
 
-          setArticles(
-            Array.isArray(data)
-              ? data
-              : data?.articles || data?.items || []
-          );
+          if (mounted) {
+            setArticles(
+              Array.isArray(data)
+                ? data
+                : data?.articles || data?.items || []
+            );
+          }
         }
-      }
 
         /*
         |--------------------------------------------------------------------------
@@ -407,959 +408,959 @@ export default function Home() {
         |--------------------------------------------------------------------------
         */
         if (
-        inspirationResult.status === "fulfilled" &&
-        inspirationResult.value.ok
-      ) {
-        const data =
-          await inspirationResult.value.json();
+          inspirationResult.status === "fulfilled" &&
+          inspirationResult.value.ok
+        ) {
+          const data =
+            await inspirationResult.value.json();
 
+          if (mounted) {
+            setDailyInspiration(data);
+          }
+        }
+      } catch (error) {
+        console.error(
+          "Unable to load home content:",
+          error
+        );
+      } finally {
         if (mounted) {
-          setDailyInspiration(data);
+          setLoadingContent(false);
         }
       }
-    } catch (error) {
-      console.error(
-        "Unable to load home content:",
-        error
-      );
-    } finally {
-      if (mounted) {
-        setLoadingContent(false);
-      }
     }
-  }
 
     loadHomeContent();
 
-  return () => {
-    mounted = false;
-  };
-}, []);
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
-/*
-|--------------------------------------------------------------------------
-| SCRIPTURE
-|--------------------------------------------------------------------------
-*/
-const scriptureText =
-  dailyInspiration?.scripture_text ||
-  DEFAULT_SCRIPTURE;
+  /*
+  |--------------------------------------------------------------------------
+  | SCRIPTURE
+  |--------------------------------------------------------------------------
+  */
+  const scriptureText =
+    dailyInspiration?.scripture_text ||
+    DEFAULT_SCRIPTURE;
 
-const scriptureReference =
-  dailyInspiration?.scripture_reference ||
-  DEFAULT_SCRIPTURE_REFERENCE;
+  const scriptureReference =
+    dailyInspiration?.scripture_reference ||
+    DEFAULT_SCRIPTURE_REFERENCE;
 
-/*
-|--------------------------------------------------------------------------
-| LIMITS
-|--------------------------------------------------------------------------
-*/
-const featuredStudiesLimit = Math.min(
-  3,
-  Math.max(
-    1,
-    Number(
-      homepageSettings.featured_studies_limit
-    ) || 3
-  )
-);
-
-const displayedFeaturedStudies =
-  featuredStudies.slice(
-    0,
-    featuredStudiesLimit
+  /*
+  |--------------------------------------------------------------------------
+  | LIMITS
+  |--------------------------------------------------------------------------
+  */
+  const featuredStudiesLimit = Math.min(
+    3,
+    Math.max(
+      1,
+      Number(
+        homepageSettings.featured_studies_limit
+      ) || 3
+    )
   );
 
-const articlesLimit = Math.max(
-  1,
-  Number(homepageSettings.articles_limit) || 3
-);
+  const displayedFeaturedStudies =
+    featuredStudies.slice(
+      0,
+      featuredStudiesLimit
+    );
 
-const latestArticles = articles.slice(
-  0,
-  articlesLimit
-);
+  const articlesLimit = Math.max(
+    1,
+    Number(homepageSettings.articles_limit) || 3
+  );
 
-/*
-|--------------------------------------------------------------------------
-| VISIBILITY
-|--------------------------------------------------------------------------
-*/
-const showHero =
-  homepageSettings.hero_enabled !== false;
+  const latestArticles = articles.slice(
+    0,
+    articlesLimit
+  );
 
-const showDailyInspiration =
-  homepageSettings.daily_inspiration_enabled !==
-  false;
+  /*
+  |--------------------------------------------------------------------------
+  | VISIBILITY
+  |--------------------------------------------------------------------------
+  */
+  const showHero =
+    homepageSettings.hero_enabled !== false;
 
-const showFeaturedStudies =
-  homepageSettings.featured_studies_enabled !==
-  false;
+  const showDailyInspiration =
+    homepageSettings.daily_inspiration_enabled !==
+    false;
 
-const showProphecy =
-  homepageSettings.prophecy_enabled !== false;
+  const showFeaturedStudies =
+    homepageSettings.featured_studies_enabled !==
+    false;
 
-const showTopics =
-  homepageSettings.topics_enabled !== false;
+  const showProphecy =
+    homepageSettings.prophecy_enabled !== false;
 
-const showArticles =
-  homepageSettings.articles_enabled !== false;
+  const showTopics =
+    homepageSettings.topics_enabled !== false;
 
-const showFeaturedVideo =
-  homepageSettings.featured_video_enabled !==
-  false;
+  const showArticles =
+    homepageSettings.articles_enabled !== false;
 
-const showNewsletter =
-  homepageSettings.newsletter_enabled !== false;
+  const showFeaturedVideo =
+    homepageSettings.featured_video_enabled !==
+    false;
 
-const showFinalCta =
-  homepageSettings.final_cta_enabled !== false;
+  const showNewsletter =
+    homepageSettings.newsletter_enabled !== false;
 
-/*
-|--------------------------------------------------------------------------
-| CLOSE EXPLORE MENU WHEN ROUTING
-|--------------------------------------------------------------------------
-*/
-const handleExploreClick = () => {
-  setExploreOpen(false);
-};
+  const showFinalCta =
+    homepageSettings.final_cta_enabled !== false;
 
-return (
-  <div
-    id="top"
-    className="home-page"
-    style={{
-      "--home-hero-image": `url("${HERO_IMAGE}")`,
-    }}
-  >
-    <Navbar />
+  /*
+  |--------------------------------------------------------------------------
+  | CLOSE EXPLORE MENU WHEN ROUTING
+  |--------------------------------------------------------------------------
+  */
+  const handleExploreClick = () => {
+    setExploreOpen(false);
+  };
 
-    <main>
-      {/* =====================================================
+  return (
+    <div
+      id="top"
+      className="home-page"
+      style={{
+        "--home-hero-image": `url("${HERO_IMAGE}")`,
+      }}
+    >
+      <Navbar />
+
+      <main>
+        {/* =====================================================
             HERO
         ====================================================== */}
-      {showHero && (
-        <section className="hero">
-          <div
-            className="hero-background"
-            aria-hidden="true"
-          />
+        {showHero && (
+          <section className="hero">
+            <div
+              className="hero-background"
+              aria-hidden="true"
+            />
 
-          <div className="container hero-container">
-            <div className="hero-content">
-              <span className="eyebrow">
-                {siteSettings?.site_name ||
-                  "PILGRIM TRUTH"}
-              </span>
-
-              <h1>
-                {siteSettings?.hero_title ||
-                  "Seeking Truth."}
-
-                <em>
-                  {siteSettings?.hero_subtitle ||
-                    "Studying Scripture."}
-                </em>
-              </h1>
-
-              <div className="hero-introduction">
-                <span className="hero-introduction-label">
-                  Welcome to Pilgrim Truth Ministry
+            <div className="container hero-container">
+              <div className="hero-content">
+                <span className="eyebrow">
+                  {siteSettings?.site_name ||
+                    "PILGRIM TRUTH"}
                 </span>
 
-                <p>
-                  This is a Christ-centred ministry
-                  committed to exploring the Bible,
-                  understanding God's Word and sharing
-                  timeless truths for spiritual
-                  nourishment. Through Scripture,
-                  prophecy, faith, and practical
-                  Christian living, we seek to inspire
-                  people to know Christ more deeply and
-                  walk faithfully in His light.
-                </p>
-              </div>
+                <h1>
+                  {siteSettings?.hero_title ||
+                    "Seeking Truth."}
 
-              <div className="hero-actions">
-                {/* =================================================
+                  <em>
+                    {siteSettings?.hero_subtitle ||
+                      "Studying Scripture."}
+                  </em>
+                </h1>
+
+                <div className="hero-introduction">
+                  <span className="hero-introduction-label">
+                    Welcome to Pilgrim Truth Ministry
+                  </span>
+
+                  <p>
+                    This is a Christ-centred ministry
+                    committed to exploring the Bible,
+                    understanding God's Word and sharing
+                    timeless truths for spiritual
+                    nourishment. Through Scripture,
+                    prophecy, faith, and practical
+                    Christian living, we seek to inspire
+                    people to know Christ more deeply and
+                    walk faithfully in His light.
+                  </p>
+                </div>
+
+                <div className="hero-actions">
+                  {/* =================================================
                       EXPLORE SCRIPTURE MENU
                   ================================================== */}
-                <div className="explore-wrapper">
-                  <button
-                    type="button"
-                    className="btn btn-primary explore-button"
-                    onClick={() =>
-                      setExploreOpen(
-                        (previous) => !previous
-                      )
-                    }
-                    aria-expanded={exploreOpen}
-                    aria-haspopup="menu"
-                  >
-                    Explore Scripture
-
-                    {exploreOpen ? (
-                      <X size={17} />
-                    ) : (
-                      <ArrowRight size={17} />
-                    )}
-                  </button>
-
-                  {exploreOpen && (
-                    <div
-                      className="explore-menu"
-                      role="menu"
+                  <div className="explore-wrapper">
+                    <button
+                      type="button"
+                      className="btn btn-primary explore-button"
+                      onClick={() =>
+                        setExploreOpen(
+                          (previous) => !previous
+                        )
+                      }
+                      aria-expanded={exploreOpen}
+                      aria-haspopup="menu"
                     >
-                      <div className="explore-menu-header">
-                        <span>
-                          EXPLORE PILGRIM TRUTH
-                        </span>
+                      Explore Scripture
 
-                        <p>
-                          Choose an area to begin
-                          exploring.
-                        </p>
-                      </div>
+                      {exploreOpen ? (
+                        <X size={17} />
+                      ) : (
+                        <ArrowRight size={17} />
+                      )}
+                    </button>
 
-                      <div className="explore-menu-grid">
-                        {EXPLORE_ITEMS.map(
-                          (item) => {
-                            const Icon =
-                              item.icon;
+                    {exploreOpen && (
+                      <div
+                        className="explore-menu"
+                        role="menu"
+                      >
+                        <div className="explore-menu-header">
+                          <span>
+                            EXPLORE PILGRIM TRUTH
+                          </span>
 
-                            return (
-                              <Link
-                                key={item.title}
-                                to={item.path}
-                                className="explore-menu-item"
-                                role="menuitem"
-                                onClick={
-                                  handleExploreClick
-                                }
-                              >
-                                <span className="explore-menu-icon">
-                                  <Icon
-                                    size={19}
-                                    strokeWidth={1.7}
+                          <p>
+                            Choose an area to begin
+                            exploring.
+                          </p>
+                        </div>
+
+                        <div className="explore-menu-grid">
+                          {EXPLORE_ITEMS.map(
+                            (item) => {
+                              const Icon =
+                                item.icon;
+
+                              return (
+                                <Link
+                                  key={item.title}
+                                  to={item.path}
+                                  className="explore-menu-item"
+                                  role="menuitem"
+                                  onClick={
+                                    handleExploreClick
+                                  }
+                                >
+                                  <span className="explore-menu-icon">
+                                    <Icon
+                                      size={19}
+                                      strokeWidth={1.7}
+                                    />
+                                  </span>
+
+                                  <span className="explore-menu-content">
+                                    <strong>
+                                      {item.title}
+                                    </strong>
+
+                                    <small>
+                                      {
+                                        item.description
+                                      }
+                                    </small>
+                                  </span>
+
+                                  <ArrowRight
+                                    size={15}
+                                    className="explore-menu-arrow"
                                   />
-                                </span>
-
-                                <span className="explore-menu-content">
-                                  <strong>
-                                    {item.title}
-                                  </strong>
-
-                                  <small>
-                                    {
-                                      item.description
-                                    }
-                                  </small>
-                                </span>
-
-                                <ArrowRight
-                                  size={15}
-                                  className="explore-menu-arrow"
-                                />
-                              </Link>
-                            );
-                          }
-                        )}
+                                </Link>
+                              );
+                            }
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
+
+                  <Link
+                    to="/videos"
+                    className="btn btn-secondary"
+                  >
+                    <Play size={16} />
+                    Watch &amp; Learn
+                  </Link>
+                </div>
+              </div>
+
+              {/* DAILY INSPIRATION */}
+              {showDailyInspiration && (
+                <div className="hero-inspiration">
+                  <div className="hero-inspiration-heading">
+                    <span className="hero-inspiration-line" />
+
+                    <span>
+                      Daily Inspiration
+                    </span>
+                  </div>
+
+                  <Quote
+                    className="hero-inspiration-quote-icon"
+                    size={21}
+                    strokeWidth={1.5}
+                  />
+
+                  <blockquote>
+                    “{scriptureText}”
+                  </blockquote>
+
+                  <span className="hero-inspiration-reference">
+                    {scriptureReference}
+                  </span>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            PURPOSE
+        ====================================================== */}
+        <section
+          className="section intro"
+          id="purpose"
+        >
+          <div className="container intro-grid">
+            <div className="intro-heading">
+              <span className="section-label">
+                OUR PURPOSE
+              </span>
+
+              <h2>
+                Seeking truth with
+                <span> Scripture at the center.</span>
+              </h2>
+            </div>
+
+            <div className="intro-content">
+              <p>
+                Pilgrim Truth exists to encourage
+                thoughtful Bible study and a deeper
+                understanding of God's Word.
+              </p>
+
+              <p>
+                Through Scripture, history, prophecy,
+                and practical Christian living, we seek
+                to help people discover truth and apply
+                it to everyday life.
+              </p>
+
+              <Link
+                to="/bible-studies"
+                className="text-link"
+              >
+                Explore our studies
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================
+            FEATURED STUDIES
+        ====================================================== */}
+        {showFeaturedStudies && (
+          <section
+            className="section featured-studies"
+            id="studies"
+          >
+            <div className="container">
+              <div className="section-heading">
+                <div>
+                  <span className="section-label">
+                    FEATURED STUDIES
+                  </span>
+
+                  <h2>
+                    Explore Scripture deeply.
+                  </h2>
+
+                  <p>
+                    Start with a study and continue
+                    discovering the biblical message.
+                  </p>
                 </div>
 
                 <Link
-                  to="/videos"
-                  className="btn btn-secondary"
+                  to="/bible-studies"
+                  className="section-heading-link"
                 >
-                  <Play size={16} />
-                  Watch &amp; Learn
+                  View all studies
+                  <ArrowRight size={16} />
                 </Link>
               </div>
-            </div>
 
-            {/* DAILY INSPIRATION */}
-            {showDailyInspiration && (
-              <div className="hero-inspiration">
-                <div className="hero-inspiration-heading">
-                  <span className="hero-inspiration-line" />
+              {loadingContent ? (
+                <div className="home-state">
+                  Loading studies...
+                </div>
+              ) : displayedFeaturedStudies.length ===
+                0 ? (
+                <div className="empty-content">
+                  <BookOpen size={24} />
+
+                  <p>
+                    Featured Bible Studies will appear
+                    here soon.
+                  </p>
+                </div>
+              ) : (
+                <div className="study-grid">
+                  {displayedFeaturedStudies.map(
+                    (study, index) => {
+                      const image = getImageUrl(
+                        study.featured_image ||
+                        study.image
+                      );
+
+                      const studyId =
+                        study.bible_study_id ||
+                        study.id;
+
+                      return (
+                        <article
+                          className="study-card"
+                          key={studyId}
+                        >
+                          {image ? (
+                            <div className="study-card-image-wrap">
+                              <img
+                                src={image}
+                                alt={
+                                  study.title ||
+                                  "Bible Study"
+                                }
+                                className="study-card-image"
+                              />
+
+                              <span className="study-card-number">
+                                {String(
+                                  index + 1
+                                ).padStart(2, "0")}
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="study-card-visual">
+                              <span className="study-card-number">
+                                {String(
+                                  index + 1
+                                ).padStart(2, "0")}
+                              </span>
+
+                              <BookOpen
+                                size={42}
+                                strokeWidth={1.35}
+                              />
+
+                              <span className="study-card-visual-label">
+                                Bible Study
+                              </span>
+                            </div>
+                          )}
+
+                          <div className="study-card-content">
+                            <span className="card-label">
+                              {study.category ||
+                                "Bible Study"}
+                            </span>
+
+                            <h3>
+                              {study.title ||
+                                "Bible Study"}
+                            </h3>
+
+                            <p>
+                              {study.description ||
+                                study.excerpt ||
+                                "Explore this Bible Study and discover more from Scripture."}
+                            </p>
+
+                            <Link
+                              to={`/bible-studies/${study.slug || studyId
+                                }`}
+                              className="study-card-link"
+                            >
+                              Read study
+                              <ArrowRight size={15} />
+                            </Link>
+                          </div>
+                        </article>
+                      );
+                    }
+                  )}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            PROPHECY
+        ====================================================== */}
+        {showProphecy && (
+          <section
+            className="section prophecy-feature"
+            id="prophecy"
+          >
+            <div className="container prophecy-grid">
+              <div className="prophecy-content">
+                <span className="section-label">
+                  BIBLICAL PROPHECY
+                </span>
+
+                <h2>
+                  Understanding prophecy through
+                  <em> Scripture.</em>
+                </h2>
+
+                <p>
+                  Explore biblical prophecy with
+                  attention to Scripture, historical
+                  context, and the central message of
+                  hope found throughout God's Word.
+                </p>
+
+                <div className="prophecy-actions">
+                  <Link
+                    to="/prophecy"
+                    className="btn btn-primary"
+                  >
+                    Explore Prophecy
+                    <ArrowRight size={17} />
+                  </Link>
+
+                  <Link
+                    to="/bible-studies"
+                    className="btn btn-outline-light"
+                  >
+                    Bible Studies
+                  </Link>
+                </div>
+              </div>
+
+              <div className="prophecy-scripture">
+                <div className="prophecy-scripture-top">
+                  <span className="prophecy-scripture-icon">
+                    <Quote size={19} />
+                  </span>
 
                   <span>
-                    Daily Inspiration
+                    THE WORD OF GOD
                   </span>
                 </div>
 
+                <blockquote>
+                  “Surely the Lord GOD will do nothing,
+                  but he revealeth his secret unto his
+                  servants the prophets.”
+                </blockquote>
+
+                <cite>Amos 3:7</cite>
+
+                <p className="prophecy-scripture-note">
+                  Scripture remains the foundation of
+                  our study.
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            TOPICS
+        ====================================================== */}
+        {showTopics && (
+          <section
+            className="section topics-section"
+            id="topics"
+          >
+            <div className="container">
+              <div className="section-heading topics-heading">
+                <div>
+                  <span className="section-label">
+                    WHAT WE EXPLORE
+                  </span>
+
+                  <h2>
+                    Discover more.
+                  </h2>
+
+                  <p>
+                    Explore the different areas of
+                    Pilgrim Truth.
+                  </p>
+                </div>
+              </div>
+
+              <div className="topics-grid">
+                {TOPICS.map((topic, index) => {
+                  const Icon = topic.icon;
+
+                  return (
+                    <Link
+                      to={topic.path}
+                      className="topic-card"
+                      key={topic.title}
+                    >
+                      <span className="topic-number">
+                        {String(index + 1).padStart(
+                          2,
+                          "0"
+                        )}
+                      </span>
+
+                      <span className="topic-icon">
+                        <Icon
+                          size={22}
+                          strokeWidth={1.6}
+                        />
+                      </span>
+
+                      <span className="topic-content">
+                        <h3>
+                          {topic.title}
+                        </h3>
+
+                        <p>
+                          {topic.description}
+                        </p>
+                      </span>
+
+                      <span className="topic-arrow">
+                        <ArrowRight size={17} />
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            ARTICLES
+        ====================================================== */}
+        {showArticles && (
+          <section
+            className="section articles-section"
+            id="articles"
+          >
+            <div className="container">
+              <div className="section-heading">
+                <div>
+                  <span className="section-label">
+                    LATEST ARTICLES
+                  </span>
+
+                  <h2>
+                    Read and reflect.
+                  </h2>
+
+                  <p>
+                    Fresh perspectives and biblical
+                    reflections for your journey.
+                  </p>
+                </div>
+
+                <Link
+                  to="/articles"
+                  className="section-heading-link"
+                >
+                  View all articles
+                  <ArrowRight size={16} />
+                </Link>
+              </div>
+
+              {loadingContent ? (
+                <div className="home-state">
+                  Loading articles...
+                </div>
+              ) : latestArticles.length === 0 ? (
+                <div className="empty-content">
+                  <BookOpen size={24} />
+
+                  <p>
+                    New articles will appear here soon.
+                  </p>
+                </div>
+              ) : (
+                <div className="articles-grid">
+                  {latestArticles.map((article) => {
+                    const image = getImageUrl(
+                      article.featured_image ||
+                      article.image
+                    );
+
+                    return (
+                      <article
+                        className="article-card"
+                        key={article.id}
+                      >
+                        {image ? (
+                          <img
+                            src={image}
+                            alt={
+                              article.title ||
+                              "Article"
+                            }
+                            className="article-image"
+                          />
+                        ) : (
+                          <div className="article-image article-image-empty">
+                            <BookOpen
+                              size={32}
+                              strokeWidth={1.35}
+                            />
+                          </div>
+                        )}
+
+                        <div className="article-content">
+                          <span className="article-category">
+                            {article.category ||
+                              "Reflection"}
+                          </span>
+
+                          <h3>
+                            {article.title}
+                          </h3>
+
+                          <p>
+                            {article.excerpt ||
+                              article.description ||
+                              "Explore this biblical reflection from Pilgrim Truth."}
+                          </p>
+
+                          <div className="article-meta">
+                            <span className="article-date">
+                              {formatArticleDate(
+                                article.published_at ||
+                                article.created_at
+                              )}
+                            </span>
+
+                            <Link
+                              to={`/articles/${article.slug ||
+                                article.id
+                                }`}
+                              className="article-link"
+                            >
+                              Read
+                              <ArrowRight size={14} />
+                            </Link>
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            VIDEO + SCRIPTURE
+        ====================================================== */}
+        {showFeaturedVideo && (
+          <section
+            className="section video-scripture-section"
+            id="videos"
+          >
+            <div className="container video-scripture-grid">
+              <div className="video-feature">
+                <div className="video-feature-media">
+                  {featuredVideo?.thumbnail_url ? (
+                    <img
+                      src={getImageUrl(
+                        featuredVideo.thumbnail_url
+                      )}
+                      alt={
+                        featuredVideo.title ||
+                        "Featured video"
+                      }
+                      className="video-feature-image"
+                    />
+                  ) : (
+                    <div className="video-feature-empty">
+                      <span className="video-empty-icon">
+                        <Play size={30} />
+                      </span>
+
+                      <span>
+                        Featured video
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="video-feature-overlay">
+                    <Link
+                      to="/videos"
+                      className="video-action"
+                      aria-label="Watch featured video"
+                    >
+                      <Play
+                        size={22}
+                        fill="currentColor"
+                      />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="video-feature-content">
+                  <span className="video-category">
+                    {featuredVideo?.category ||
+                      "FEATURED VIDEO"}
+                  </span>
+
+                  <h3>
+                    {featuredVideo?.title ||
+                      "Discover biblical truth through video."}
+                  </h3>
+
+                  <p>
+                    Explore Bible-focused presentations,
+                    teachings and studies.
+                  </p>
+
+                  <Link
+                    to="/videos"
+                    className="video-link"
+                  >
+                    Browse videos
+                    <ArrowRight size={15} />
+                  </Link>
+                </div>
+              </div>
+
+              <div className="scripture-card">
+                <span className="scripture-card-label">
+                  SCRIPTURE
+                </span>
+
                 <Quote
-                  className="hero-inspiration-quote-icon"
-                  size={21}
-                  strokeWidth={1.5}
+                  className="scripture-card-quote"
+                  size={28}
+                  strokeWidth={1.4}
                 />
 
                 <blockquote>
                   “{scriptureText}”
                 </blockquote>
 
-                <span className="hero-inspiration-reference">
+                <span className="scripture-reference">
                   {scriptureReference}
                 </span>
+
+                <div className="scripture-card-footer">
+                  <span />
+                  <span>
+                    THE WORD REMAINS
+                  </span>
+                </div>
               </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* =====================================================
-            PURPOSE
-        ====================================================== */}
-      <section
-        className="section intro"
-        id="purpose"
-      >
-        <div className="container intro-grid">
-          <div className="intro-heading">
-            <span className="section-label">
-              OUR PURPOSE
-            </span>
-
-            <h2>
-              Seeking truth with
-              <span> Scripture at the center.</span>
-            </h2>
-          </div>
-
-          <div className="intro-content">
-            <p>
-              Pilgrim Truth exists to encourage
-              thoughtful Bible study and a deeper
-              understanding of God's Word.
-            </p>
-
-            <p>
-              Through Scripture, history, prophecy,
-              and practical Christian living, we seek
-              to help people discover truth and apply
-              it to everyday life.
-            </p>
-
-            <Link
-              to="/bible-studies"
-              className="text-link"
-            >
-              Explore our studies
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* =====================================================
-            FEATURED STUDIES
-        ====================================================== */}
-      {showFeaturedStudies && (
-        <section
-          className="section featured-studies"
-          id="studies"
-        >
-          <div className="container">
-            <div className="section-heading">
-              <div>
-                <span className="section-label">
-                  FEATURED STUDIES
-                </span>
-
-                <h2>
-                  Explore Scripture deeply.
-                </h2>
-
-                <p>
-                  Start with a study and continue
-                  discovering the biblical message.
-                </p>
-              </div>
-
-              <Link
-                to="/bible-studies"
-                className="section-heading-link"
-              >
-                View all studies
-                <ArrowRight size={16} />
-              </Link>
             </div>
+          </section>
+        )}
 
-            {loadingContent ? (
-              <div className="home-state">
-                Loading studies...
-              </div>
-            ) : displayedFeaturedStudies.length ===
-              0 ? (
-              <div className="empty-content">
-                <BookOpen size={24} />
-
-                <p>
-                  Featured Bible Studies will appear
-                  here soon.
-                </p>
-              </div>
-            ) : (
-              <div className="study-grid">
-                {displayedFeaturedStudies.map(
-                  (study, index) => {
-                    const image = getImageUrl(
-                      study.featured_image ||
-                      study.image
-                    );
-
-                    const studyId =
-                      study.bible_study_id ||
-                      study.id;
-
-                    return (
-                      <article
-                        className="study-card"
-                        key={studyId}
-                      >
-                        {image ? (
-                          <div className="study-card-image-wrap">
-                            <img
-                              src={image}
-                              alt={
-                                study.title ||
-                                "Bible Study"
-                              }
-                              className="study-card-image"
-                            />
-
-                            <span className="study-card-number">
-                              {String(
-                                index + 1
-                              ).padStart(2, "0")}
-                            </span>
-                          </div>
-                        ) : (
-                          <div className="study-card-visual">
-                            <span className="study-card-number">
-                              {String(
-                                index + 1
-                              ).padStart(2, "0")}
-                            </span>
-
-                            <BookOpen
-                              size={42}
-                              strokeWidth={1.35}
-                            />
-
-                            <span className="study-card-visual-label">
-                              Bible Study
-                            </span>
-                          </div>
-                        )}
-
-                        <div className="study-card-content">
-                          <span className="card-label">
-                            {study.category ||
-                              "Bible Study"}
-                          </span>
-
-                          <h3>
-                            {study.title ||
-                              "Bible Study"}
-                          </h3>
-
-                          <p>
-                            {study.description ||
-                              study.excerpt ||
-                              "Explore this Bible Study and discover more from Scripture."}
-                          </p>
-
-                          <Link
-                            to={`/bible-studies/${study.slug || studyId
-                              }`}
-                            className="study-card-link"
-                          >
-                            Read study
-                            <ArrowRight size={15} />
-                          </Link>
-                        </div>
-                      </article>
-                    );
-                  }
-                )}
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* =====================================================
-            PROPHECY
+        {/* =====================================================
+            NEWSLETTER
         ====================================================== */}
-      {showProphecy && (
-        <section
-          className="section prophecy-feature"
-          id="prophecy"
-        >
-          <div className="container prophecy-grid">
-            <div className="prophecy-content">
+        {showNewsletter && (
+          <section
+            className="newsletter-section"
+            id="newsletter"
+          >
+            <div className="container">
+              <div className="newsletter-box">
+                <div className="newsletter-mark">
+                  PT
+                </div>
+
+                <div className="newsletter-content">
+                  <span className="section-label">
+                    STAY CONNECTED
+                  </span>
+
+                  <h2>
+                    {
+                      homepageSettings.newsletter_title
+                    }
+                  </h2>
+
+                  <p>
+                    {
+                      homepageSettings.newsletter_description
+                    }
+                  </p>
+                </div>
+
+                <form
+                  className="newsletter-form"
+                  onSubmit={(event) =>
+                    event.preventDefault()
+                  }
+                >
+                  <div className="newsletter-input">
+                    <input
+                      type="email"
+                      placeholder="Your email address"
+                      aria-label="Email address"
+                    />
+
+                    <button type="submit">
+                      Subscribe
+                      <ArrowRight size={15} />
+                    </button>
+                  </div>
+
+                  <span className="newsletter-helper">
+                    We respect your inbox. No
+                    unnecessary emails.
+                  </span>
+                </form>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* =====================================================
+            FINAL CTA
+        ====================================================== */}
+        {showFinalCta && (
+          <section className="cta-section">
+            <div className="container cta-content">
               <span className="section-label">
-                BIBLICAL PROPHECY
+                KEEP SEEKING
               </span>
 
               <h2>
-                Understanding prophecy through
-                <em> Scripture.</em>
+                {homepageSettings.final_cta_title}
               </h2>
 
               <p>
-                Explore biblical prophecy with
-                attention to Scripture, historical
-                context, and the central message of
-                hope found throughout God's Word.
+                {homepageSettings.final_cta_description}
               </p>
 
-              <div className="prophecy-actions">
+              <div className="cta-actions">
                 <Link
-                  to="/prophecy"
+                  to="/bible-studies"
                   className="btn btn-primary"
                 >
-                  Explore Prophecy
+                  Start a Study
                   <ArrowRight size={17} />
                 </Link>
 
                 <Link
-                  to="/bible-studies"
-                  className="btn btn-outline-light"
+                  to="/articles"
+                  className="btn btn-secondary"
                 >
-                  Bible Studies
+                  Read Articles
                 </Link>
               </div>
             </div>
+          </section>
+        )}
+      </main>
 
-            <div className="prophecy-scripture">
-              <div className="prophecy-scripture-top">
-                <span className="prophecy-scripture-icon">
-                  <Quote size={19} />
-                </span>
-
-                <span>
-                  THE WORD OF GOD
-                </span>
-              </div>
-
-              <blockquote>
-                “Surely the Lord GOD will do nothing,
-                but he revealeth his secret unto his
-                servants the prophets.”
-              </blockquote>
-
-              <cite>Amos 3:7</cite>
-
-              <p className="prophecy-scripture-note">
-                Scripture remains the foundation of
-                our study.
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* =====================================================
-            TOPICS
-        ====================================================== */}
-      {showTopics && (
-        <section
-          className="section topics-section"
-          id="topics"
-        >
-          <div className="container">
-            <div className="section-heading topics-heading">
-              <div>
-                <span className="section-label">
-                  WHAT WE EXPLORE
-                </span>
-
-                <h2>
-                  Discover more.
-                </h2>
-
-                <p>
-                  Explore the different areas of
-                  Pilgrim Truth.
-                </p>
-              </div>
-            </div>
-
-            <div className="topics-grid">
-              {TOPICS.map((topic, index) => {
-                const Icon = topic.icon;
-
-                return (
-                  <Link
-                    to={topic.path}
-                    className="topic-card"
-                    key={topic.title}
-                  >
-                    <span className="topic-number">
-                      {String(index + 1).padStart(
-                        2,
-                        "0"
-                      )}
-                    </span>
-
-                    <span className="topic-icon">
-                      <Icon
-                        size={22}
-                        strokeWidth={1.6}
-                      />
-                    </span>
-
-                    <span className="topic-content">
-                      <h3>
-                        {topic.title}
-                      </h3>
-
-                      <p>
-                        {topic.description}
-                      </p>
-                    </span>
-
-                    <span className="topic-arrow">
-                      <ArrowRight size={17} />
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* =====================================================
-            ARTICLES
-        ====================================================== */}
-      {showArticles && (
-        <section
-          className="section articles-section"
-          id="articles"
-        >
-          <div className="container">
-            <div className="section-heading">
-              <div>
-                <span className="section-label">
-                  LATEST ARTICLES
-                </span>
-
-                <h2>
-                  Read and reflect.
-                </h2>
-
-                <p>
-                  Fresh perspectives and biblical
-                  reflections for your journey.
-                </p>
-              </div>
-
-              <Link
-                to="/articles"
-                className="section-heading-link"
-              >
-                View all articles
-                <ArrowRight size={16} />
-              </Link>
-            </div>
-
-            {loadingContent ? (
-              <div className="home-state">
-                Loading articles...
-              </div>
-            ) : latestArticles.length === 0 ? (
-              <div className="empty-content">
-                <BookOpen size={24} />
-
-                <p>
-                  New articles will appear here soon.
-                </p>
-              </div>
-            ) : (
-              <div className="articles-grid">
-                {latestArticles.map((article) => {
-                  const image = getImageUrl(
-                    article.featured_image ||
-                    article.image
-                  );
-
-                  return (
-                    <article
-                      className="article-card"
-                      key={article.id}
-                    >
-                      {image ? (
-                        <img
-                          src={image}
-                          alt={
-                            article.title ||
-                            "Article"
-                          }
-                          className="article-image"
-                        />
-                      ) : (
-                        <div className="article-image article-image-empty">
-                          <BookOpen
-                            size={32}
-                            strokeWidth={1.35}
-                          />
-                        </div>
-                      )}
-
-                      <div className="article-content">
-                        <span className="article-category">
-                          {article.category ||
-                            "Reflection"}
-                        </span>
-
-                        <h3>
-                          {article.title}
-                        </h3>
-
-                        <p>
-                          {article.excerpt ||
-                            article.description ||
-                            "Explore this biblical reflection from Pilgrim Truth."}
-                        </p>
-
-                        <div className="article-meta">
-                          <span className="article-date">
-                            {formatArticleDate(
-                              article.published_at ||
-                              article.created_at
-                            )}
-                          </span>
-
-                          <Link
-                            to={`/articles/${article.slug ||
-                              article.id
-                              }`}
-                            className="article-link"
-                          >
-                            Read
-                            <ArrowRight size={14} />
-                          </Link>
-                        </div>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* =====================================================
-            VIDEO + SCRIPTURE
-        ====================================================== */}
-      {showFeaturedVideo && (
-        <section
-          className="section video-scripture-section"
-          id="videos"
-        >
-          <div className="container video-scripture-grid">
-            <div className="video-feature">
-              <div className="video-feature-media">
-                {featuredVideo?.thumbnail_url ? (
-                  <img
-                    src={getImageUrl(
-                      featuredVideo.thumbnail_url
-                    )}
-                    alt={
-                      featuredVideo.title ||
-                      "Featured video"
-                    }
-                    className="video-feature-image"
-                  />
-                ) : (
-                  <div className="video-feature-empty">
-                    <span className="video-empty-icon">
-                      <Play size={30} />
-                    </span>
-
-                    <span>
-                      Featured video
-                    </span>
-                  </div>
-                )}
-
-                <div className="video-feature-overlay">
-                  <Link
-                    to="/videos"
-                    className="video-action"
-                    aria-label="Watch featured video"
-                  >
-                    <Play
-                      size={22}
-                      fill="currentColor"
-                    />
-                  </Link>
-                </div>
-              </div>
-
-              <div className="video-feature-content">
-                <span className="video-category">
-                  {featuredVideo?.category ||
-                    "FEATURED VIDEO"}
-                </span>
-
-                <h3>
-                  {featuredVideo?.title ||
-                    "Discover biblical truth through video."}
-                </h3>
-
-                <p>
-                  Explore Bible-focused presentations,
-                  teachings and studies.
-                </p>
-
-                <Link
-                  to="/videos"
-                  className="video-link"
-                >
-                  Browse videos
-                  <ArrowRight size={15} />
-                </Link>
-              </div>
-            </div>
-
-            <div className="scripture-card">
-              <span className="scripture-card-label">
-                SCRIPTURE
-              </span>
-
-              <Quote
-                className="scripture-card-quote"
-                size={28}
-                strokeWidth={1.4}
-              />
-
-              <blockquote>
-                “{scriptureText}”
-              </blockquote>
-
-              <span className="scripture-reference">
-                {scriptureReference}
-              </span>
-
-              <div className="scripture-card-footer">
-                <span />
-                <span>
-                  THE WORD REMAINS
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* =====================================================
-            NEWSLETTER
-        ====================================================== */}
-      {showNewsletter && (
-        <section
-          className="newsletter-section"
-          id="newsletter"
-        >
-          <div className="container">
-            <div className="newsletter-box">
-              <div className="newsletter-mark">
-                PT
-              </div>
-
-              <div className="newsletter-content">
-                <span className="section-label">
-                  STAY CONNECTED
-                </span>
-
-                <h2>
-                  {
-                    homepageSettings.newsletter_title
-                  }
-                </h2>
-
-                <p>
-                  {
-                    homepageSettings.newsletter_description
-                  }
-                </p>
-              </div>
-
-              <form
-                className="newsletter-form"
-                onSubmit={(event) =>
-                  event.preventDefault()
-                }
-              >
-                <div className="newsletter-input">
-                  <input
-                    type="email"
-                    placeholder="Your email address"
-                    aria-label="Email address"
-                  />
-
-                  <button type="submit">
-                    Subscribe
-                    <ArrowRight size={15} />
-                  </button>
-                </div>
-
-                <span className="newsletter-helper">
-                  We respect your inbox. No
-                  unnecessary emails.
-                </span>
-              </form>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* =====================================================
-            FINAL CTA
-        ====================================================== */}
-      {showFinalCta && (
-        <section className="cta-section">
-          <div className="container cta-content">
-            <span className="section-label">
-              KEEP SEEKING
-            </span>
-
-            <h2>
-              {homepageSettings.final_cta_title}
-            </h2>
-
-            <p>
-              {homepageSettings.final_cta_description}
-            </p>
-
-            <div className="cta-actions">
-              <Link
-                to="/bible-studies"
-                className="btn btn-primary"
-              >
-                Start a Study
-                <ArrowRight size={17} />
-              </Link>
-
-              <Link
-                to="/articles"
-                className="btn btn-secondary"
-              >
-                Read Articles
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
-    </main>
-
-    <Footer />
-  </div>
-);
+      <Footer />
+    </div>
+  );
 }

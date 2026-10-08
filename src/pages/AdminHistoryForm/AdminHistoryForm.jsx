@@ -39,22 +39,22 @@ const initialForm = {
   published_at: "",
 };
 
-function formatDateTimeForInput(date) {
-  if (!date) return "";
+function formatDateTimeForInput(value) {
+  if (!value) return "";
 
-  const parsedDate = new Date(date);
+  const date = new Date(`${value}Z`);
 
-  if (Number.isNaN(parsedDate.getTime())) {
+  if (Number.isNaN(date.getTime())) {
     return "";
   }
 
-  const offset = parsedDate.getTimezoneOffset();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
 
-  const localDate = new Date(
-    parsedDate.getTime() - offset * 60 * 1000
-  );
-
-  return localDate.toISOString().slice(0, 16);
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 function generateSlug(value) {
@@ -138,7 +138,7 @@ function AdminHistoryForm() {
 
         setError(
           error.message ||
-            "Unable to load history study."
+          "Unable to load history study."
         );
       } finally {
         setLoading(false);
@@ -234,7 +234,7 @@ function AdminHistoryForm() {
 
       setError(
         error.message ||
-          "Unable to upload image."
+        "Unable to upload image."
       );
     } finally {
       setUploading(false);
@@ -301,8 +301,9 @@ function AdminHistoryForm() {
         content: form.content.trim(),
         featured_image:
           form.featured_image.trim(),
-        published_at:
-          form.published_at || null,
+        published_at: form.published_at
+          ? new Date(form.published_at).toISOString()
+          : null,
       };
 
       if (isEditMode) {
@@ -336,7 +337,7 @@ function AdminHistoryForm() {
 
       setError(
         error.message ||
-          "Unable to save history study."
+        "Unable to save history study."
       );
     } finally {
       setSaving(false);

@@ -28,18 +28,16 @@ function FeaturedStudies() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  /*
-   * Try the common token names used by the
-   * existing authentication system.
-   */
-  const getToken = () => {
-    return (
-      user?.token ||
-      localStorage.getItem("token") ||
-      localStorage.getItem("authToken") ||
-      localStorage.getItem("accessToken")
-    );
-  };
+  
+const getToken = () => {
+  return (
+    token ||
+    user?.token ||
+    localStorage.getItem("token") ||
+    localStorage.getItem("authToken") ||
+    localStorage.getItem("accessToken")
+  );
+};
 
   const getHeaders = () => {
     const token = getToken();

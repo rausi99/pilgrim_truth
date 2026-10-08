@@ -51,7 +51,7 @@ function getImageUrl(image) {
 function formatDateTimeForInput(value) {
   if (!value) return "";
 
-  const date = new Date(value);
+  const date = new Date(`${value}Z`);
 
   if (Number.isNaN(date.getTime())) {
     return "";
@@ -121,7 +121,7 @@ export default function AdminHealthForm() {
       } catch (err) {
         setError(
           err.message ||
-            "Unable to load Health content."
+          "Unable to load Health content."
         );
       } finally {
         setLoading(false);
@@ -218,7 +218,9 @@ export default function AdminHealthForm() {
 
       const payload = {
         ...form,
-        published_at: form.published_at || null,
+        published_at: form.published_at
+          ? new Date(form.published_at).toISOString()
+          : null,
       };
 
       if (isEditing) {
@@ -238,7 +240,7 @@ export default function AdminHealthForm() {
     } catch (err) {
       setError(
         err.message ||
-          "Unable to save Health content."
+        "Unable to save Health content."
       );
     } finally {
       setSaving(false);
@@ -538,11 +540,10 @@ export default function AdminHealthForm() {
             ) : (
               <label
                 htmlFor="health-image-upload"
-                className={`admin-image-upload ${
-                  uploading
+                className={`admin-image-upload ${uploading
                     ? "is-uploading"
                     : ""
-                }`}
+                  }`}
               >
                 <input
                   id="health-image-upload"
@@ -638,8 +639,8 @@ export default function AdminHealthForm() {
               {saving
                 ? "Saving..."
                 : isEditing
-                ? "Update Content"
-                : "Save Content"}
+                  ? "Update Content"
+                  : "Save Content"}
             </button>
           </div>
         </aside>

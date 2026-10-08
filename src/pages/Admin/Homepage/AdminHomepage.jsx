@@ -150,7 +150,7 @@ export default function AdminHomepage() {
       console.error(err);
       setError(
         err.message ||
-          "Unable to load homepage settings."
+        "Unable to load homepage settings."
       );
     } finally {
       setLoading(false);
@@ -166,8 +166,8 @@ export default function AdminHomepage() {
         type === "checkbox"
           ? checked
           : type === "number"
-          ? Number(value)
-          : value,
+            ? Number(value)
+            : value,
     }));
 
     setSuccess("");
@@ -198,7 +198,7 @@ export default function AdminHomepage() {
       if (!response.ok) {
         throw new Error(
           data?.message ||
-            "Unable to save homepage settings."
+          "Unable to save homepage settings."
         );
       }
 
@@ -207,7 +207,7 @@ export default function AdminHomepage() {
         ...(data?.settings || {}),
       }));
 
-      <FeaturedStudies />
+
 
       setSuccess(
         "Homepage settings saved successfully."
@@ -216,7 +216,7 @@ export default function AdminHomepage() {
       console.error(err);
       setError(
         err.message ||
-          "Unable to save homepage settings."
+        "Unable to save homepage settings."
       );
     } finally {
       setSaving(false);
@@ -271,6 +271,8 @@ export default function AdminHomepage() {
         </div>
       )}
 
+      <FeaturedStudies />
+
       <form
         className="admin-homepage-form"
         onSubmit={handleSubmit}
@@ -297,9 +299,8 @@ export default function AdminHomepage() {
 
               return (
                 <div
-                  className={`admin-homepage-section ${
-                    enabled ? "enabled" : "disabled"
-                  }`}
+                  className={`admin-homepage-section ${enabled ? "enabled" : "disabled"
+                    }`}
                   key={section.key}
                 >
                   <div className="admin-homepage-section-icon">
@@ -311,11 +312,10 @@ export default function AdminHomepage() {
                       <h3>{section.title}</h3>
 
                       <span
-                        className={`admin-homepage-status ${
-                          enabled
-                            ? "active"
-                            : "inactive"
-                        }`}
+                        className={`admin-homepage-status ${enabled
+                          ? "active"
+                          : "inactive"
+                          }`}
                       >
                         {enabled ? "Visible" : "Hidden"}
                       </span>

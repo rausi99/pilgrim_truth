@@ -55,11 +55,10 @@ function getImageUrl(image) {
 
   return image;
 }
-
 function formatDateTimeForInput(value) {
   if (!value) return "";
 
-  const date = new Date(value);
+  const date = new Date(`${value}Z`);
 
   if (Number.isNaN(date.getTime())) {
     return "";
@@ -224,7 +223,9 @@ export default function AdminArticleForm() {
 
       const payload = {
         ...form,
-        published_at: form.published_at || null,
+        published_at: form.published_at
+          ? new Date(form.published_at).toISOString()
+          : null,
       };
 
       if (isEditing) {
@@ -544,9 +545,8 @@ export default function AdminArticleForm() {
             ) : (
               <label
                 htmlFor="article-image-upload"
-                className={`admin-image-upload ${
-                  uploading ? "is-uploading" : ""
-                }`}
+                className={`admin-image-upload ${uploading ? "is-uploading" : ""
+                  }`}
               >
                 <input
                   id="article-image-upload"
@@ -639,8 +639,8 @@ export default function AdminArticleForm() {
               {saving
                 ? "Saving..."
                 : isEditing
-                ? "Update Article"
-                : "Save Article"}
+                  ? "Update Article"
+                  : "Save Article"}
             </button>
           </div>
         </aside>

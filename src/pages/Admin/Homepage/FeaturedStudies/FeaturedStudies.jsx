@@ -31,14 +31,12 @@ function FeaturedStudies() {
   
 const getToken = () => {
   return (
-    token ||
     user?.token ||
     localStorage.getItem("token") ||
     localStorage.getItem("authToken") ||
     localStorage.getItem("accessToken")
   );
 };
-
   const getHeaders = () => {
     const token = getToken();
 

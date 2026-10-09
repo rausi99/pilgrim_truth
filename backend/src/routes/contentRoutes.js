@@ -386,6 +386,7 @@ router.get(
   getYouTubeMetadata
 );
 
+
 /* =========================================================
    RESOURCES
    ========================================================= */
@@ -404,12 +405,21 @@ router.get(
   getResourceById
 );
 
+// Upload a resource file.
 router.post(
-  "/resources",
+  "/resources/upload",
   authMiddleware,
   adminMiddleware,
   uploadResource.single("file"),
   uploadResourceFile
+);
+
+// Save the resource details in the database.
+router.post(
+  "/resources",
+  authMiddleware,
+  adminMiddleware,
+  createResource
 );
 
 router.put(

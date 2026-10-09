@@ -1690,6 +1690,7 @@ const getFeaturedVideo = async (req, res) => {
 // =========================================================
 
 // GET ALL PUBLIC VIDEOS
+
 const getPublicVideos = async (req, res) => {
   try {
     const result = await pool.query(`
@@ -1711,10 +1712,6 @@ const getPublicVideos = async (req, res) => {
       LEFT JOIN users u
         ON v.author_id = u.id
       WHERE v.status = 'published'
-        AND (
-          v.published_at IS NULL
-          OR v.published_at <= CURRENT_TIMESTAMP
-        )
       ORDER BY
         v.is_featured DESC,
         v.published_at DESC NULLS LAST,
@@ -1726,10 +1723,7 @@ const getPublicVideos = async (req, res) => {
       videos: result.rows,
     });
   } catch (error) {
-    console.error(
-      "Get public videos error:",
-      error
-    );
+    console.error("Get public videos error:", error);
 
     res.status(500).json({
       success: false,
@@ -1876,6 +1870,10 @@ const createVideo = async (req, res) => {
       status,
       published_at,
     } = req.body;
+
+
+
+
 
     if (!title || !slug || !category) {
       return res.status(400).json({

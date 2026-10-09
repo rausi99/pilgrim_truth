@@ -945,8 +945,8 @@ function AdminResourceForm() {
                       uploadInfo.file_url.startsWith(
                         "http"
                       )
-                        ? uploadInfo.file_url
-                        : `${BACKEND_URL}${uploadInfo.file_url}`
+? uploadInfo.file_url
+: `https://pilgrim-truth.onrender.com${uploadInfo.file_url}`
                     }
                     target="_blank"
                     rel="noreferrer"

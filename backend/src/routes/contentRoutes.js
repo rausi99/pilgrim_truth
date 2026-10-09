@@ -56,6 +56,7 @@ const {
   createResource,
   updateResource,
   deleteResource,
+  getPublicResources,
 
   // YouTube
   getYouTubeMetadata,
@@ -390,6 +391,12 @@ router.get(
 /* =========================================================
    RESOURCES
    ========================================================= */
+
+router.get(
+  "/public/resources",
+  getPublicResources
+);
+
 
 router.get(
   "/resources",

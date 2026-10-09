@@ -2370,6 +2370,45 @@ const getResources = async (req, res) => {
   }
 };
 
+const getPublicResources = async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT
+        r.id,
+        r.title,
+        r.slug,
+        r.category,
+        r.description,
+        r.file_url,
+        r.thumbnail_url,
+        r.file_type,
+        r.file_size,
+        r.is_featured,
+        r.published_at,
+        r.download_count,
+        r.created_at,
+        u.name AS author
+      FROM resources r
+      LEFT JOIN users u ON r.author_id = u.id
+      WHERE LOWER(r.status) = 'published'
+      ORDER BY r.is_featured DESC, r.published_at DESC NULLS LAST, r.created_at DESC
+    `);
+
+    res.json({
+      success: true,
+      resources: result.rows,
+    });
+  } catch (error) {
+    console.error("Get public resources error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Unable to load resources.",
+    });
+  }
+};
+
+
 // GET SINGLE RESOURCE
 const getResourceById = async (req, res) => {
   try {
@@ -4389,6 +4428,7 @@ module.exports = {
   createResource,
   updateResource,
   deleteResource,
+  getPublicResources,
 
   // Public content
   getPublicArticles,

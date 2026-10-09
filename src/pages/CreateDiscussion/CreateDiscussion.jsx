@@ -17,7 +17,7 @@ import {
   getDiscussionCategories,
 } from "../../services/discussions";
 import { useAuth } from "../../context/AuthContext";
-
+import "./CreateDiscussion.css";
 function CreateDiscussion() {
   const navigate = useNavigate();
   const { user, token, isAuthenticated, loading: authLoading } =

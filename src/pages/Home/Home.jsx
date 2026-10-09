@@ -553,15 +553,15 @@ export default function Home() {
                     "PILGRIM TRUTH"}
                 </span>
 
-                <h1>
-                  {siteSettings?.hero_title ||
-                    "Seeking Truth."}
 
+                <h1>
+                  {siteSettings?.hero_title || "Seeking Truth."}
+                  {" "}
                   <em>
-                    {siteSettings?.hero_subtitle ||
-                      "Studying Scripture."}
+                    {siteSettings?.hero_subtitle || "Studying Scripture."}
                   </em>
                 </h1>
+
 
                 <div className="hero-introduction">
                   <span className="hero-introduction-label">

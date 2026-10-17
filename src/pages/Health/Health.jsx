@@ -90,7 +90,7 @@ function Health() {
         if (!response.ok) {
           throw new Error(
             data.message ||
-              "Failed to load health content."
+            "Failed to load health content."
           );
         }
 
@@ -139,11 +139,11 @@ function Health() {
       const matchesCategory =
         activeCategory === "All" ||
         study.category ===
-          activeCategory;
+        activeCategory;
 
       const contentText =
         typeof study.content ===
-        "string"
+          "string"
           ? study.content
           : "";
 
@@ -195,18 +195,13 @@ function Health() {
             HERO
         ===================================================== */}
 
+
         <section className="health-hero">
-          {featuredStudy?.featured_image ? (
-            <img
-              className="health-hero-image"
-              src={getImageUrl(
-                featuredStudy.featured_image
-              )}
-              alt=""
-            />
-          ) : (
-            <div className="health-hero-fallback" />
-          )}
+          <img
+            className="health-hero-image"
+            src="/images/health.jpeg"
+            alt=""
+          />
 
           <div className="health-hero-overlay" />
 
@@ -214,26 +209,18 @@ function Health() {
             <div className="health-hero-copy">
               <div className="health-eyebrow">
                 <BookOpen size={16} />
-                <span>
-                  BIBLICAL HEALTH & WELLNESS
-                </span>
+                <span>BIBLICAL HEALTH & WELLNESS</span>
               </div>
 
               <h1>
                 Caring for the life
-                <span>
-                  {" "}
-                  God has entrusted to us.
-                </span>
+                <span>{" "}God has entrusted to us.</span>
               </h1>
 
               <p>
-                Explore practical health
-                principles through the wisdom
-                of Scripture, thoughtful
-                guidance, and a Christ-centered
-                understanding of whole-person
-                wellbeing.
+                Explore practical health principles through the wisdom
+                of Scripture, thoughtful guidance, and a Christ-centered
+                understanding of whole-person wellbeing.
               </p>
 
               <div className="health-hero-actions">
@@ -247,14 +234,10 @@ function Health() {
 
                 <div className="health-scripture">
                   <span>
-                    “Beloved, I wish above all
-                    things that thou mayest
+                    “Beloved, I wish above all things that thou mayest
                     prosper and be in health.”
                   </span>
-
-                  <strong>
-                    3 John 1:2
-                  </strong>
+                  <strong>3 John 1:2</strong>
                 </div>
               </div>
             </div>
@@ -265,17 +248,13 @@ function Health() {
               </div>
 
               <div>
-                <strong>
-                  Whole-Person Care
-                </strong>
-
-                <span>
-                  Body · Mind · Spirit
-                </span>
+                <strong>Whole-Person Care</strong>
+                <span>Body · Mind · Spirit</span>
               </div>
             </div>
           </div>
         </section>
+
 
         {/* =====================================================
             INTRO
@@ -346,7 +325,7 @@ function Health() {
                     type="button"
                     className={
                       activeCategory ===
-                      category
+                        category
                         ? "health-category active"
                         : "health-category"
                     }
@@ -427,7 +406,7 @@ function Health() {
             {!loading &&
               !error &&
               filteredStudies.length ===
-                0 && (
+              0 && (
                 <div className="health-state">
                   <BookOpen size={34} />
 
@@ -500,7 +479,7 @@ function Health() {
                       <p>
                         {getExcerpt(
                           featuredStudy.description ||
-                            featuredStudy.content,
+                          featuredStudy.content,
                           220
                         )}
                       </p>
@@ -521,83 +500,83 @@ function Health() {
 
                   {regularStudies.length >
                     0 && (
-                    <div className="health-grid">
-                      {regularStudies.map(
-                        (study) => (
-                          <article
-                            className="health-card"
-                            key={study.id}
-                          >
-                            <Link
-                              to={`/health/${study.slug}`}
-                              className="health-card-image"
+                      <div className="health-grid">
+                        {regularStudies.map(
+                          (study) => (
+                            <article
+                              className="health-card"
+                              key={study.id}
                             >
-                              {study.featured_image ? (
-                                <img
-                                  src={getImageUrl(
-                                    study.featured_image
-                                  )}
-                                  alt={
-                                    study.title
-                                  }
-                                />
-                              ) : (
-                                <div className="health-image-placeholder">
-                                  <BookOpen
-                                    size={32}
-                                  />
-                                </div>
-                              )}
-                            </Link>
-
-                            <div className="health-card-content">
-                              <span className="health-card-category">
-                                {
-                                  study.category
-                                }
-                              </span>
-
-                              <h3>
-                                <Link
-                                  to={`/health/${study.slug}`}
-                                >
-                                  {
-                                    study.title
-                                  }
-                                </Link>
-                              </h3>
-
-                              {study.scripture_reference && (
-                                <span className="health-card-reference">
-                                  {
-                                    study.scripture_reference
-                                  }
-                                </span>
-                              )}
-
-                              <p>
-                                {getExcerpt(
-                                  study.description ||
-                                    study.content,
-                                  135
-                                )}
-                              </p>
-
                               <Link
                                 to={`/health/${study.slug}`}
-                                className="health-card-read"
+                                className="health-card-image"
                               >
-                                Read more
-                                <ArrowRight
-                                  size={16}
-                                />
+                                {study.featured_image ? (
+                                  <img
+                                    src={getImageUrl(
+                                      study.featured_image
+                                    )}
+                                    alt={
+                                      study.title
+                                    }
+                                  />
+                                ) : (
+                                  <div className="health-image-placeholder">
+                                    <BookOpen
+                                      size={32}
+                                    />
+                                  </div>
+                                )}
                               </Link>
-                            </div>
-                          </article>
-                        )
-                      )}
-                    </div>
-                  )}
+
+                              <div className="health-card-content">
+                                <span className="health-card-category">
+                                  {
+                                    study.category
+                                  }
+                                </span>
+
+                                <h3>
+                                  <Link
+                                    to={`/health/${study.slug}`}
+                                  >
+                                    {
+                                      study.title
+                                    }
+                                  </Link>
+                                </h3>
+
+                                {study.scripture_reference && (
+                                  <span className="health-card-reference">
+                                    {
+                                      study.scripture_reference
+                                    }
+                                  </span>
+                                )}
+
+                                <p>
+                                  {getExcerpt(
+                                    study.description ||
+                                    study.content,
+                                    135
+                                  )}
+                                </p>
+
+                                <Link
+                                  to={`/health/${study.slug}`}
+                                  className="health-card-read"
+                                >
+                                  Read more
+                                  <ArrowRight
+                                    size={16}
+                                  />
+                                </Link>
+                              </div>
+                            </article>
+                          )
+                        )}
+                      </div>
+                    )}
                 </>
               )}
           </div>

@@ -1,10 +1,11 @@
+
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
 const uploadDirectory = path.join(
   __dirname,
-  "../../uploads/resources"
+  "../../uploads/images"
 );
 
 if (!fs.existsSync(uploadDirectory)) {
@@ -24,32 +25,32 @@ const storage = multer.diskStorage({
       .toLowerCase();
 
     const baseName = path
-      .basename(
-        file.originalname,
-        extension
-      )
+      .basename(file.originalname, extension)
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "-")
       .replace(/-+/g, "-")
       .replace(/^-|-$/g, "");
 
     const uniqueName =
-      `${Date.now()}-${baseName}${extension}`;
+      `${Date.now()}-${baseName || "image"}${extension}`;
 
     cb(null, uniqueName);
   },
 });
 
+const allowedMimeTypes = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+];
+
 const allowedExtensions = [
-  ".pdf",
-  ".doc",
-  ".docx",
-  ".ppt",
-  ".pptx",
-  ".xls",
-  ".xlsx",
-  ".txt",
-  ".zip",
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".gif",
 ];
 
 const fileFilter = (req, file, cb) => {
@@ -57,10 +58,13 @@ const fileFilter = (req, file, cb) => {
     .extname(file.originalname)
     .toLowerCase();
 
-  if (!allowedExtensions.includes(extension)) {
+  if (
+    !allowedExtensions.includes(extension) ||
+    !allowedMimeTypes.includes(file.mimetype)
+  ) {
     return cb(
       new Error(
-        "Unsupported file type. Please upload a PDF, Word, PowerPoint, Excel, TXT, or ZIP file."
+        "Unsupported image type. Please upload a JPG, JPEG, PNG, WebP, or GIF image."
       )
     );
   }
@@ -68,13 +72,12 @@ const fileFilter = (req, file, cb) => {
   cb(null, true);
 };
 
-const uploadResource = multer({
+const uploadImage = multer({
   storage,
   fileFilter,
-
   limits: {
-    fileSize: 20 * 1024 * 1024,
+    fileSize: 5 * 1024 * 1024,
   },
 });
 
-module.exports = uploadResource;
+module.exports = uploadImage;

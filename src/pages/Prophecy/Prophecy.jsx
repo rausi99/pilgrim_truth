@@ -25,8 +25,8 @@ const BACKEND_URL = API_URL.replace(/\/api\/?$/, "");
  * The dark overlay in Prophecy.css keeps the text readable.
  */
 const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=2000&q=85";
-
+  "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1600&q=70";
+const PROPHECY_FALLBACK_IMAGE = "/images/prophecy.jpeg";
 function getReadingTime(content = "") {
   const words = content.trim().split(/\s+/).filter(Boolean).length;
 
@@ -128,15 +128,45 @@ function Prophecy() {
     }
   }, [activeTheme, themes]);
 
-  const filteredStudies = useMemo(() => {
-    if (activeTheme === "All") {
-      return studies;
-    }
 
-    return studies.filter(
-      (study) => study.category?.trim() === activeTheme
-    );
+  const filteredStudies = useMemo(() => {
+    const filtered =
+      activeTheme === "All"
+        ? studies
+        : studies.filter(
+          (study) =>
+            study.category?.trim() === activeTheme
+        );
+
+    const getStudyDate = (study) => {
+      const value =
+        study.published_at ||
+        study.publication_date ||
+        study.published_date ||
+        study.created_at ||
+        study.createdAt;
+
+      if (!value) return null;
+
+      const timestamp = new Date(value).getTime();
+
+      return Number.isNaN(timestamp) ? null : timestamp;
+    };
+
+    return [...filtered].sort((a, b) => {
+      const dateA = getStudyDate(a);
+      const dateB = getStudyDate(b);
+
+      // Studies without dates appear after dated studies.
+      if (dateA === null && dateB === null) return 0;
+      if (dateA === null) return 1;
+      if (dateB === null) return -1;
+
+      // Oldest first, newest last.
+      return dateA - dateB;
+    });
   }, [activeTheme, studies]);
+
 
   const handleThemeClick = (theme) => {
     setActiveTheme(theme);
@@ -390,13 +420,12 @@ function Prophecy() {
             ) : (
               <div className="prophecy-study-grid">
                 {filteredStudies.map((study) => {
-                  const imageUrl = getImageUrl(
-                    study.featured_image
-                  );
+                  const imageUrl = getImageUrl(study.featured_image);
 
-                  const hasImage =
-                    imageUrl && !imageErrors[study.id];
-
+                  const hasImage = !imageErrors[study.id];
+                  const studyImage = hasImage && imageUrl
+                    ? imageUrl
+                    : PROPHECY_FALLBACK_IMAGE;
                   return (
                     <article
                       className="prophecy-study-card"
@@ -405,12 +434,21 @@ function Prophecy() {
                       <div className="prophecy-study-media">
                         {hasImage ? (
                           <img
-                            src={imageUrl}
+                            src={studyImage}
                             alt={study.title}
                             loading="lazy"
-                            onError={() =>
-                              handleImageError(study.id)
-                            }
+                            onError={(event) => {
+                              const fallbackUrl = new URL(
+                                PROPHECY_FALLBACK_IMAGE,
+                                window.location.origin
+                              ).href;
+
+                              if (event.currentTarget.src !== fallbackUrl) {
+                                event.currentTarget.src = fallbackUrl;
+                              } else {
+                                handleImageError(study.id);
+                              }
+                            }}
                           />
                         ) : (
                           <div className="prophecy-study-placeholder">
@@ -483,9 +521,8 @@ function Prophecy() {
               <div className="prophecy-themes-grid">
                 <button
                   type="button"
-                  className={`prophecy-theme-card ${
-                    activeTheme === "All" ? "active" : ""
-                  }`}
+                  className={`prophecy-theme-card ${activeTheme === "All" ? "active" : ""
+                    }`}
                   onClick={() => handleThemeClick("All")}
                 >
                   <span className="prophecy-theme-number">
@@ -509,9 +546,8 @@ function Prophecy() {
                   return (
                     <button
                       type="button"
-                      className={`prophecy-theme-card ${
-                        activeTheme === theme ? "active" : ""
-                      }`}
+                      className={`prophecy-theme-card ${activeTheme === theme ? "active" : ""
+                        }`}
                       key={theme}
                       onClick={() =>
                         handleThemeClick(theme)

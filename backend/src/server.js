@@ -15,10 +15,27 @@ const publicSettingsRoutes = require("./routes/publicSettingsRoutes");
 const homepageRoutes = require("./routes/homepageRoutes");
 const publicHomepageRoutes = require("./routes/publicHomepageRoutes");
 
+import compression from "compression";
+
 const app = express();
+app.use(compression());
 
 app.use(cors());
 app.use(express.json());
+
+// Temporary performance diagnostic
+app.use((req, res, next) => {
+  const startedAt = Date.now();
+
+  res.on("finish", () => {
+    console.log(
+      `[PERF] ${req.method} ${req.originalUrl} ` +
+      `${res.statusCode} ${Date.now() - startedAt}ms`
+    );
+  });
+
+  next();
+});
 
 
 // ===============================

@@ -136,7 +136,6 @@
 
 .prophecy-page-hero {
   position: relative;
-
   min-height: 720px;
 
   display: flex;
@@ -144,6 +143,8 @@
 
   isolation: isolate;
 
+
+  background-color: #07182d;
   background-image: var(--prophecy-hero-image);
   background-position: center;
   background-size: cover;

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -20,7 +21,6 @@ const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const BACKEND_URL = API_URL.replace(/\/api\/?$/, "");
-
 const HERO_IMAGE = "/images/bble.jpeg";
 
 const DEFAULT_SCRIPTURE =
@@ -38,26 +38,16 @@ const DEFAULT_HOMEPAGE_SETTINGS = {
   featured_video_enabled: true,
   newsletter_enabled: true,
   final_cta_enabled: true,
-
   featured_studies_limit: 3,
   articles_limit: 3,
-
   newsletter_title: "Continue the journey.",
   newsletter_description:
     "Receive new studies, articles, and reflections from Pilgrim Truth.",
-
   final_cta_title: "Truth is worth searching for.",
   final_cta_description:
     "Open Scripture. Ask questions. Keep learning.",
 };
 
-/*
-|--------------------------------------------------------------------------
-| EXPLORE SCRIPTURE
-|--------------------------------------------------------------------------
-| These are the main discovery areas available from the hero.
-| Each item has its own route so the user can go directly to that area.
-*/
 const EXPLORE_ITEMS = [
   {
     title: "Bible Studies",
@@ -73,7 +63,8 @@ const EXPLORE_ITEMS = [
   },
   {
     title: "Bible History",
-    description: "Understand the people, places and events of the Bible.",
+    description:
+      "Understand the people, places and events of the Bible.",
     path: "/bible-history",
     icon: History,
   },
@@ -97,13 +88,6 @@ const EXPLORE_ITEMS = [
   },
 ];
 
-/*
-|--------------------------------------------------------------------------
-| HOMEPAGE TOPIC CARDS
-|--------------------------------------------------------------------------
-| Kept separate from the hero menu so the page does not feel repetitive.
-| These cards are a visual discovery section.
-*/
 const TOPICS = [
   {
     title: "Bible Studies",
@@ -196,12 +180,6 @@ export default function Home() {
   const [dailyInspiration, setDailyInspiration] = useState(null);
 
   const [loadingContent, setLoadingContent] = useState(true);
-
-  /*
-  |--------------------------------------------------------------------------
-  | HERO EXPLORE MENU
-  |--------------------------------------------------------------------------
-  */
   const [exploreOpen, setExploreOpen] = useState(false);
 
   useEffect(() => {
@@ -220,9 +198,6 @@ export default function Home() {
           fetch(`${API_URL}/content/public/prophecy`),
           fetch(`${API_URL}/content/public/history`),
           fetch(`${API_URL}/content/public/articles`),
-          fetch(
-            `${API_URL}/content/public/daily-inspirations/today`
-          ),
         ]);
 
         if (!mounted) return;
@@ -236,193 +211,160 @@ export default function Home() {
           prophecyResult,
           historyResult,
           articlesResult,
-          inspirationResult,
         ] = results;
 
-        /*
-        |--------------------------------------------------------------------------
-        | SITE SETTINGS
-        |--------------------------------------------------------------------------
-        */
+        // SITE SETTINGS
         if (
           settingsResult.status === "fulfilled" &&
           settingsResult.value.ok
         ) {
-          const data = await settingsResult.value.json();
+          try {
+            const data = await settingsResult.value.json();
 
-          if (mounted) {
-            setSiteSettings(data);
+            if (mounted) {
+              setSiteSettings(data);
+            }
+          } catch (error) {
+            console.warn("Unable to parse site settings:", error);
           }
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | HOMEPAGE SETTINGS
-        |--------------------------------------------------------------------------
-        */
+        // HOMEPAGE SETTINGS
         if (
           homepageResult.status === "fulfilled" &&
           homepageResult.value.ok
         ) {
-          const data = await homepageResult.value.json();
+          try {
+            const data = await homepageResult.value.json();
 
-          if (mounted) {
-            setHomepageSettings({
-              ...DEFAULT_HOMEPAGE_SETTINGS,
-              ...(data?.settings || data || {}),
-            });
+            if (mounted) {
+              setHomepageSettings({
+                ...DEFAULT_HOMEPAGE_SETTINGS,
+                ...(data?.settings || data || {}),
+              });
+            }
+          } catch (error) {
+            console.warn("Unable to parse homepage settings:", error);
           }
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | FEATURED STUDIES
-        |--------------------------------------------------------------------------
-        */
+        // FEATURED STUDIES
         if (
           featuredStudiesResult.status === "fulfilled" &&
           featuredStudiesResult.value.ok
         ) {
-          const data =
-            await featuredStudiesResult.value.json();
+          try {
+            const data = await featuredStudiesResult.value.json();
 
-          if (mounted) {
-            setFeaturedStudies(
-              Array.isArray(data)
-                ? data
-                : data?.studies || []
-            );
+            if (mounted) {
+              setFeaturedStudies(
+                Array.isArray(data) ? data : data?.studies || []
+              );
+            }
+          } catch (error) {
+            console.warn("Unable to parse featured studies:", error);
+            if (mounted) setFeaturedStudies([]);
           }
         } else if (mounted) {
           setFeaturedStudies([]);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | FEATURED VIDEO
-        |--------------------------------------------------------------------------
-        */
+        // FEATURED VIDEO
         if (
           videoResult.status === "fulfilled" &&
           videoResult.value.ok
         ) {
-          const data = await videoResult.value.json();
+          try {
+            const data = await videoResult.value.json();
 
-          if (mounted) {
-            setFeaturedVideo(
-              data?.success && data?.video
-                ? data.video
-                : null
-            );
+            if (mounted) {
+              setFeaturedVideo(
+                data?.success && data?.video ? data.video : null
+              );
+            }
+          } catch (error) {
+            console.warn("Unable to parse featured video:", error);
+            if (mounted) setFeaturedVideo(null);
           }
         } else if (mounted) {
           setFeaturedVideo(null);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | ALL BIBLE STUDIES
-        |--------------------------------------------------------------------------
-        */
+        // ALL BIBLE STUDIES
         if (
           studiesResult.status === "fulfilled" &&
           studiesResult.value.ok
         ) {
-          const data = await studiesResult.value.json();
+          try {
+            const data = await studiesResult.value.json();
 
-          if (mounted) {
-            setBibleStudies(
-              Array.isArray(data)
-                ? data
-                : data?.items || []
-            );
+            if (mounted) {
+              setBibleStudies(
+                Array.isArray(data) ? data : data?.items || []
+              );
+            }
+          } catch (error) {
+            console.warn("Unable to parse Bible studies:", error);
           }
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | PROPHECY
-        |--------------------------------------------------------------------------
-        */
+        // PROPHECY
         if (
           prophecyResult.status === "fulfilled" &&
           prophecyResult.value.ok
         ) {
-          const data =
-            await prophecyResult.value.json();
+          try {
+            const data = await prophecyResult.value.json();
 
-          if (mounted) {
-            setProphecies(
-              Array.isArray(data)
-                ? data
-                : data?.items || []
-            );
+            if (mounted) {
+              setProphecies(
+                Array.isArray(data) ? data : data?.items || []
+              );
+            }
+          } catch (error) {
+            console.warn("Unable to parse prophecy:", error);
           }
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | HISTORY
-        |--------------------------------------------------------------------------
-        */
+        // HISTORY
         if (
           historyResult.status === "fulfilled" &&
           historyResult.value.ok
         ) {
-          const data =
-            await historyResult.value.json();
+          try {
+            const data = await historyResult.value.json();
 
-          if (mounted) {
-            setHistories(
-              Array.isArray(data)
-                ? data
-                : data?.items || []
-            );
+            if (mounted) {
+              setHistories(
+                Array.isArray(data) ? data : data?.items || []
+              );
+            }
+          } catch (error) {
+            console.warn("Unable to parse history:", error);
           }
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | ARTICLES
-        |--------------------------------------------------------------------------
-        */
+        // ARTICLES
         if (
           articlesResult.status === "fulfilled" &&
           articlesResult.value.ok
         ) {
-          const data =
-            await articlesResult.value.json();
+          try {
+            const data = await articlesResult.value.json();
 
-          if (mounted) {
-            setArticles(
-              Array.isArray(data)
-                ? data
-                : data?.articles || data?.items || []
-            );
-          }
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | DAILY INSPIRATION
-        |--------------------------------------------------------------------------
-        */
-        if (
-          inspirationResult.status === "fulfilled" &&
-          inspirationResult.value.ok
-        ) {
-          const data =
-            await inspirationResult.value.json();
-
-          if (mounted) {
-            setDailyInspiration(data);
+            if (mounted) {
+              setArticles(
+                Array.isArray(data)
+                  ? data
+                  : data?.articles || data?.items || []
+              );
+            }
+          } catch (error) {
+            console.warn("Unable to parse articles:", error);
           }
         }
       } catch (error) {
-        console.error(
-          "Unable to load home content:",
-          error
-        );
+        console.error("Unable to load home content:", error);
       } finally {
         if (mounted) {
           setLoadingContent(false);
@@ -430,97 +372,78 @@ export default function Home() {
       }
     }
 
+    // Daily Inspiration loads independently from the main homepage batch.
+    async function loadDailyInspiration() {
+      try {
+        const response = await fetch(
+          `${API_URL}/content/public/daily-inspirations/today`
+        );
+
+        // A missing entry for today is valid. Use the fallback scripture.
+        if (!response.ok) return;
+
+        const data = await response.json();
+
+        if (mounted) {
+          setDailyInspiration(data?.inspiration || data);
+        }
+      } catch (error) {
+        console.warn(
+          "Daily Inspiration is temporarily unavailable:",
+          error
+        );
+      }
+    }
+
     loadHomeContent();
+    loadDailyInspiration();
 
     return () => {
       mounted = false;
     };
   }, []);
 
-  /*
-  |--------------------------------------------------------------------------
-  | SCRIPTURE
-  |--------------------------------------------------------------------------
-  */
   const scriptureText =
-    dailyInspiration?.scripture_text ||
-    DEFAULT_SCRIPTURE;
+    dailyInspiration?.scripture_text || DEFAULT_SCRIPTURE;
 
   const scriptureReference =
     dailyInspiration?.scripture_reference ||
     DEFAULT_SCRIPTURE_REFERENCE;
 
-  /*
-  |--------------------------------------------------------------------------
-  | LIMITS
-  |--------------------------------------------------------------------------
-  */
   const featuredStudiesLimit = Math.min(
     3,
     Math.max(
       1,
-      Number(
-        homepageSettings.featured_studies_limit
-      ) || 3
+      Number(homepageSettings.featured_studies_limit) || 3
     )
   );
 
-  const displayedFeaturedStudies =
-    featuredStudies.slice(
-      0,
-      featuredStudiesLimit
-    );
+  const displayedFeaturedStudies = featuredStudies.slice(
+    0,
+    featuredStudiesLimit
+  );
 
   const articlesLimit = Math.max(
     1,
     Number(homepageSettings.articles_limit) || 3
   );
 
-  const latestArticles = articles.slice(
-    0,
-    articlesLimit
-  );
+  const latestArticles = articles.slice(0, articlesLimit);
 
-  /*
-  |--------------------------------------------------------------------------
-  | VISIBILITY
-  |--------------------------------------------------------------------------
-  */
-  const showHero =
-    homepageSettings.hero_enabled !== false;
-
+  const showHero = homepageSettings.hero_enabled !== false;
   const showDailyInspiration =
-    homepageSettings.daily_inspiration_enabled !==
-    false;
-
+    homepageSettings.daily_inspiration_enabled !== false;
   const showFeaturedStudies =
-    homepageSettings.featured_studies_enabled !==
-    false;
-
-  const showProphecy =
-    homepageSettings.prophecy_enabled !== false;
-
-  const showTopics =
-    homepageSettings.topics_enabled !== false;
-
-  const showArticles =
-    homepageSettings.articles_enabled !== false;
-
+    homepageSettings.featured_studies_enabled !== false;
+  const showProphecy = homepageSettings.prophecy_enabled !== false;
+  const showTopics = homepageSettings.topics_enabled !== false;
+  const showArticles = homepageSettings.articles_enabled !== false;
   const showFeaturedVideo =
-    homepageSettings.featured_video_enabled !==
-    false;
-
+    homepageSettings.featured_video_enabled !== false;
   const showNewsletter =
     homepageSettings.newsletter_enabled !== false;
+  const showFinalCta = homepageSettings.final_cta_enabled !== false;
 
-  const showFinalCta =
-    homepageSettings.final_cta_enabled !== false;
-
-  /*
-  |--------------------------------------------------------------------------
-  | CLOSE EXPLORE MENU WHEN ROUTING
-  |--------------------------------------------------------------------------
-  */
   const handleExploreClick = () => {
     setExploreOpen(false);
   };
@@ -536,32 +459,24 @@ export default function Home() {
       <Navbar />
 
       <main>
-        {/* =====================================================
-            HERO
-        ====================================================== */}
+        {/* HERO */}
         {showHero && (
           <section className="hero">
-            <div
-              className="hero-background"
-              aria-hidden="true"
-            />
+            <div className="hero-background" aria-hidden="true" />
 
             <div className="container hero-container">
               <div className="hero-content">
                 <span className="eyebrow">
-                  {siteSettings?.site_name ||
-                    "PILGRIM TRUTH"}
+                  {siteSettings?.site_name || "PILGRIM TRUTH"}
                 </span>
 
-
                 <h1>
-                  {siteSettings?.hero_title || "Seeking Truth."}
-                  {" "}
+                  {siteSettings?.hero_title || "Seeking Truth."}{" "}
                   <em>
-                    {siteSettings?.hero_subtitle || "Studying Scripture."}
+                    {siteSettings?.hero_subtitle ||
+                      "Studying Scripture."}
                   </em>
                 </h1>
-
 
                 <div className="hero-introduction">
                   <span className="hero-introduction-label">
@@ -569,36 +484,27 @@ export default function Home() {
                   </span>
 
                   <p>
-                    This is a Christ-centred ministry
-                    committed to exploring the Bible,
-                    understanding God's Word and sharing
-                    timeless truths for spiritual
-                    nourishment. Through Scripture,
-                    prophecy, faith, and practical
-                    Christian living, we seek to inspire
-                    people to know Christ more deeply and
-                    walk faithfully in His light.
+                    This is a Christ-centred ministry committed to
+                    exploring the Bible, understanding God's Word and
+                    sharing timeless truths for spiritual nourishment.
+                    Through Scripture, prophecy, faith, and practical
+                    Christian living, we seek to inspire people to know
+                    Christ more deeply and walk faithfully in His light.
                   </p>
                 </div>
 
                 <div className="hero-actions">
-                  {/* =================================================
-                      EXPLORE SCRIPTURE MENU
-                  ================================================== */}
                   <div className="explore-wrapper">
                     <button
                       type="button"
                       className="btn btn-primary explore-button"
                       onClick={() =>
-                        setExploreOpen(
-                          (previous) => !previous
-                        )
+                        setExploreOpen((previous) => !previous)
                       }
                       aria-expanded={exploreOpen}
                       aria-haspopup="menu"
                     >
                       Explore Scripture
-
                       {exploreOpen ? (
                         <X size={17} />
                       ) : (
@@ -607,88 +513,60 @@ export default function Home() {
                     </button>
 
                     {exploreOpen && (
-                      <div
-                        className="explore-menu"
-                        role="menu"
-                      >
+                      <div className="explore-menu" role="menu">
                         <div className="explore-menu-header">
-                          <span>
-                            EXPLORE PILGRIM TRUTH
-                          </span>
-
-                          <p>
-                            Choose an area to begin
-                            exploring.
-                          </p>
+                          <span>EXPLORE PILGRIM TRUTH</span>
+                          <p>Choose an area to begin exploring.</p>
                         </div>
 
                         <div className="explore-menu-grid">
-                          {EXPLORE_ITEMS.map(
-                            (item) => {
-                              const Icon =
-                                item.icon;
+                          {EXPLORE_ITEMS.map((item) => {
+                            const Icon = item.icon;
 
-                              return (
-                                <Link
-                                  key={item.title}
-                                  to={item.path}
-                                  className="explore-menu-item"
-                                  role="menuitem"
-                                  onClick={
-                                    handleExploreClick
-                                  }
-                                >
-                                  <span className="explore-menu-icon">
-                                    <Icon
-                                      size={19}
-                                      strokeWidth={1.7}
-                                    />
-                                  </span>
-
-                                  <span className="explore-menu-content">
-                                    <strong>
-                                      {item.title}
-                                    </strong>
-
-                                    <small>
-                                      {
-                                        item.description
-                                      }
-                                    </small>
-                                  </span>
-
-                                  <ArrowRight
-                                    size={15}
-                                    className="explore-menu-arrow"
+                            return (
+                              <Link
+                                key={item.title}
+                                to={item.path}
+                                className="explore-menu-item"
+                                role="menuitem"
+                                onClick={handleExploreClick}
+                              >
+                                <span className="explore-menu-icon">
+                                  <Icon
+                                    size={19}
+                                    strokeWidth={1.7}
                                   />
-                                </Link>
-                              );
-                            }
-                          )}
+                                </span>
+
+                                <span className="explore-menu-content">
+                                  <strong>{item.title}</strong>
+                                  <small>{item.description}</small>
+                                </span>
+
+                                <ArrowRight
+                                  size={15}
+                                  className="explore-menu-arrow"
+                                />
+                              </Link>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
                   </div>
 
-                  <Link
-                    to="/videos"
-                    className="btn btn-secondary"
-                  >
+                  <Link to="/videos" className="btn btn-secondary">
                     <Play size={16} />
                     Watch &amp; Learn
                   </Link>
                 </div>
               </div>
 
-              {/* DAILY INSPIRATION */}
               {showDailyInspiration && (
                 <div className="hero-inspiration">
                   <div className="hero-inspiration-heading">
                     <span className="hero-inspiration-line" />
-
-                    <span>
-                      Daily Inspiration
-                    </span>
+                    <span>Daily Inspiration</span>
                   </div>
 
                   <Quote
@@ -697,9 +575,7 @@ export default function Home() {
                     strokeWidth={1.5}
                   />
 
-                  <blockquote>
-                    “{scriptureText}”
-                  </blockquote>
+                  <blockquote>“{scriptureText}”</blockquote>
 
                   <span className="hero-inspiration-reference">
                     {scriptureReference}
@@ -710,19 +586,11 @@ export default function Home() {
           </section>
         )}
 
-        {/* =====================================================
-            PURPOSE
-        ====================================================== */}
-        <section
-          className="section intro"
-          id="purpose"
-        >
+        {/* PURPOSE */}
+        <section className="section intro" id="purpose">
           <div className="container intro-grid">
             <div className="intro-heading">
-              <span className="section-label">
-                OUR PURPOSE
-              </span>
-
+              <span className="section-label">OUR PURPOSE</span>
               <h2>
                 Seeking truth with
                 <span> Scripture at the center.</span>
@@ -731,22 +599,17 @@ export default function Home() {
 
             <div className="intro-content">
               <p>
-                Pilgrim Truth exists to encourage
-                thoughtful Bible study and a deeper
-                understanding of God's Word.
+                Pilgrim Truth exists to encourage thoughtful Bible study
+                and a deeper understanding of God's Word.
               </p>
 
               <p>
-                Through Scripture, history, prophecy,
-                and practical Christian living, we seek
-                to help people discover truth and apply
-                it to everyday life.
+                Through Scripture, history, prophecy, and practical
+                Christian living, we seek to help people discover truth
+                and apply it to everyday life.
               </p>
 
-              <Link
-                to="/bible-studies"
-                className="text-link"
-              >
+              <Link to="/bible-studies" className="text-link">
                 Explore our studies
                 <ArrowRight size={16} />
               </Link>
@@ -754,9 +617,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* =====================================================
-            FEATURED STUDIES
-        ====================================================== */}
+        {/* FEATURED STUDIES */}
         {showFeaturedStudies && (
           <section
             className="section featured-studies"
@@ -768,14 +629,10 @@ export default function Home() {
                   <span className="section-label">
                     FEATURED STUDIES
                   </span>
-
-                  <h2>
-                    Explore Scripture deeply.
-                  </h2>
-
+                  <h2>Explore Scripture deeply.</h2>
                   <p>
-                    Start with a study and continue
-                    discovering the biblical message.
+                    Start with a study and continue discovering the
+                    biblical message.
                   </p>
                 </div>
 
@@ -789,112 +646,81 @@ export default function Home() {
               </div>
 
               {loadingContent ? (
-                <div className="home-state">
-                  Loading studies...
-                </div>
-              ) : displayedFeaturedStudies.length ===
-                0 ? (
+                <div className="home-state">Loading studies...</div>
+              ) : displayedFeaturedStudies.length === 0 ? (
                 <div className="empty-content">
                   <BookOpen size={24} />
-
                   <p>
-                    Featured Bible Studies will appear
-                    here soon.
+                    Featured Bible Studies will appear here soon.
                   </p>
                 </div>
               ) : (
                 <div className="study-grid">
-                  {displayedFeaturedStudies.map(
-                    (study, index) => {
-                      const image = getImageUrl(
-                        study.featured_image ||
-                        study.image
-                      );
+                  {displayedFeaturedStudies.map((study, index) => {
+                    const image = getImageUrl(
+                      study.featured_image || study.image
+                    );
 
-                      const studyId =
-                        study.bible_study_id ||
-                        study.id;
+                    const studyId =
+                      study.bible_study_id || study.id;
 
-                      return (
-                        <article
-                          className="study-card"
-                          key={studyId}
-                        >
-                          {image ? (
-                            <div className="study-card-image-wrap">
-                              <img
-                                src={image}
-                                alt={
-                                  study.title ||
-                                  "Bible Study"
-                                }
-                                className="study-card-image"
-                              />
-
-                              <span className="study-card-number">
-                                {String(
-                                  index + 1
-                                ).padStart(2, "0")}
-                              </span>
-                            </div>
-                          ) : (
-                            <div className="study-card-visual">
-                              <span className="study-card-number">
-                                {String(
-                                  index + 1
-                                ).padStart(2, "0")}
-                              </span>
-
-                              <BookOpen
-                                size={42}
-                                strokeWidth={1.35}
-                              />
-
-                              <span className="study-card-visual-label">
-                                Bible Study
-                              </span>
-                            </div>
-                          )}
-
-                          <div className="study-card-content">
-                            <span className="card-label">
-                              {study.category ||
-                                "Bible Study"}
+                    return (
+                      <article className="study-card" key={studyId}>
+                        {image ? (
+                          <div className="study-card-image-wrap">
+                            <img
+                              src={image}
+                              alt={study.title || "Bible Study"}
+                              className="study-card-image"
+                              loading="lazy"
+                            />
+                            <span className="study-card-number">
+                              {String(index + 1).padStart(2, "0")}
                             </span>
-
-                            <h3>
-                              {study.title ||
-                                "Bible Study"}
-                            </h3>
-
-                            <p>
-                              {study.description ||
-                                study.excerpt ||
-                                "Explore this Bible Study and discover more from Scripture."}
-                            </p>
-
-                            <Link
-                              to={`/bible-studies/${study.slug || studyId
-                                }`}
-                              className="study-card-link"
-                            >
-                              Read study
-                              <ArrowRight size={15} />
-                            </Link>
                           </div>
-                        </article>
-                      );
-                    }
-                  )}
+                        ) : (
+                          <div className="study-card-visual">
+                            <span className="study-card-number">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <BookOpen
+                              size={42}
+                              strokeWidth={1.35}
+                            />
+                            <span className="study-card-visual-label">
+                              Bible Study
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="study-card-content">
+                          <span className="card-label">
+                            {study.category || "Bible Study"}
+                          </span>
+                          <h3>{study.title || "Bible Study"}</h3>
+                          <p>
+                            {study.description ||
+                              study.excerpt ||
+                              "Explore this Bible Study and discover more from Scripture."}
+                          </p>
+                          <Link
+                            to={`/bible-studies/${study.slug || studyId}`}
+                            className="study-card-link"
+                          >
+                            Read study
+                            <ArrowRight size={15} />
+                          </Link>
+                        </div>
+                      </article>
+                    );
+                  })}
                 </div>
               )}
             </div>
           </section>
         )}
 
-        {/* =====================================================
-            PROPHECY
-        ====================================================== */}
+        {/* PROPHECY */}
         {showProphecy && (
           <section
             className="section prophecy-feature"
@@ -905,28 +731,21 @@ export default function Home() {
                 <span className="section-label">
                   BIBLICAL PROPHECY
                 </span>
-
                 <h2>
                   Understanding prophecy through
                   <em> Scripture.</em>
                 </h2>
-
                 <p>
-                  Explore biblical prophecy with
-                  attention to Scripture, historical
-                  context, and the central message of
-                  hope found throughout God's Word.
+                  Explore biblical prophecy with attention to Scripture,
+                  historical context, and the central message of hope
+                  found throughout God's Word.
                 </p>
 
                 <div className="prophecy-actions">
-                  <Link
-                    to="/prophecy"
-                    className="btn btn-primary"
-                  >
+                  <Link to="/prophecy" className="btn btn-primary">
                     Explore Prophecy
                     <ArrowRight size={17} />
                   </Link>
-
                   <Link
                     to="/bible-studies"
                     className="btn btn-outline-light"
@@ -941,32 +760,23 @@ export default function Home() {
                   <span className="prophecy-scripture-icon">
                     <Quote size={19} />
                   </span>
-
-                  <span>
-                    THE WORD OF GOD
-                  </span>
+                  <span>THE WORD OF GOD</span>
                 </div>
 
                 <blockquote>
-                  “Surely the Lord GOD will do nothing,
-                  but he revealeth his secret unto his
-                  servants the prophets.”
+                  “Surely the Lord GOD will do nothing, but he revealeth
+                  his secret unto his servants the prophets.”
                 </blockquote>
-
                 <cite>Amos 3:7</cite>
-
                 <p className="prophecy-scripture-note">
-                  Scripture remains the foundation of
-                  our study.
+                  Scripture remains the foundation of our study.
                 </p>
               </div>
             </div>
           </section>
         )}
 
-        {/* =====================================================
-            TOPICS
-        ====================================================== */}
+        {/* TOPICS */}
         {showTopics && (
           <section
             className="section topics-section"
@@ -978,14 +788,9 @@ export default function Home() {
                   <span className="section-label">
                     WHAT WE EXPLORE
                   </span>
-
-                  <h2>
-                    Discover more.
-                  </h2>
-
+                  <h2>Discover more.</h2>
                   <p>
-                    Explore the different areas of
-                    Pilgrim Truth.
+                    Explore the different areas of Pilgrim Truth.
                   </p>
                 </div>
               </div>
@@ -1001,29 +806,15 @@ export default function Home() {
                       key={topic.title}
                     >
                       <span className="topic-number">
-                        {String(index + 1).padStart(
-                          2,
-                          "0"
-                        )}
+                        {String(index + 1).padStart(2, "0")}
                       </span>
-
                       <span className="topic-icon">
-                        <Icon
-                          size={22}
-                          strokeWidth={1.6}
-                        />
+                        <Icon size={22} strokeWidth={1.6} />
                       </span>
-
                       <span className="topic-content">
-                        <h3>
-                          {topic.title}
-                        </h3>
-
-                        <p>
-                          {topic.description}
-                        </p>
+                        <h3>{topic.title}</h3>
+                        <p>{topic.description}</p>
                       </span>
-
                       <span className="topic-arrow">
                         <ArrowRight size={17} />
                       </span>
@@ -1035,9 +826,7 @@ export default function Home() {
           </section>
         )}
 
-        {/* =====================================================
-            ARTICLES
-        ====================================================== */}
+        {/* ARTICLES */}
         {showArticles && (
           <section
             className="section articles-section"
@@ -1049,14 +838,10 @@ export default function Home() {
                   <span className="section-label">
                     LATEST ARTICLES
                   </span>
-
-                  <h2>
-                    Read and reflect.
-                  </h2>
-
+                  <h2>Read and reflect.</h2>
                   <p>
-                    Fresh perspectives and biblical
-                    reflections for your journey.
+                    Fresh perspectives and biblical reflections for
+                    your journey.
                   </p>
                 </div>
 
@@ -1070,23 +855,17 @@ export default function Home() {
               </div>
 
               {loadingContent ? (
-                <div className="home-state">
-                  Loading articles...
-                </div>
+                <div className="home-state">Loading articles...</div>
               ) : latestArticles.length === 0 ? (
                 <div className="empty-content">
                   <BookOpen size={24} />
-
-                  <p>
-                    New articles will appear here soon.
-                  </p>
+                  <p>New articles will appear here soon.</p>
                 </div>
               ) : (
                 <div className="articles-grid">
                   {latestArticles.map((article) => {
                     const image = getImageUrl(
-                      article.featured_image ||
-                      article.image
+                      article.featured_image || article.image
                     );
 
                     return (
@@ -1097,11 +876,9 @@ export default function Home() {
                         {image ? (
                           <img
                             src={image}
-                            alt={
-                              article.title ||
-                              "Article"
-                            }
+                            alt={article.title || "Article"}
                             className="article-image"
+                            loading="lazy"
                           />
                         ) : (
                           <div className="article-image article-image-empty">
@@ -1114,14 +891,9 @@ export default function Home() {
 
                         <div className="article-content">
                           <span className="article-category">
-                            {article.category ||
-                              "Reflection"}
+                            {article.category || "Reflection"}
                           </span>
-
-                          <h3>
-                            {article.title}
-                          </h3>
-
+                          <h3>{article.title}</h3>
                           <p>
                             {article.excerpt ||
                               article.description ||
@@ -1132,14 +904,11 @@ export default function Home() {
                             <span className="article-date">
                               {formatArticleDate(
                                 article.published_at ||
-                                article.created_at
+                                  article.created_at
                               )}
                             </span>
-
                             <Link
-                              to={`/articles/${article.slug ||
-                                article.id
-                                }`}
+                              to={`/articles/${article.slug || article.id}`}
                               className="article-link"
                             >
                               Read
@@ -1156,9 +925,7 @@ export default function Home() {
           </section>
         )}
 
-        {/* =====================================================
-            VIDEO + SCRIPTURE
-        ====================================================== */}
+        {/* VIDEO + SCRIPTURE */}
         {showFeaturedVideo && (
           <section
             className="section video-scripture-section"
@@ -1169,24 +936,17 @@ export default function Home() {
                 <div className="video-feature-media">
                   {featuredVideo?.thumbnail_url ? (
                     <img
-                      src={getImageUrl(
-                        featuredVideo.thumbnail_url
-                      )}
-                      alt={
-                        featuredVideo.title ||
-                        "Featured video"
-                      }
+                      src={getImageUrl(featuredVideo.thumbnail_url)}
+                      alt={featuredVideo.title || "Featured video"}
                       className="video-feature-image"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="video-feature-empty">
                       <span className="video-empty-icon">
                         <Play size={30} />
                       </span>
-
-                      <span>
-                        Featured video
-                      </span>
+                      <span>Featured video</span>
                     </div>
                   )}
 
@@ -1196,34 +956,24 @@ export default function Home() {
                       className="video-action"
                       aria-label="Watch featured video"
                     >
-                      <Play
-                        size={22}
-                        fill="currentColor"
-                      />
+                      <Play size={22} fill="currentColor" />
                     </Link>
                   </div>
                 </div>
 
                 <div className="video-feature-content">
                   <span className="video-category">
-                    {featuredVideo?.category ||
-                      "FEATURED VIDEO"}
+                    {featuredVideo?.category || "FEATURED VIDEO"}
                   </span>
-
                   <h3>
                     {featuredVideo?.title ||
                       "Discover biblical truth through video."}
                   </h3>
-
                   <p>
-                    Explore Bible-focused presentations,
-                    teachings and studies.
+                    Explore Bible-focused presentations, teachings and
+                    studies.
                   </p>
-
-                  <Link
-                    to="/videos"
-                    className="video-link"
-                  >
+                  <Link to="/videos" className="video-link">
                     Browse videos
                     <ArrowRight size={15} />
                   </Link>
@@ -1234,35 +984,25 @@ export default function Home() {
                 <span className="scripture-card-label">
                   SCRIPTURE
                 </span>
-
                 <Quote
                   className="scripture-card-quote"
                   size={28}
                   strokeWidth={1.4}
                 />
-
-                <blockquote>
-                  “{scriptureText}”
-                </blockquote>
-
+                <blockquote>“{scriptureText}”</blockquote>
                 <span className="scripture-reference">
                   {scriptureReference}
                 </span>
-
                 <div className="scripture-card-footer">
                   <span />
-                  <span>
-                    THE WORD REMAINS
-                  </span>
+                  <span>THE WORD REMAINS</span>
                 </div>
               </div>
             </div>
           </section>
         )}
 
-        {/* =====================================================
-            NEWSLETTER
-        ====================================================== */}
+        {/* NEWSLETTER */}
         {showNewsletter && (
           <section
             className="newsletter-section"
@@ -1270,33 +1010,21 @@ export default function Home() {
           >
             <div className="container">
               <div className="newsletter-box">
-                <div className="newsletter-mark">
-                  PT
-                </div>
+                <div className="newsletter-mark">PT</div>
 
                 <div className="newsletter-content">
                   <span className="section-label">
                     STAY CONNECTED
                   </span>
-
-                  <h2>
-                    {
-                      homepageSettings.newsletter_title
-                    }
-                  </h2>
-
+                  <h2>{homepageSettings.newsletter_title}</h2>
                   <p>
-                    {
-                      homepageSettings.newsletter_description
-                    }
+                    {homepageSettings.newsletter_description}
                   </p>
                 </div>
 
                 <form
                   className="newsletter-form"
-                  onSubmit={(event) =>
-                    event.preventDefault()
-                  }
+                  onSubmit={(event) => event.preventDefault()}
                 >
                   <div className="newsletter-input">
                     <input
@@ -1304,16 +1032,13 @@ export default function Home() {
                       placeholder="Your email address"
                       aria-label="Email address"
                     />
-
                     <button type="submit">
                       Subscribe
                       <ArrowRight size={15} />
                     </button>
                   </div>
-
                   <span className="newsletter-helper">
-                    We respect your inbox. No
-                    unnecessary emails.
+                    We respect your inbox. No unnecessary emails.
                   </span>
                 </form>
               </div>
@@ -1321,23 +1046,13 @@ export default function Home() {
           </section>
         )}
 
-        {/* =====================================================
-            FINAL CTA
-        ====================================================== */}
+        {/* FINAL CTA */}
         {showFinalCta && (
           <section className="cta-section">
             <div className="container cta-content">
-              <span className="section-label">
-                KEEP SEEKING
-              </span>
-
-              <h2>
-                {homepageSettings.final_cta_title}
-              </h2>
-
-              <p>
-                {homepageSettings.final_cta_description}
-              </p>
+              <span className="section-label">KEEP SEEKING</span>
+              <h2>{homepageSettings.final_cta_title}</h2>
+              <p>{homepageSettings.final_cta_description}</p>
 
               <div className="cta-actions">
                 <Link
@@ -1347,11 +1062,7 @@ export default function Home() {
                   Start a Study
                   <ArrowRight size={17} />
                 </Link>
-
-                <Link
-                  to="/articles"
-                  className="btn btn-secondary"
-                >
+                <Link to="/articles" className="btn btn-secondary">
                   Read Articles
                 </Link>
               </div>

@@ -1,20 +1,21 @@
 import { useAuth } from "../../context/AuthContext";
 import { Link, NavLink, useLocation } from "react-router-dom";
+
 import {
   ArrowRight,
   BookOpen,
   ChevronDown,
-  Cross,
   FileText,
   Flame,
-  Heart,
   History,
+  Heart,
   Menu,
   MessageCircle,
   Play,
   Search,
   X,
 } from "lucide-react";
+
 import { useEffect, useState } from "react";
 import "./Navbar.css";
 
@@ -219,22 +220,31 @@ function Navbar() {
     <>
       <header className="navbar">
         <div className="nav-inner">
-          {/* Brand */}
-          <Link
-            to="/"
-            className="navbar-brand"
-            onClick={closeMenus}
-            aria-label="Pilgrim Truth Home"
-          >
-            <span className="brand-mark">
-              <Cross size={21} strokeWidth={2.2} />
-            </span>
+        
+{/* Brand */}
+<Link
+  to="/"
+  className="navbar-brand"
+  onClick={closeMenus}
+  aria-label="Pilgrim Truth Ministry Home"
+>
+  <span className="brand-mark">
+    <img
+      src="/images/logo-icon.png"
+      alt=""
+      className="navbar-logo"
+      onError={(event) => {
+        event.currentTarget.style.visibility = "hidden";
+      }}
+    />
+  </span>
 
-            <span className="brand-text">
-              <span className="brand-primary">PILGRIM</span>
-              <span className="brand-secondary">TRUTH</span>
-            </span>
-          </Link>
+  <span className="brand-text">
+    <span className="brand-primary">PILGRIM</span>
+    <span className="brand-secondary">TRUTH MINISTRY</span>
+  </span>
+</Link>
+
 
           {/* Desktop / Mobile Navigation */}
           <nav
@@ -259,9 +269,8 @@ function Navbar() {
             <div className="nav-more">
               <button
                 type="button"
-                className={`nav-more-trigger ${
-                  moreIsActive ? "active" : ""
-                }`}
+                className={`nav-more-trigger ${moreIsActive ? "active" : ""
+                  }`}
                 onClick={() => setMoreOpen((open) => !open)}
                 aria-expanded={moreOpen}
               >
@@ -273,9 +282,8 @@ function Navbar() {
               </button>
 
               <div
-                className={`nav-more-menu ${
-                  moreOpen ? "show" : ""
-                }`}
+                className={`nav-more-menu ${moreOpen ? "show" : ""
+                  }`}
               >
                 {moreLinks.map((item) => {
                   const Icon = item.icon;
@@ -393,9 +401,8 @@ function Navbar() {
                 </button>
 
                 <div
-                  className={`account-menu ${
-                    accountOpen ? "show" : ""
-                  }`}
+                  className={`account-menu ${accountOpen ? "show" : ""
+                    }`}
                 >
                   {isAdmin && (
                     <Link

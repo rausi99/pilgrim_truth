@@ -26,7 +26,7 @@ const BACKEND_URL = API_URL.replace(/\/api\/?$/, "");
  */
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&w=1600&q=70";
-const PROPHECY_FALLBACK_IMAGE = "/images/prophecy.jpeg";
+const PROPHECY_FALLBACK_IMAGE = "/images/pil1.jpeg";
 function getReadingTime(content = "") {
   const words = content.trim().split(/\s+/).filter(Boolean).length;
 

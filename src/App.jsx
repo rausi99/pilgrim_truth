@@ -175,6 +175,11 @@ function App() {
           element={<Health />}
         />
 
+        <Route
+          path="/health/:slug"
+          element={<ArticleDetail contentType="health" />}
+        />
+
         {/* Articles */}
         <Route
           path="/articles"

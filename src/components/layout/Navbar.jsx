@@ -230,7 +230,7 @@ function Navbar() {
 >
   <span className="brand-mark">
     <img
-      src="/images//logo.jpeg"
+      src="/images/logo.jpeg"
       alt=""
       className="navbar-logo"
       onError={(event) => {

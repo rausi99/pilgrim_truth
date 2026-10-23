@@ -15,7 +15,7 @@ const publicSettingsRoutes = require("./routes/publicSettingsRoutes");
 const homepageRoutes = require("./routes/homepageRoutes");
 const publicHomepageRoutes = require("./routes/publicHomepageRoutes");
 
-import compression from "compression";
+const compression = require("compression");
 
 const app = express();
 app.use(compression());

@@ -1,39 +1,40 @@
+
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-const uploadDirectory = path.join(
-  __dirname,
-  "../../uploads/images"
-);
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-if (!fs.existsSync(uploadDirectory)) {
-  fs.mkdirSync(uploadDirectory, {
-    recursive: true,
-  });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDirectory);
-  },
-
-  filename: (req, file, cb) => {
-    const extension = path
-      .extname(file.originalname)
-      .toLowerCase();
-
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
     const baseName = path
-      .basename(file.originalname, extension)
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "-")
-      .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "");
+      .parse(file.originalname)
+      .name.toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+      .slice(0, 80);
 
-    const uniqueName =
-      `${Date.now()}-${baseName || "image"}${extension}`;
-
-    cb(null, uniqueName);
+    return {
+      folder: "pilgrim-truth/images",
+      public_id: `${Date.now()}-${baseName || "image"}`,
+      resource_type: "image",
+      allowed_formats: ["jpg", "jpeg", "png", "webp", "gif"],
+      transformation: [
+        {
+          width: 1600,
+          height: 1600,
+          crop: "limit",
+          quality: "auto",
+          fetch_format: "auto",
+        },
+      ],
+    };
   },
 });
 
@@ -63,7 +64,7 @@ const fileFilter = (req, file, cb) => {
   ) {
     return cb(
       new Error(
-        "Unsupported image type. Please upload a JPG, JPEG, PNG, WebP, or GIF image."
+        "Unsupported image type. Please upload JPG, PNG, WebP, or GIF."
       )
     );
   }

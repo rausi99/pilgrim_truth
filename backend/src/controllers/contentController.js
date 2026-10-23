@@ -2981,7 +2981,7 @@ const uploadArticleImage = async (req, res) => {
       });
     }
 
-    const imageUrl = `/uploads/images/${req.file.filename}`;
+    const imageUrl = req.file.path;
 
     return res.status(201).json({
       success: true,

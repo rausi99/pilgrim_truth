@@ -1,0 +1,226 @@
+.rich-editor-wrapper {
+  width: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #cfd9e3;
+  border-radius: 9px;
+}
+
+.rich-editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  background: #f6f9fc;
+  border-bottom: 1px solid #dfe6ee;
+}
+
+.rich-toolbar-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-right: 8px;
+  border-right: 1px solid #dce4eb;
+}
+
+.rich-toolbar-group:last-child {
+  padding-right: 0;
+  border-right: none;
+}
+
+.rich-editor-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 32px;
+  padding: 5px 8px;
+  color: #344b5d;
+  background: #ffffff;
+  border: 1px solid #d5dfe8;
+  border-radius: 5px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.rich-editor-button:hover {
+  color: #145da0;
+  background: #eaf3fa;
+  border-color: #a9c6da;
+}
+
+.rich-editor-button.active {
+  color: #ffffff;
+  background: #145da0;
+  border-color: #145da0;
+}
+
+.rich-toolbar-group select {
+  max-width: 125px;
+  min-height: 32px;
+  padding: 5px 7px;
+  color: #344b5d;
+  background: #ffffff;
+  border: 1px solid #d5dfe8;
+  border-radius: 5px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+  outline: none;
+}
+
+.rich-color-controls label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 32px;
+  color: #344b5d;
+  background: #ffffff;
+  border: 1px solid #d5dfe8;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.rich-color-controls input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.highlight-symbol {
+  text-decoration: underline;
+  text-decoration-color: #f1c40f;
+  text-decoration-thickness: 4px;
+}
+
+.rich-text-editor-content {
+  min-height: 430px;
+  padding: 20px;
+  color: #263746;
+  font-family: "DM Sans", sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  outline: none;
+  overflow-wrap: anywhere;
+}
+
+.rich-text-editor-content:focus {
+  outline: none;
+}
+
+.rich-text-editor-content p {
+  margin: 0 0 14px;
+}
+
+.rich-text-editor-content h1,
+.rich-text-editor-content h2,
+.rich-text-editor-content h3 {
+  margin: 22px 0 12px;
+  color: #172c3e;
+  line-height: 1.35;
+}
+
+.rich-text-editor-content h1 {
+  font-size: 30px;
+}
+
+.rich-text-editor-content h2 {
+  font-size: 24px;
+}
+
+.rich-text-editor-content h3 {
+  font-size: 19px;
+}
+
+.rich-text-editor-content ul,
+.rich-text-editor-content ol {
+  padding-left: 28px;
+  margin: 12px 0;
+}
+
+.rich-text-editor-content blockquote {
+  margin: 18px 0;
+  padding: 12px 18px;
+  color: #526779;
+  background: #f4f8fb;
+  border-left: 4px solid #176da3;
+}
+
+.rich-text-editor-content a {
+  color: #176da3;
+  text-decoration: underline;
+}
+
+.rich-text-editor-content mark {
+  padding: 1px 3px;
+  border-radius: 3px;
+}
+
+.rich-text-editor-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.rich-text-editor-content p.is-editor-empty:first-child::before {
+  float: left;
+  height: 0;
+  color: #98a6b3;
+  content: attr(data-placeholder);
+  pointer-events: none;
+}
+
+.rich-editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  color: #82919d;
+  background: #f8fafc;
+  border-top: 1px solid #e6ebf0;
+  font-size: 11px;
+}
+
+.rich-editor-loading {
+  padding: 25px;
+  color: #7b8a98;
+  background: #ffffff;
+  border: 1px solid #dfe6ee;
+  border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+  .rich-editor-toolbar {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .rich-toolbar-group {
+    padding-right: 5px;
+  }
+
+  .rich-text-editor-content {
+    min-height: 360px;
+    padding: 14px;
+    font-size: 14px;
+  }
+
+  .rich-text-editor-content h1 {
+    font-size: 25px;
+  }
+
+  .rich-text-editor-content h2 {
+    font-size: 21px;
+  }
+
+  .rich-text-editor-content h3 {
+    font-size: 18px;
+  }
+}

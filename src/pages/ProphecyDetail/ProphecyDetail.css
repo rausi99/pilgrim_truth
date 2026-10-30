@@ -733,3 +733,62 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Rich text content */
+.prophecy-content {
+  line-height: 1.85;
+  overflow-wrap: break-word;
+}
+
+.prophecy-content p {
+  margin-bottom: 1.25rem;
+}
+
+.prophecy-content h1,
+.prophecy-content h2,
+.prophecy-content h3,
+.prophecy-content h4 {
+  line-height: 1.4;
+  margin: 2rem 0 1rem;
+  color: var(--primary-color, #1b692f);
+}
+
+.prophecy-content ul,
+.prophecy-content ol {
+  padding-left: 2rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.prophecy-content li {
+  margin-bottom: 0.5rem;
+}
+
+.prophecy-content blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid #1b692f;
+  background: rgba(27, 105, 47, 0.06);
+  border-radius: 4px;
+}
+
+.prophecy-content mark {
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+}
+
+.prophecy-content a {
+  color: #1b692f;
+  text-decoration: underline;
+}
+
+.prophecy-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.prophecy-content hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid #ddd;
+}

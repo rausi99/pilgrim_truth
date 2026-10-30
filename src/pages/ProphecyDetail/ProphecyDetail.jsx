@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-
+import DOMPurify from "dompurify";
 import {
   ArrowLeft,
   ArrowRight,
@@ -88,14 +88,14 @@ function ProphecyDetail() {
         if (!prophecyResponse.ok) {
           throw new Error(
             prophecyData.message ||
-              "Unable to load this prophecy study."
+            "Unable to load this prophecy study."
           );
         }
 
         if (!propheciesResponse.ok) {
           throw new Error(
             propheciesData.message ||
-              "Unable to load prophecy studies."
+            "Unable to load prophecy studies."
           );
         }
 
@@ -119,7 +119,7 @@ function ProphecyDetail() {
         if (mounted) {
           setError(
             err.message ||
-              "Unable to load this prophecy study."
+            "Unable to load this prophecy study."
           );
         }
       } finally {
@@ -240,12 +240,22 @@ function ProphecyDetail() {
     );
   }
 
-  const paragraphs = String(
-    prophecy.content || ""
-  )
-    .split(/\n\s*\n/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
+  const content = String(prophecy.content || "").trim();
+
+  const isRichText = /<\/?[a-z][^>]*>/i.test(content);
+
+  const sanitizedContent = isRichText
+    ? DOMPurify.sanitize(content, {
+      USE_PROFILES: { html: true },
+    })
+    : "";
+
+  const paragraphs = !isRichText
+    ? content
+      .split(/\n\s*\n/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean)
+    : [];;
 
   return (
     <div className="inner-page prophecy-detail-page">
@@ -328,18 +338,20 @@ function ProphecyDetail() {
               )}
 
               <div className="prophecy-content">
-                {paragraphs.length > 0 ? (
-                  paragraphs.map(
-                    (paragraph, index) => (
-                      <p key={index}>
-                        {paragraph}
-                      </p>
-                    )
-                  )
+                {isRichText ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizedContent,
+                    }}
+                  />
+                ) : paragraphs.length > 0 ? (
+                  paragraphs.map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))
                 ) : (
                   <p>
-                    This prophecy study does not
-                    have published content yet.
+                    This prophecy study does not have
+                    published content yet.
                   </p>
                 )}
               </div>
@@ -395,46 +407,46 @@ function ProphecyDetail() {
         {/* PREVIOUS / NEXT */}
         {(navigation.previous ||
           navigation.next) && (
-          <section className="prophecy-navigation">
-            <div className="container prophecy-navigation-grid">
-              {navigation.previous ? (
-                <Link
-                  to={`/prophecy/${navigation.previous.slug}`}
-                  className="prophecy-nav-card"
-                >
-                  <span>
-                    <ArrowLeft size={15} />
-                    Previous study
-                  </span>
+            <section className="prophecy-navigation">
+              <div className="container prophecy-navigation-grid">
+                {navigation.previous ? (
+                  <Link
+                    to={`/prophecy/${navigation.previous.slug}`}
+                    className="prophecy-nav-card"
+                  >
+                    <span>
+                      <ArrowLeft size={15} />
+                      Previous study
+                    </span>
 
-                  <strong>
-                    {navigation.previous.title}
-                  </strong>
-                </Link>
-              ) : (
-                <div />
-              )}
+                    <strong>
+                      {navigation.previous.title}
+                    </strong>
+                  </Link>
+                ) : (
+                  <div />
+                )}
 
-              {navigation.next ? (
-                <Link
-                  to={`/prophecy/${navigation.next.slug}`}
-                  className="prophecy-nav-card prophecy-nav-card-next"
-                >
-                  <span>
-                    Next study
-                    <ArrowRight size={15} />
-                  </span>
+                {navigation.next ? (
+                  <Link
+                    to={`/prophecy/${navigation.next.slug}`}
+                    className="prophecy-nav-card prophecy-nav-card-next"
+                  >
+                    <span>
+                      Next study
+                      <ArrowRight size={15} />
+                    </span>
 
-                  <strong>
-                    {navigation.next.title}
-                  </strong>
-                </Link>
-              ) : (
-                <div />
-              )}
-            </div>
-          </section>
-        )}
+                    <strong>
+                      {navigation.next.title}
+                    </strong>
+                  </Link>
+                ) : (
+                  <div />
+                )}
+              </div>
+            </section>
+          )}
       </main>
 
       <Footer />

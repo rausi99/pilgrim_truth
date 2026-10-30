@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import DOMPurify from "dompurify";
 import {
   ArrowLeft,
   ArrowRight,
@@ -18,12 +19,18 @@ const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 function getReadingTime(content = "") {
-  const words = content
-    .trim()
+  const plainText = String(content)
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;|&#160;/g, " ")
+    .trim();
+
+  const words = plainText
     .split(/\s+/)
     .filter(Boolean).length;
 
-  return words ? Math.max(1, Math.ceil(words / 200)) : 5;
+  return words
+    ? Math.max(1, Math.ceil(words / 200))
+    : 5;
 }
 
 function formatDate(date) {
@@ -89,14 +96,14 @@ function HistoryDetail() {
         if (!historyResponse.ok) {
           throw new Error(
             historyData.message ||
-              "Unable to load this History study."
+            "Unable to load this History study."
           );
         }
 
         if (!listResponse.ok) {
           throw new Error(
             listData.message ||
-              "Unable to load History studies."
+            "Unable to load History studies."
           );
         }
 
@@ -157,6 +164,20 @@ function HistoryDetail() {
           : null,
     };
   }, [history, histories]);
+  const articleContent = history?.content || "";
+
+  const isRichText =
+    typeof articleContent === "string" &&
+    /<\/?[a-z][^>]*>/i.test(articleContent);
+
+  const sanitizedContent = useMemo(() => {
+    if (!isRichText) return "";
+
+    return DOMPurify.sanitize(articleContent, {
+      USE_PROFILES: { html: true },
+    });
+  }, [articleContent, isRichText]);
+
 
   if (loading) {
     return (
@@ -318,7 +339,15 @@ function HistoryDetail() {
                 )}
 
                 <div className="history-study-content">
-                  {contentParagraphs.length > 0 ? (
+
+                  {isRichText ? (
+                    <div
+                      className="history-rich-content"
+                      dangerouslySetInnerHTML={{
+                        __html: sanitizedContent,
+                      }}
+                    />
+                  ) : contentParagraphs.length > 0 ? (
                     contentParagraphs.map((paragraph, index) => {
                       const isHeading =
                         paragraph.length < 100 &&
@@ -343,8 +372,8 @@ function HistoryDetail() {
                       No study content is available yet.
                     </p>
                   )}
-                </div>
 
+                </div>
                 {history.author && (
                   <div className="history-detail-author">
                     <div className="history-author-avatar">

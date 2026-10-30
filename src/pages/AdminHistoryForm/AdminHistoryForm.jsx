@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import RichTextEditor from "../../components/ui/RichTextEditor";
 import {
   ArrowLeft,
   CalendarDays,
@@ -165,6 +166,13 @@ function AdminHistoryForm() {
     }));
   };
 
+  const handleContentChange = (content) => {
+    setForm((previous) => ({
+      ...previous,
+      content,
+    }));
+  };
+
   const handleTitleChange = (event) => {
     const value = event.target.value;
 
@@ -262,11 +270,16 @@ function AdminHistoryForm() {
       return;
     }
 
+    const plainContent = String(form.content || "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;|&#160;/g, " ")
+      .trim();
+
     if (
       !form.title.trim() ||
       !form.slug.trim() ||
       !form.category.trim() ||
-      !form.content.trim()
+      !plainContent
     ) {
       setError(
         "Title, slug, category, and content are required."
@@ -572,9 +585,7 @@ function AdminHistoryForm() {
             <section className="admin-form-card">
 
               <div className="admin-form-card-heading">
-
                 <div>
-
                   <span className="admin-eyebrow">
                     STUDY CONTENT
                   </span>
@@ -582,31 +593,25 @@ function AdminHistoryForm() {
                   <h2>
                     History Study
                   </h2>
-
                 </div>
-
               </div>
-
 
               <div className="admin-form-field">
 
-                <label htmlFor="content">
+                <label>
                   Full Content
                 </label>
 
-                <textarea
-                  id="content"
-                  name="content"
+                <RichTextEditor
                   value={form.content}
-                  onChange={handleChange}
+                  onChange={handleContentChange}
                   placeholder="Write the complete history study here..."
-                  rows="18"
-                  required
                 />
 
                 <small>
-                  This content will appear on
-                  the public History detail page.
+                  Format your history study using headings, bold,
+                  italics, underline, colours, highlights, lists,
+                  links, font sizes and text alignment.
                 </small>
 
               </div>

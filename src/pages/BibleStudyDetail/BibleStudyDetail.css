@@ -602,3 +602,63 @@
     transform: none;
   }
 }
+
+/* Rich text formatting for Bible Studies */
+
+.bible-study-content {
+  line-height: 1.85;
+  overflow-wrap: break-word;
+}
+
+.bible-study-content p {
+  margin-bottom: 1.25rem;
+}
+
+.bible-study-content h1,
+.bible-study-content h2,
+.bible-study-content h3,
+.bible-study-content h4 {
+  line-height: 1.4;
+  margin: 2rem 0 1rem;
+  color: #1b692f;
+}
+
+.bible-study-content ul,
+.bible-study-content ol {
+  padding-left: 2rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.bible-study-content li {
+  margin-bottom: 0.5rem;
+}
+
+.bible-study-content blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid #1b692f;
+  background: rgba(27, 105, 47, 0.06);
+  border-radius: 4px;
+}
+
+.bible-study-content mark {
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+}
+
+.bible-study-content a {
+  color: #1b692f;
+  text-decoration: underline;
+}
+
+.bible-study-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.bible-study-content hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid #ddd;
+}

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-
+import DOMPurify from "dompurify";
 import {
   ArrowLeft,
   ArrowRight,
@@ -165,14 +165,14 @@ function BibleStudyDetail() {
         if (!studyResponse.ok) {
           throw new Error(
             studyData?.message ||
-              "Unable to load this Bible Study."
+            "Unable to load this Bible Study."
           );
         }
 
         if (!studiesResponse.ok) {
           throw new Error(
             studiesData?.message ||
-              "Unable to load Bible Studies."
+            "Unable to load Bible Studies."
           );
         }
 
@@ -183,10 +183,10 @@ function BibleStudyDetail() {
           Array.isArray(studiesData)
             ? studiesData
             : Array.isArray(
-                studiesData?.studies
-              )
-            ? studiesData.studies
-            : [];
+              studiesData?.studies
+            )
+              ? studiesData.studies
+              : [];
 
         if (!mounted) {
           return;
@@ -216,7 +216,7 @@ function BibleStudyDetail() {
 
           setError(
             err.message ||
-              "Unable to load this Bible Study."
+            "Unable to load this Bible Study."
           );
         }
       } finally {
@@ -276,7 +276,7 @@ function BibleStudyDetail() {
     return {
       previous:
         currentIndex <
-        studies.length - 1
+          studies.length - 1
           ? studies[currentIndex + 1]
           : null,
 
@@ -287,17 +287,35 @@ function BibleStudyDetail() {
     };
   }, [study, studies]);
 
+  const studyContent = String(
+    study?.content || ""
+  ).trim();
+
+  const isRichText = /<\/?[a-z][^>]*>/i.test(
+    studyContent
+  );
+
+  const sanitizedContent = useMemo(
+    () =>
+      isRichText
+        ? DOMPurify.sanitize(studyContent, {
+          USE_PROFILES: { html: true },
+        })
+        : "",
+    [studyContent, isRichText]
+  );
+
   const contentParagraphs = useMemo(
     () =>
-      getContentParagraphs(
-        study?.content
-      ),
-    [study?.content]
+      !isRichText
+        ? getContentParagraphs(studyContent)
+        : [],
+    [studyContent, isRichText]
   );
 
   const studyImage = getImageUrl(
     study?.featured_image ||
-      study?.image
+    study?.image
   );
 
   if (loading) {
@@ -467,7 +485,13 @@ function BibleStudyDetail() {
               )}
 
               <div className="bible-study-content">
-                {contentParagraphs.length > 0 ? (
+                {isRichText ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizedContent,
+                    }}
+                  />
+                ) : contentParagraphs.length > 0 ? (
                   contentParagraphs.map(
                     (paragraph, index) => (
                       <p key={index}>
@@ -532,46 +556,46 @@ function BibleStudyDetail() {
         {/* PREVIOUS / NEXT */}
         {(navigation.previous ||
           navigation.next) && (
-          <section className="bible-study-navigation">
-            <div className="container bible-study-navigation-grid">
-              {navigation.previous ? (
-                <Link
-                  to={`/bible-studies/${navigation.previous.slug || navigation.previous.id}`}
-                  className="bible-study-nav-card"
-                >
-                  <span>
-                    <ArrowLeft size={15} />
-                    Previous study
-                  </span>
+            <section className="bible-study-navigation">
+              <div className="container bible-study-navigation-grid">
+                {navigation.previous ? (
+                  <Link
+                    to={`/bible-studies/${navigation.previous.slug || navigation.previous.id}`}
+                    className="bible-study-nav-card"
+                  >
+                    <span>
+                      <ArrowLeft size={15} />
+                      Previous study
+                    </span>
 
-                  <strong>
-                    {navigation.previous.title}
-                  </strong>
-                </Link>
-              ) : (
-                <div />
-              )}
+                    <strong>
+                      {navigation.previous.title}
+                    </strong>
+                  </Link>
+                ) : (
+                  <div />
+                )}
 
-              {navigation.next ? (
-                <Link
-                  to={`/bible-studies/${navigation.next.slug || navigation.next.id}`}
-                  className="bible-study-nav-card bible-study-nav-card-next"
-                >
-                  <span>
-                    Next study
-                    <ArrowRight size={15} />
-                  </span>
+                {navigation.next ? (
+                  <Link
+                    to={`/bible-studies/${navigation.next.slug || navigation.next.id}`}
+                    className="bible-study-nav-card bible-study-nav-card-next"
+                  >
+                    <span>
+                      Next study
+                      <ArrowRight size={15} />
+                    </span>
 
-                  <strong>
-                    {navigation.next.title}
-                  </strong>
-                </Link>
-              ) : (
-                <div />
-              )}
-            </div>
-          </section>
-        )}
+                    <strong>
+                      {navigation.next.title}
+                    </strong>
+                  </Link>
+                ) : (
+                  <div />
+                )}
+              </div>
+            </section>
+          )}
       </main>
 
       <Footer />

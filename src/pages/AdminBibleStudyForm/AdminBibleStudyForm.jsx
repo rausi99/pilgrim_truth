@@ -21,6 +21,7 @@ import {
 } from "../../services/admin";
 
 import "./AdminBibleStudyForm.css";
+import RichTextEditor from "../../components/ui/RichTextEditor";
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
@@ -145,6 +146,13 @@ function AdminBibleStudyForm() {
       .replace(/-+/g, "-");
   };
 
+  const handleContentChange = (content) => {
+    setFormData((previous) => ({
+      ...previous,
+      content,
+    }));
+  };
+
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
 
@@ -253,7 +261,10 @@ function AdminBibleStudyForm() {
       !formData.title.trim() ||
       !formData.slug.trim() ||
       !formData.category.trim() ||
-      !formData.content.trim()
+      !formData.content
+        .replace(/<[^>]*>/g, " ")
+        .replace(/&nbsp;|&#160;/g, " ")
+        .trim()
     ) {
       setError(
         "Title, slug, category, and study content are required."
@@ -426,25 +437,22 @@ function AdminBibleStudyForm() {
                 </div>
 
                 <div className="admin-form-field">
-                  <label htmlFor="slug">
-                    Slug *
+                  <label>
+                    Study Content *
                   </label>
 
-                  <input
-                    id="slug"
-                    name="slug"
-                    type="text"
-                    value={formData.slug}
-                    onChange={handleChange}
-                    placeholder="bible-study-slug"
-                    required
+                  <RichTextEditor
+                    value={formData.content}
+                    onChange={handleContentChange}
+                    placeholder="Write the full Bible Study content here..."
                   />
 
                   <small className="admin-field-help">
-                    Used for the public URL.
+                    Format your Bible Study using headings, bold,
+                    italics, underline, colours, highlights,
+                    lists, links and text alignment.
                   </small>
                 </div>
-
                 <div className="admin-form-field">
                   <label htmlFor="description">
                     Description

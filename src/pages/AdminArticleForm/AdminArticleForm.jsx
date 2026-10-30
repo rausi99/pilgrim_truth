@@ -101,11 +101,11 @@ export default function AdminArticleForm() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const wordCount = String(form.content || "")
-  .replace(/<[^>]*>/g, " ")
-  .replace(/&nbsp;|&#160;/g, " ")
-  .trim()
-  .split(/\s+/)
-  .filter(Boolean).length;
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;|&#160;/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
 
   useEffect(() => {
     if (!isEditing || !token) return;
@@ -319,29 +319,38 @@ export default function AdminArticleForm() {
         onSubmit={handleSubmit}
       >
         <div className="admin-form-main">
-          
-
           <section className="admin-form-card">
             <div className="admin-form-section-heading">
-
+              <h2>Article Details</h2>
               <p>
-                Write the complete article content.
+                Basic information about this article.
               </p>
             </div>
 
             <div className="admin-form-field">
-              <label htmlFor="content">
+              <label htmlFor="title">
+                Title *
+              </label>
+
+              <input
+                id="title"
+                name="title"
+                value={form.title}
+                onChange={handleTitleChange}
+                placeholder="e.g. Understanding God's Word"
+                required
+              />
+            </div>
+
+            <div className="admin-form-field">
+              <label>
                 Content *
               </label>
 
-              <textarea
-                id="content"
-                name="content"
+              <RichTextEditor
                 value={form.content}
-                onChange={handleChange}
-                rows={20}
+                onChange={handleContentChange}
                 placeholder="Write the article content here..."
-                required
               />
 
               <div className="admin-content-meta">
@@ -350,6 +359,50 @@ export default function AdminArticleForm() {
                   {wordCount === 1 ? "word" : "words"}
                 </span>
               </div>
+
+              <small className="admin-field-help">
+                Format your article using headings, bold, italics,
+                underline, colours, highlights, lists, links,
+                font sizes and text alignment.
+              </small>
+            </div>
+
+            <div className="admin-form-field">
+              <label htmlFor="category">
+                Category *
+              </label>
+
+              <select
+                id="category"
+                name="category"
+                value={form.category}
+                onChange={handleChange}
+                required
+              >
+                {categories.map((category) => (
+                  <option
+                    key={category}
+                    value={category}
+                  >
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="admin-form-field">
+              <label htmlFor="description">
+                Description
+              </label>
+
+              <textarea
+                id="description"
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                rows={4}
+                placeholder="Brief description of the article..."
+              />
             </div>
           </section>
         </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import RichTextEditor from "../../components/ui/RichTextEditor";
 import {
   ArrowLeft,
   ImagePlus,
@@ -149,6 +150,12 @@ export default function AdminArticleForm() {
     }));
   }
 
+  function handleContentChange(content) {
+    setForm((current) => ({
+      ...current,
+      content,
+    }));
+  }
   function handleTitleChange(event) {
     const title = event.target.value;
 
@@ -217,6 +224,16 @@ export default function AdminArticleForm() {
   async function handleSubmit(event) {
     event.preventDefault();
 
+    const plainContent = String(form.content || "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;|&#160;/g, " ")
+      .trim();
+
+    if (!plainContent) {
+      setError("Please add the article content before saving.");
+      return;
+    }
+
     try {
       setSaving(true);
       setError("");
@@ -265,7 +282,16 @@ export default function AdminArticleForm() {
     form.featured_image
   );
 
-  const wordCount = getWordCount(form.content);
+  function getWordCount(content) {
+    const plainText = String(content || "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;|&#160;/g, " ")
+      .trim();
+
+    if (!plainText) return 0;
+
+    return plainText.split(/\s+/).filter(Boolean).length;
+  }
 
   return (
     <div className="admin-content-page">
@@ -328,18 +354,28 @@ export default function AdminArticleForm() {
 
             <div className="admin-form-grid">
               <div className="admin-form-field">
-                <label htmlFor="slug">
-                  Slug *
+                <label>
+                  Content *
                 </label>
 
-                <input
-                  id="slug"
-                  name="slug"
-                  value={form.slug}
-                  onChange={handleChange}
-                  placeholder="understanding-gods-word"
-                  required
+                <RichTextEditor
+                  value={form.content}
+                  onChange={handleContentChange}
+                  placeholder="Write the article content here..."
                 />
+
+                <div className="admin-content-meta">
+                  <span>
+                    {wordCount.toLocaleString()}{" "}
+                    {wordCount === 1 ? "word" : "words"}
+                  </span>
+                </div>
+
+                <small className="admin-field-help">
+                  Format your article using headings, bold, italics,
+                  underline, colours, highlights, lists, links,
+                  font sizes and text alignment.
+                </small>
               </div>
 
               <div className="admin-form-field">

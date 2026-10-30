@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import DOMPurify from "dompurify";
 import {
   ArrowLeft,
   ArrowRight,
@@ -200,6 +201,19 @@ function ArticleDetail({ contentType = "articles" }) {
 
     return `${serverUrl}/${image}`;
   };
+  const articleContent = article?.content;
+
+  const isRichText =
+    typeof articleContent === "string" &&
+    /<\/?[a-z][^>]*>/i.test(articleContent);
+
+  const sanitizedContent = useMemo(() => {
+    if (!isRichText) return "";
+
+    return DOMPurify.sanitize(articleContent, {
+      USE_PROFILES: { html: true },
+    });
+  }, [articleContent, isRichText]);
 
   const contentBlocks = useMemo(() => {
     if (!article) return [];
@@ -208,7 +222,11 @@ function ArticleDetail({ contentType = "articles" }) {
       return article.content;
     }
 
-    if (typeof article.content === "string" && article.content) {
+    if (
+      typeof article.content === "string" &&
+      article.content &&
+      !isRichText
+    ) {
       return [
         {
           type: "paragraph",
@@ -218,7 +236,7 @@ function ArticleDetail({ contentType = "articles" }) {
     }
 
     return [];
-  }, [article]);
+  }, [article, isRichText]);
 
   if (loading) {
     return (
@@ -354,29 +372,38 @@ function ArticleDetail({ contentType = "articles" }) {
               )}
 
               <div className="article-body">
-                {contentBlocks.map((block, index) => {
-                  if (!block?.text) return null;
+                {isRichText ? (
+                  <div
+                    className="article-rich-content"
+                    dangerouslySetInnerHTML={{
+                      __html: sanitizedContent,
+                    }}
+                  />
+                ) : (
+                  contentBlocks.map((block, index) => {
+                    if (!block?.text) return null;
 
-                  const key = `${block.type || "text"}-${index}`;
+                    const key = `${block.type || "text"}-${index}`;
 
-                  if (block.type === "heading") {
-                    return <h2 key={key}>{block.text}</h2>;
-                  }
+                    if (block.type === "heading") {
+                      return <h2 key={key}>{block.text}</h2>;
+                    }
 
-                  if (block.type === "subheading") {
-                    return <h3 key={key}>{block.text}</h3>;
-                  }
+                    if (block.type === "subheading") {
+                      return <h3 key={key}>{block.text}</h3>;
+                    }
 
-                  if (block.type === "quote") {
-                    return (
-                      <blockquote key={key}>
-                        {block.text}
-                      </blockquote>
-                    );
-                  }
+                    if (block.type === "quote") {
+                      return (
+                        <blockquote key={key}>
+                          {block.text}
+                        </blockquote>
+                      );
+                    }
 
-                  return <p key={key}>{block.text}</p>;
-                })}
+                    return <p key={key}>{block.text}</p>;
+                  })
+                )}
               </div>
             </article>
 

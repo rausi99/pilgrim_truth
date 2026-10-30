@@ -20,7 +20,8 @@ import "./AdminHealthForm.css";
 
 const API_URL =
   import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-const BACKEND_URL = API_URL.replace("/api", "");
+
+const BACKEND_URL = API_URL.replace(/\/api\/?$/, "");
 
 function generateSlug(title) {
   return title
@@ -109,21 +110,15 @@ export default function AdminHealthForm() {
           slug: study.slug || "",
           category: study.category || "",
           description: study.description || "",
-          scripture_reference:
-            study.scripture_reference || "",
+          scripture_reference: study.scripture_reference || "",
           content: study.content || "",
           featured_image: study.featured_image || "",
           is_featured: Boolean(study.is_featured),
           status: study.status || "draft",
-          published_at: formatDateTimeForInput(
-            study.published_at
-          ),
+          published_at: formatDateTimeForInput(study.published_at),
         });
       } catch (err) {
-        setError(
-          err.message ||
-          "Unable to load Health content."
-        );
+        setError(err.message || "Unable to load Health content.");
       } finally {
         setLoading(false);
       }
@@ -137,8 +132,7 @@ export default function AdminHealthForm() {
 
     setForm((current) => ({
       ...current,
-      [name]:
-        type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   }
 
@@ -155,9 +149,7 @@ export default function AdminHealthForm() {
     setForm((current) => ({
       ...current,
       title,
-      slug: current.slug
-        ? current.slug
-        : generateSlug(title),
+      slug: current.slug || generateSlug(title),
     }));
   }
 
@@ -180,9 +172,7 @@ export default function AdminHealthForm() {
     ];
 
     if (!allowedTypes.includes(file.type)) {
-      setError(
-        "Please upload a JPG, PNG, WebP or GIF image."
-      );
+      setError("Please upload a JPG, PNG, WebP or GIF image.");
       event.target.value = "";
       return;
     }
@@ -191,19 +181,14 @@ export default function AdminHealthForm() {
       setUploading(true);
       setError("");
 
-      const data = await uploadAdminImage(
-        token,
-        file
-      );
+      const data = await uploadAdminImage(token, file);
 
       setForm((current) => ({
         ...current,
         featured_image: data.imageUrl,
       }));
     } catch (err) {
-      setError(
-        err.message || "Unable to upload image."
-      );
+      setError(err.message || "Unable to upload image.");
     } finally {
       setUploading(false);
       event.target.value = "";
@@ -220,10 +205,25 @@ export default function AdminHealthForm() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const plainContent = form.content
+    const plainContent = String(form.content || "")
       .replace(/<[^>]*>/g, " ")
       .replace(/&nbsp;|&#160;/g, " ")
       .trim();
+
+    if (!form.title.trim()) {
+      setError("Please enter the Health article title.");
+      return;
+    }
+
+    if (!form.slug.trim()) {
+      setError("Please enter the article slug.");
+      return;
+    }
+
+    if (!form.category.trim()) {
+      setError("Please enter the article category.");
+      return;
+    }
 
     if (!plainContent) {
       setError("Please add the Health article content before saving.");
@@ -236,30 +236,25 @@ export default function AdminHealthForm() {
 
       const payload = {
         ...form,
+        title: form.title.trim(),
+        slug: form.slug.trim(),
+        category: form.category.trim(),
+        description: form.description.trim(),
+        scripture_reference: form.scripture_reference.trim(),
         published_at: form.published_at
           ? new Date(form.published_at).toISOString()
           : null,
       };
 
       if (isEditing) {
-        await updateAdminHealth(
-          token,
-          id,
-          payload
-        );
+        await updateAdminHealth(token, id, payload);
       } else {
-        await createAdminHealth(
-          token,
-          payload
-        );
+        await createAdminHealth(token, payload);
       }
 
       navigate("/admin/health");
     } catch (err) {
-      setError(
-        err.message ||
-        "Unable to save Health content."
-      );
+      setError(err.message || "Unable to save Health content.");
     } finally {
       setSaving(false);
     }
@@ -275,32 +270,24 @@ export default function AdminHealthForm() {
     );
   }
 
-  const imagePreview = getImageUrl(
-    form.featured_image
-  );
+  const imagePreview = getImageUrl(form.featured_image);
 
   return (
     <div className="admin-content-page">
       <div className="admin-page-header">
         <div>
-          <Link
-            to="/admin/health"
-            className="admin-back-link"
-          >
+          <Link to="/admin/health" className="admin-back-link">
             <ArrowLeft size={16} />
             Health
           </Link>
 
           <h1>
-            {isEditing
-              ? "Edit Health Content"
-              : "New Health Content"}
+            {isEditing ? "Edit Health Content" : "New Health Content"}
           </h1>
 
           <p>
-            Create practical, trustworthy health and
-            wellness content with a Scripture-centered
-            perspective.
+            Create practical, trustworthy health and wellness content
+            with a Scripture-centered perspective.
           </p>
         </div>
       </div>
@@ -311,36 +298,27 @@ export default function AdminHealthForm() {
         </div>
       )}
 
-      <form
-        className="admin-form-layout"
-        onSubmit={handleSubmit}
-      >
+      <form className="admin-form-layout" onSubmit={handleSubmit}>
         <div className="admin-form-main">
           <section className="admin-form-card">
             <div className="admin-form-section-heading">
               <h2>Health Content Details</h2>
-              <p>
-                Basic information about this health
-                article.
-              </p>
+              <p>Basic information about this health article.</p>
             </div>
 
             <div className="admin-form-field">
-              <label>
-                Content *
+              <label htmlFor="title">
+                Article Title *
               </label>
 
-              <RichTextEditor
-                value={form.content}
-                onChange={handleContentChange}
-                placeholder="Write the health content here..."
+              <input
+                id="title"
+                name="title"
+                value={form.title}
+                onChange={handleTitleChange}
+                placeholder="Enter the health article title"
+                required
               />
-
-              <small className="admin-field-help">
-                Format your Health article using headings, bold,
-                italics, underline, colours, highlights, lists,
-                links and text alignment.
-              </small>
             </div>
 
             <div className="admin-form-grid">
@@ -409,25 +387,26 @@ export default function AdminHealthForm() {
             <div className="admin-form-section-heading">
               <h2>Article Content</h2>
               <p>
-                Write the complete health and wellness
-                article.
+                Write the complete health and wellness article.
               </p>
             </div>
 
             <div className="admin-form-field">
-              <label htmlFor="content">
+              <label>
                 Content *
               </label>
 
-              <textarea
-                id="content"
-                name="content"
+              <RichTextEditor
                 value={form.content}
-                onChange={handleChange}
-                rows={20}
+                onChange={handleContentChange}
                 placeholder="Write the health content here..."
-                required
               />
+
+              <small className="admin-field-help">
+                Format your article using headings, bold, italics,
+                underline, colours, highlights, lists, links and
+                text alignment.
+              </small>
             </div>
           </section>
         </div>
@@ -436,9 +415,7 @@ export default function AdminHealthForm() {
           <section className="admin-form-card">
             <div className="admin-form-section-heading">
               <h2>Publishing</h2>
-              <p>
-                Control visibility and publication.
-              </p>
+              <p>Control visibility and publication.</p>
             </div>
 
             <div className="admin-form-field">
@@ -452,17 +429,9 @@ export default function AdminHealthForm() {
                 value={form.status}
                 onChange={handleChange}
               >
-                <option value="draft">
-                  Draft
-                </option>
-
-                <option value="published">
-                  Published
-                </option>
-
-                <option value="scheduled">
-                  Scheduled
-                </option>
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+                <option value="scheduled">Scheduled</option>
               </select>
             </div>
 
@@ -489,13 +458,9 @@ export default function AdminHealthForm() {
               />
 
               <span>
-                <strong>
-                  Feature this content
-                </strong>
-
+                <strong>Feature this content</strong>
                 <small>
-                  Show this content prominently on
-                  the public Health page.
+                  Show this content prominently on the public Health page.
                 </small>
               </span>
             </label>
@@ -504,11 +469,7 @@ export default function AdminHealthForm() {
           <section className="admin-form-card admin-media-card">
             <div className="admin-form-section-heading">
               <h2>Featured Image</h2>
-
-              <p>
-                Add a cover image for this health
-                article.
-              </p>
+              <p>Add a cover image for this health article.</p>
             </div>
 
             {imagePreview ? (
@@ -516,16 +477,11 @@ export default function AdminHealthForm() {
                 <div className="admin-image-preview-frame">
                   <img
                     src={imagePreview}
-                    alt={
-                      form.title ||
-                      "Featured health preview"
-                    }
+                    alt={form.title || "Featured health preview"}
                   />
 
                   <div className="admin-image-preview-overlay">
-                    <span>
-                      Featured image
-                    </span>
+                    <span>Featured image</span>
                   </div>
                 </div>
 
@@ -561,10 +517,9 @@ export default function AdminHealthForm() {
             ) : (
               <label
                 htmlFor="health-image-upload"
-                className={`admin-image-upload ${uploading
-                  ? "is-uploading"
-                  : ""
-                  }`}
+                className={`admin-image-upload ${
+                  uploading ? "is-uploading" : ""
+                }`}
               >
                 <input
                   id="health-image-upload"
@@ -572,6 +527,7 @@ export default function AdminHealthForm() {
                   accept="image/jpeg,image/png,image/webp,image/gif"
                   onChange={handleImageUpload}
                   disabled={uploading}
+                  hidden
                 />
 
                 <div className="admin-image-upload-icon">
@@ -598,8 +554,7 @@ export default function AdminHealthForm() {
                     </span>
 
                     <span className="admin-image-upload-help">
-                      or drag and drop your image
-                      here
+                      or drag and drop your image here
                     </span>
                   </>
                 )}
@@ -634,8 +589,7 @@ export default function AdminHealthForm() {
               </div>
 
               <small>
-                Use a hosted image URL instead of
-                uploading a file.
+                Use a hosted image URL instead of uploading a file.
               </small>
             </div>
           </section>
@@ -651,9 +605,7 @@ export default function AdminHealthForm() {
             <button
               type="submit"
               className="admin-primary-button"
-              disabled={
-                saving || uploading
-              }
+              disabled={saving || uploading}
             >
               <Save size={16} />
 

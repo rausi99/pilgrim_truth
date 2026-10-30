@@ -169,6 +169,10 @@ function App() {
           path="/christian-living/:slug"
           element={<ChristianLivingDetail />}
         />
+        <Route
+          path="/christian-living"
+          element={<ChristianLiving />}
+        />
         {/* Health */}
         <Route
           path="/health"

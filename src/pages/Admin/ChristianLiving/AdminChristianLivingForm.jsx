@@ -1,5 +1,7 @@
+
 import { useEffect, useState } from "react";
 import RichTextEditor from "../../../components/ui/RichTextEditor";
+
 import {
   ArrowLeft,
   ImagePlus,
@@ -8,20 +10,31 @@ import {
   Save,
   Trash2,
 } from "lucide-react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+
+import {
+  Link,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+
 import { useAuth } from "../../../context/AuthContext";
+
 import {
   createAdminChristianLiving,
   getAdminChristianLivingStudy,
   updateAdminChristianLiving,
   uploadAdminImage,
 } from "../../../services/admin";
+
 import "./AdminChristianLivingForm.css";
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-const BACKEND_URL = API_URL.replace("/api", "");
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000/api";
 
+const BACKEND_URL = API_URL.replace(/\/api\/?$/, "");
+
+// Generate URL-friendly slug
 function generateSlug(title) {
   return title
     .toLowerCase()
@@ -31,6 +44,7 @@ function generateSlug(title) {
     .replace(/-+/g, "-");
 }
 
+// Resolve uploaded and external image URLs
 function getImageUrl(image) {
   if (!image) return null;
 
@@ -49,6 +63,7 @@ function getImageUrl(image) {
   return image;
 }
 
+// Format date for datetime-local input
 function formatDateTimeForInput(value) {
   if (!value) return "";
 
@@ -88,11 +103,15 @@ export default function AdminChristianLivingForm() {
   const isEditing = Boolean(id);
 
   const [form, setForm] = useState(initialForm);
+
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState("");
 
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  // Load existing Christian Living study
   useEffect(() => {
     if (!isEditing || !token) return;
 
@@ -101,7 +120,11 @@ export default function AdminChristianLivingForm() {
         setLoading(true);
         setError("");
 
-        const data = await getAdminChristianLivingStudy(token, id);
+        const data = await getAdminChristianLivingStudy(
+          token,
+          id
+        );
+
         const study = data.study;
 
         setForm({
@@ -109,16 +132,25 @@ export default function AdminChristianLivingForm() {
           slug: study.slug || "",
           category: study.category || "",
           description: study.description || "",
-          scripture_reference: study.scripture_reference || "",
+          scripture_reference:
+            study.scripture_reference || "",
           content: study.content || "",
           featured_image: study.featured_image || "",
           is_featured: Boolean(study.is_featured),
           status: study.status || "draft",
-          published_at: formatDateTimeForInput(study.published_at),
+          published_at: formatDateTimeForInput(
+            study.published_at
+          ),
         });
       } catch (err) {
+        console.error(
+          "Load Christian Living study error:",
+          err
+        );
+
         setError(
-          err.message || "Unable to load Christian Living study."
+          err.message ||
+            "Unable to load Christian Living study."
         );
       } finally {
         setLoading(false);
@@ -128,8 +160,14 @@ export default function AdminChristianLivingForm() {
     loadStudy();
   }, [id, isEditing, token]);
 
+  // Handle ordinary form fields
   function handleChange(event) {
-    const { name, value, type, checked } = event.target;
+    const {
+      name,
+      value,
+      type,
+      checked,
+    } = event.target;
 
     setForm((current) => ({
       ...current,
@@ -137,29 +175,37 @@ export default function AdminChristianLivingForm() {
     }));
   }
 
+  // Handle rich text editor content
   function handleContentChange(content) {
     setForm((current) => ({
       ...current,
       content,
     }));
   }
+
+  // Handle title and automatic slug generation
   function handleTitleChange(event) {
     const title = event.target.value;
 
     setForm((current) => ({
       ...current,
       title,
-      slug: current.slug ? current.slug : generateSlug(title),
+      slug: isEditing
+        ? current.slug
+        : generateSlug(title),
     }));
   }
 
+  // Upload featured image
   async function handleImageUpload(event) {
     const file = event.target.files?.[0];
 
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      setError("Image must be 5MB or smaller.");
+    if (!token) {
+      setError(
+        "Your session has expired. Please log in again."
+      );
       event.target.value = "";
       return;
     }
@@ -172,7 +218,17 @@ export default function AdminChristianLivingForm() {
     ];
 
     if (!allowedTypes.includes(file.type)) {
-      setError("Please upload a JPG, PNG, WebP or GIF image.");
+      setError(
+        "Please upload a JPG, PNG, WebP or GIF image."
+      );
+
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError("Image must be 5MB or smaller.");
+
       event.target.value = "";
       return;
     }
@@ -180,66 +236,136 @@ export default function AdminChristianLivingForm() {
     try {
       setUploading(true);
       setError("");
+      setSuccess("");
 
       const data = await uploadAdminImage(token, file);
 
       setForm((current) => ({
         ...current,
-        featured_image: data.imageUrl,
+        featured_image: data.imageUrl || "",
       }));
+
+      setSuccess("Featured image uploaded successfully.");
     } catch (err) {
-      setError(err.message || "Unable to upload image.");
+      console.error(
+        "Christian Living image upload error:",
+        err
+      );
+
+      setError(
+        err.message || "Unable to upload image."
+      );
     } finally {
       setUploading(false);
       event.target.value = "";
     }
   }
 
+  // Remove featured image
   function removeImage() {
     setForm((current) => ({
       ...current,
       featured_image: "",
     }));
+
+    setSuccess("");
   }
 
+  // Validate and save study
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const plainContent = form.content
+    setError("");
+    setSuccess("");
+
+    if (!token) {
+      setError(
+        "Your session has expired. Please log in again."
+      );
+      return;
+    }
+
+    const plainContent = String(form.content || "")
       .replace(/<[^>]*>/g, " ")
       .replace(/&nbsp;|&#160;/g, " ")
       .trim();
 
-    if (!plainContent) {
-      setError("Please add the study content before saving.");
+    if (
+      !form.title.trim() ||
+      !form.slug.trim() ||
+      !form.category.trim() ||
+      !plainContent
+    ) {
+      setError(
+        "Title, slug, category and study content are required."
+      );
+      return;
+    }
+
+    if (
+      form.status === "scheduled" &&
+      !form.published_at
+    ) {
+      setError(
+        "Scheduled studies require a publication date and time."
+      );
       return;
     }
 
     try {
       setSaving(true);
-      setError("");
 
       const payload = {
         ...form,
+        title: form.title.trim(),
+        slug: form.slug.trim(),
+        category: form.category.trim(),
+        description: form.description.trim(),
+        scripture_reference:
+          form.scripture_reference.trim(),
+        content: form.content.trim(),
+        featured_image: form.featured_image.trim(),
         published_at: form.published_at || null,
       };
 
       if (isEditing) {
-        await updateAdminChristianLiving(token, id, payload);
+        await updateAdminChristianLiving(
+          token,
+          id,
+          payload
+        );
+
+        setSuccess(
+          "Christian Living study updated successfully."
+        );
       } else {
-        await createAdminChristianLiving(token, payload);
+        await createAdminChristianLiving(
+          token,
+          payload
+        );
+
+        setSuccess(
+          "Christian Living study created successfully."
+        );
       }
 
       navigate("/admin/christian-living");
     } catch (err) {
+      console.error(
+        "Save Christian Living study error:",
+        err
+      );
+
       setError(
-        err.message || "Unable to save Christian Living study."
+        err.message ||
+          "Unable to save Christian Living study."
       );
     } finally {
       setSaving(false);
     }
   }
 
+  // Loading state
   if (loading) {
     return (
       <div className="admin-content-page">
@@ -250,10 +376,13 @@ export default function AdminChristianLivingForm() {
     );
   }
 
-  const imagePreview = getImageUrl(form.featured_image);
+  const imagePreview = getImageUrl(
+    form.featured_image
+  );
 
   return (
     <div className="admin-content-page">
+      {/* PAGE HEADER */}
       <div className="admin-page-header">
         <div>
           <Link
@@ -277,9 +406,16 @@ export default function AdminChristianLivingForm() {
         </div>
       </div>
 
+      {/* ALERTS */}
       {error && (
         <div className="admin-error-message">
           {error}
+        </div>
+      )}
+
+      {success && (
+        <div className="admin-success-message">
+          {success}
         </div>
       )}
 
@@ -287,33 +423,34 @@ export default function AdminChristianLivingForm() {
         className="admin-form-layout"
         onSubmit={handleSubmit}
       >
+        {/* MAIN CONTENT */}
         <div className="admin-form-main">
           <section className="admin-form-card">
             <div className="admin-form-section-heading">
               <h2>Study Details</h2>
+
               <p>
-                Basic information about this study.
+                Basic information and Scripture-centered teaching.
               </p>
             </div>
 
+            {/* TITLE */}
             <div className="admin-form-field">
-              <label>
-                Content *
+              <label htmlFor="title">
+                Study Title *
               </label>
 
-              <RichTextEditor
-                value={form.content}
-                onChange={handleContentChange}
-                placeholder="Write the study content here..."
+              <input
+                id="title"
+                name="title"
+                value={form.title}
+                onChange={handleTitleChange}
+                placeholder="Enter study title"
+                required
               />
-
-              <small className="admin-field-help">
-                Format your study using headings, bold, italics,
-                underline, colours, highlights, lists, links and
-                text alignment.
-              </small>
             </div>
 
+            {/* SLUG AND CATEGORY */}
             <div className="admin-form-grid">
               <div className="admin-form-field">
                 <label htmlFor="slug">
@@ -328,6 +465,11 @@ export default function AdminChristianLivingForm() {
                   placeholder="building-a-christ-centered-character"
                   required
                 />
+
+                <small className="admin-field-help">
+                  Automatically generated from the title.
+                  You can also edit it manually.
+                </small>
               </div>
 
               <div className="admin-form-field">
@@ -346,6 +488,7 @@ export default function AdminChristianLivingForm() {
               </div>
             </div>
 
+            {/* DESCRIPTION */}
             <div className="admin-form-field">
               <label htmlFor="description">
                 Description
@@ -361,6 +504,7 @@ export default function AdminChristianLivingForm() {
               />
             </div>
 
+            {/* SCRIPTURE REFERENCE */}
             <div className="admin-form-field">
               <label htmlFor="scripture_reference">
                 Scripture Reference
@@ -374,42 +518,35 @@ export default function AdminChristianLivingForm() {
                 placeholder="Galatians 5:22–23"
               />
             </div>
-          </section>
 
-          <section className="admin-form-card">
-            <div className="admin-form-section-heading">
-              <h2>Study Content</h2>
-              <p>
-                Write the complete study content.
-              </p>
-            </div>
-
+            {/* RICH TEXT CONTENT */}
             <div className="admin-form-field">
-              <label htmlFor="content">
-                Content *
+              <label>
+                Study Content *
               </label>
 
-              <textarea
-                id="content"
-                name="content"
+              <RichTextEditor
                 value={form.content}
-                onChange={handleChange}
-                rows={20}
-                placeholder="Write the study content here..."
-                required
+                onChange={handleContentChange}
+                placeholder="Write the complete Christian Living study here..."
               />
+
+              <small className="admin-field-help">
+                Use headings, bold, italics, underline,
+                colours, highlights, lists, links and
+                text alignment.
+              </small>
             </div>
           </section>
         </div>
 
+        {/* SIDEBAR */}
         <aside className="admin-form-sidebar">
-          {/* =================================================
-              PUBLISHING
-              ================================================= */}
-
+          {/* PUBLISHING */}
           <section className="admin-form-card">
             <div className="admin-form-section-heading">
               <h2>Publishing</h2>
+
               <p>
                 Control visibility and publication.
               </p>
@@ -452,8 +589,13 @@ export default function AdminChristianLivingForm() {
                 value={form.published_at}
                 onChange={handleChange}
               />
+
+              <small className="admin-field-help">
+                Required when the status is Scheduled.
+              </small>
             </div>
 
+            {/* FEATURED STUDY */}
             <label className="admin-checkbox-field">
               <input
                 type="checkbox"
@@ -475,10 +617,7 @@ export default function AdminChristianLivingForm() {
             </label>
           </section>
 
-          {/* =================================================
-              FEATURED IMAGE
-              ================================================= */}
-
+          {/* FEATURED IMAGE */}
           <section className="admin-form-card admin-media-card">
             <div className="admin-form-section-heading">
               <h2>Featured Image</h2>
@@ -536,8 +675,9 @@ export default function AdminChristianLivingForm() {
             ) : (
               <label
                 htmlFor="featured-image-upload"
-                className={`admin-image-upload ${uploading ? "is-uploading" : ""
-                  }`}
+                className={`admin-image-upload ${
+                  uploading ? "is-uploading" : ""
+                }`}
               >
                 <input
                   id="featured-image-upload"
@@ -545,6 +685,7 @@ export default function AdminChristianLivingForm() {
                   accept="image/jpeg,image/png,image/webp,image/gif"
                   onChange={handleImageUpload}
                   disabled={uploading}
+                  hidden
                 />
 
                 <div className="admin-image-upload-icon">
@@ -584,8 +725,7 @@ export default function AdminChristianLivingForm() {
               </label>
             )}
 
-            {/* URL FALLBACK */}
-
+            {/* EXTERNAL IMAGE URL */}
             <div className="admin-media-divider">
               <span>OR</span>
             </div>
@@ -614,10 +754,7 @@ export default function AdminChristianLivingForm() {
             </div>
           </section>
 
-          {/* =================================================
-              ACTIONS
-              ================================================= */}
-
+          {/* ACTIONS */}
           <div className="admin-form-actions">
             <Link
               to="/admin/christian-living"

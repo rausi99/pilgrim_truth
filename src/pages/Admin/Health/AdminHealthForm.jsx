@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import RichTextEditor from "../../../components/ui/RichTextEditor";
 import {
   ArrowLeft,
   ImagePlus,
@@ -141,6 +142,13 @@ export default function AdminHealthForm() {
     }));
   }
 
+  function handleContentChange(content) {
+    setForm((current) => ({
+      ...current,
+      content,
+    }));
+  }
+
   function handleTitleChange(event) {
     const title = event.target.value;
 
@@ -211,6 +219,16 @@ export default function AdminHealthForm() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
+    const plainContent = form.content
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;|&#160;/g, " ")
+      .trim();
+
+    if (!plainContent) {
+      setError("Please add the Health article content before saving.");
+      return;
+    }
 
     try {
       setSaving(true);
@@ -308,18 +326,21 @@ export default function AdminHealthForm() {
             </div>
 
             <div className="admin-form-field">
-              <label htmlFor="title">
-                Title *
+              <label>
+                Content *
               </label>
 
-              <input
-                id="title"
-                name="title"
-                value={form.title}
-                onChange={handleTitleChange}
-                placeholder="e.g. Caring for Your Body as God's Temple"
-                required
+              <RichTextEditor
+                value={form.content}
+                onChange={handleContentChange}
+                placeholder="Write the health content here..."
               />
+
+              <small className="admin-field-help">
+                Format your Health article using headings, bold,
+                italics, underline, colours, highlights, lists,
+                links and text alignment.
+              </small>
             </div>
 
             <div className="admin-form-grid">
@@ -541,8 +562,8 @@ export default function AdminHealthForm() {
               <label
                 htmlFor="health-image-upload"
                 className={`admin-image-upload ${uploading
-                    ? "is-uploading"
-                    : ""
+                  ? "is-uploading"
+                  : ""
                   }`}
               >
                 <input

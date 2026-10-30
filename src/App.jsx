@@ -10,6 +10,7 @@ import BibleStudies from "./pages/BibleStudies/BibleStudies";
 import Prophecy from "./pages/Prophecy/Prophecy";
 import History from "./pages/History/History";
 import ChristianLiving from "./pages/ChristianLiving/ChristianLiving";
+import ChristianLivingDetail from "./pages/ChristianLivingDetail/ChristianLivingDetail";
 import Health from "./pages/Health/Health";
 import Articles from "./pages/Articles/Articles";
 import Videos from "./pages/Videos/Videos";
@@ -165,10 +166,9 @@ function App() {
 
         {/* Christian Living */}
         <Route
-          path="/christian-living"
-          element={<ChristianLiving />}
+          path="/christian-living/:slug"
+          element={<ChristianLivingDetail />}
         />
-
         {/* Health */}
         <Route
           path="/health"

@@ -74,11 +74,7 @@ function formatDateTimeForInput(value) {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
-function getWordCount(text) {
-  if (!text?.trim()) return 0;
 
-  return text.trim().split(/\s+/).length;
-}
 
 const initialForm = {
   title: "",
@@ -104,6 +100,12 @@ export default function AdminArticleForm() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const wordCount = String(form.content || "")
+  .replace(/<[^>]*>/g, " ")
+  .replace(/&nbsp;|&#160;/g, " ")
+  .trim()
+  .split(/\s+/)
+  .filter(Boolean).length;
 
   useEffect(() => {
     if (!isEditing || !token) return;
@@ -281,18 +283,6 @@ export default function AdminArticleForm() {
   const imagePreview = getImageUrl(
     form.featured_image
   );
-
-  function getWordCount(content) {
-    const plainText = String(content || "")
-      .replace(/<[^>]*>/g, " ")
-      .replace(/&nbsp;|&#160;/g, " ")
-      .trim();
-
-    if (!plainText) return 0;
-
-    return plainText.split(/\s+/).filter(Boolean).length;
-  }
-
   return (
     <div className="admin-content-page">
       <div className="admin-page-header">
@@ -420,7 +410,6 @@ export default function AdminArticleForm() {
 
           <section className="admin-form-card">
             <div className="admin-form-section-heading">
-              <h2>Article Content</h2>
 
               <p>
                 Write the complete article content.

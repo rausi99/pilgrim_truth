@@ -419,10 +419,12 @@ function AdminBibleStudyForm() {
                 </div>
               </div>
 
+
               <div className="admin-form-fields">
+                {/* TITLE */}
                 <div className="admin-form-field">
                   <label htmlFor="title">
-                    Title *
+                    Study Title *
                   </label>
 
                   <input
@@ -436,6 +438,61 @@ function AdminBibleStudyForm() {
                   />
                 </div>
 
+                {/* SLUG */}
+                <div className="admin-form-field">
+                  <label htmlFor="slug">
+                    URL Slug *
+                  </label>
+
+                  <input
+                    id="slug"
+                    name="slug"
+                    type="text"
+                    value={formData.slug}
+                    onChange={handleChange}
+                    placeholder="bible-study-title"
+                    required
+                  />
+
+                  <small className="admin-field-help">
+                    Automatically generated from the title when creating a new study.
+                    You can also edit it manually.
+                  </small>
+                </div>
+
+                {/* DESCRIPTION */}
+                <div className="admin-form-field">
+                  <label htmlFor="description">
+                    Description
+                  </label>
+
+                  <textarea
+                    id="description"
+                    name="description"
+                    rows="4"
+                    value={formData.description}
+                    onChange={handleChange}
+                    placeholder="Write a short description of this Bible Study"
+                  />
+                </div>
+
+                {/* SCRIPTURE REFERENCE */}
+                <div className="admin-form-field">
+                  <label htmlFor="scripture_reference">
+                    Scripture Reference
+                  </label>
+
+                  <input
+                    id="scripture_reference"
+                    name="scripture_reference"
+                    type="text"
+                    value={formData.scripture_reference}
+                    onChange={handleChange}
+                    placeholder="e.g. John 3:16-21"
+                  />
+                </div>
+
+                {/* RICH TEXT CONTENT */}
                 <div className="admin-form-field">
                   <label>
                     Study Content *
@@ -448,64 +505,12 @@ function AdminBibleStudyForm() {
                   />
 
                   <small className="admin-field-help">
-                    Format your Bible Study using headings, bold,
-                    italics, underline, colours, highlights,
-                    lists, links and text alignment.
-                  </small>
-                </div>
-                <div className="admin-form-field">
-                  <label htmlFor="description">
-                    Description
-                  </label>
-
-                  <textarea
-                    id="description"
-                    name="description"
-                    rows="4"
-                    value={formData.description}
-                    onChange={handleChange}
-                    placeholder="Short description of this Bible Study"
-                  />
-                </div>
-
-                <div className="admin-form-field">
-                  <label htmlFor="scripture_reference">
-                    Scripture Reference
-                  </label>
-
-                  <input
-                    id="scripture_reference"
-                    name="scripture_reference"
-                    type="text"
-                    value={
-                      formData.scripture_reference
-                    }
-                    onChange={handleChange}
-                    placeholder="e.g. John 3:16-21"
-                  />
-                </div>
-
-                <div className="admin-form-field">
-                  <label htmlFor="content">
-                    Study Content *
-                  </label>
-
-                  <textarea
-                    id="content"
-                    name="content"
-                    rows="18"
-                    value={formData.content}
-                    onChange={handleChange}
-                    placeholder="Write the full Bible Study content here..."
-                    required
-                  />
-
-                  <small className="admin-field-help">
-                    You can expand this later into a
-                    richer content editor.
+                    Format your Bible Study using headings, bold, italics,
+                    underline, colours, highlights, lists, links and text alignment.
                   </small>
                 </div>
               </div>
+
             </div>
           </div>
 

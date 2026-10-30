@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import RichTextEditor from "../../../components/ui/RichTextEditor";
 import {
   ArrowLeft,
   ImagePlus,
@@ -136,6 +137,12 @@ export default function AdminChristianLivingForm() {
     }));
   }
 
+  function handleContentChange(content) {
+    setForm((current) => ({
+      ...current,
+      content,
+    }));
+  }
   function handleTitleChange(event) {
     const title = event.target.value;
 
@@ -197,6 +204,16 @@ export default function AdminChristianLivingForm() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
+    const plainContent = form.content
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;|&#160;/g, " ")
+      .trim();
+
+    if (!plainContent) {
+      setError("Please add the study content before saving.");
+      return;
+    }
 
     try {
       setSaving(true);
@@ -280,18 +297,21 @@ export default function AdminChristianLivingForm() {
             </div>
 
             <div className="admin-form-field">
-              <label htmlFor="title">
-                Title *
+              <label>
+                Content *
               </label>
 
-              <input
-                id="title"
-                name="title"
-                value={form.title}
-                onChange={handleTitleChange}
-                placeholder="e.g. Building a Christ-Centered Character"
-                required
+              <RichTextEditor
+                value={form.content}
+                onChange={handleContentChange}
+                placeholder="Write the study content here..."
               />
+
+              <small className="admin-field-help">
+                Format your study using headings, bold, italics,
+                underline, colours, highlights, lists, links and
+                text alignment.
+              </small>
             </div>
 
             <div className="admin-form-grid">
@@ -516,9 +536,8 @@ export default function AdminChristianLivingForm() {
             ) : (
               <label
                 htmlFor="featured-image-upload"
-                className={`admin-image-upload ${
-                  uploading ? "is-uploading" : ""
-                }`}
+                className={`admin-image-upload ${uploading ? "is-uploading" : ""
+                  }`}
               >
                 <input
                   id="featured-image-upload"
@@ -617,8 +636,8 @@ export default function AdminChristianLivingForm() {
               {saving
                 ? "Saving..."
                 : isEditing
-                ? "Update Study"
-                : "Save Study"}
+                  ? "Update Study"
+                  : "Save Study"}
             </button>
           </div>
         </aside>

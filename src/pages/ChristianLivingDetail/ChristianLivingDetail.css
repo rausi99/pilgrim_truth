@@ -356,3 +356,63 @@
     align-items: flex-start;
   }
 }
+
+/* Rich text formatting for Christian Living */
+
+.christian-detail-content {
+  line-height: 1.85;
+  overflow-wrap: break-word;
+}
+
+.christian-detail-content p {
+  margin-bottom: 1.25rem;
+}
+
+.christian-detail-content h1,
+.christian-detail-content h2,
+.christian-detail-content h3,
+.christian-detail-content h4 {
+  line-height: 1.4;
+  margin: 2rem 0 1rem;
+  color: #1b692f;
+}
+
+.christian-detail-content ul,
+.christian-detail-content ol {
+  padding-left: 2rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.christian-detail-content li {
+  margin-bottom: 0.5rem;
+}
+
+.christian-detail-content blockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid #1b692f;
+  background: rgba(27, 105, 47, 0.06);
+  border-radius: 4px;
+}
+
+.christian-detail-content mark {
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+}
+
+.christian-detail-content a {
+  color: #1b692f;
+  text-decoration: underline;
+}
+
+.christian-detail-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.christian-detail-content hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid #ddd;
+}

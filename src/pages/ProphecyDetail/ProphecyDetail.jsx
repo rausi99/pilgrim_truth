@@ -136,6 +136,7 @@ function ProphecyDetail() {
     };
   }, [slug]);
 
+
   const navigation = useMemo(() => {
     if (!prophecy || prophecies.length === 0) {
       return {
@@ -144,10 +145,9 @@ function ProphecyDetail() {
       };
     }
 
-    const currentIndex =
-      prophecies.findIndex(
-        (item) => item.slug === prophecy.slug
-      );
+    const currentIndex = prophecies.findIndex(
+      (item) => item.slug === prophecy.slug
+    );
 
     if (currentIndex === -1) {
       return {
@@ -157,17 +157,20 @@ function ProphecyDetail() {
     }
 
     return {
+      // Previous = item earlier in the displayed order
       previous:
-        currentIndex < prophecies.length - 1
-          ? prophecies[currentIndex + 1]
-          : null,
-
-      next:
         currentIndex > 0
           ? prophecies[currentIndex - 1]
           : null,
+
+      // Next = item later in the displayed order
+      next:
+        currentIndex < prophecies.length - 1
+          ? prophecies[currentIndex + 1]
+          : null,
     };
   }, [prophecy, prophecies]);
+
 
   if (loading) {
     return (

@@ -42,31 +42,31 @@ function ArticleDetail({ contentType = "articles" }) {
         setArticles([]);
 
         if (contentType === "health") {
-          const response = await fetch(
-            `${API_URL}/content/public/health`,
-            { signal: controller.signal }
-          );
+          const [studyResponse, healthResponse] = await Promise.all([
+            fetch(
+              `${API_URL}/content/public/health/${encodeURIComponent(slug)}`,
+              { signal: controller.signal }
+            ),
+            fetch(
+              `${API_URL}/content/public/health`,
+              { signal: controller.signal }
+            ),
+          ]);
 
-          const data = await response.json();
+          const studyData = await studyResponse.json();
 
-          if (!response.ok) {
+          if (!studyResponse.ok) {
             throw new Error(
-              data.message || "Unable to load health articles."
+              studyData.message || "Unable to load health article."
             );
           }
 
-          const healthStudies = data.studies || [];
+          setArticle(studyData.study);
 
-          const selectedStudy = healthStudies.find(
-            (study) => study.slug === slug
-          );
-
-          if (!selectedStudy) {
-            throw new Error("Health article not found.");
+          if (healthResponse.ok) {
+            const healthData = await healthResponse.json();
+            setArticles(healthData.studies || []);
           }
-
-          setArticle(selectedStudy);
-          setArticles(healthStudies);
         } else {
           const [articleResponse, articlesResponse] =
             await Promise.all([

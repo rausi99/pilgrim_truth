@@ -1208,9 +1208,7 @@ const getPublicProphecies = async (req, res) => {
           p.published_at IS NULL
           OR p.published_at <= NOW()
         )
-    ORDER BY
-  COALESCE(p.published_at, p.created_at) ASC,
-  p.id ASC
+   ORDER BY p.id ASC
     `);
 
     res.json({
